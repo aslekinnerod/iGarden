@@ -1,0 +1,89 @@
+rules_version = '2';
+
+// Datamodell for delt hage:
+//   users/{uid}                                  – brukerprofil + liste over hager
+//   invites/{code}                               – invitasjonskoder med utløpstid
+//   gardens/{gardenId}                           – hage med navn og ownerId
+//   gardens/{gardenId}/members/{uid}             – medlemskap (role: owner|member)
+//   gardens/{gardenId}/customLocations/{id}      – egne plasseringer
+//   gardens/{gardenId}/plants/{plantId}          – planter
+//   gardens/{gardenId}/plants/{plantId}/careEvents/{id} – stell-logg
+//   gardens/{gardenId}/plants/{plantId}/photos/{id}     – bildemetadata (binærdata i Storage)
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isMember(gardenId) {
+      return exists(/databases/$(database)/documents/gardens/$(gardenId)/members/$(request.auth.uid));
+    }
+
+    function isOwner(gardenId) {
+      return signedIn()
+        && get(/databases/$(database)/documents/gardens/$(gardenId)).data.ownerId == request.auth.uid;
+    }
+
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    match /invites/{code} {
+      // Mottakeren må kunne slå opp koden før de er medlem.
+      allow read: if signedIn();
+      allow create: if isOwner(request.resource.data.gardenId)
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.expiresAt is timestamp;
+      allow delete: if signedIn()
+        && (resource.data.createdBy == request.auth.uid || isOwner(resource.data.gardenId));
+    }
+
+    match /gardens/{gardenId} {
+      allow create: if signedIn() && request.resource.data.ownerId == request.auth.uid;
+      // Eieren må kunne lese hagen sin før medlemsdokumentet er opprettet.
+      allow read: if signedIn()
+        && (isMember(gardenId) || resource.data.ownerId == request.auth.uid);
+      // ownerId kan ikke endres etter opprettelse.
+      allow update: if signedIn() && isMember(gardenId)
+        && request.resource.data.ownerId == resource.data.ownerId;
+      allow delete: if isOwner(gardenId);
+
+      match /members/{uid} {
+        allow read: if signedIn()
+          && (isMember(gardenId) || isOwner(gardenId));
+        // Eieren oppretter sitt eget medlemskap; andre melder seg inn selv
+        // med gyldig, ikke utløpt invitasjonskode.
+        allow create: if signedIn() && request.auth.uid == uid && (
+          isOwner(gardenId)
+          || (
+            request.resource.data.inviteCode is string
+            && get(/databases/$(database)/documents/invites/$(request.resource.data.inviteCode)).data.gardenId == gardenId
+            && get(/databases/$(database)/documents/invites/$(request.resource.data.inviteCode)).data.expiresAt > request.time
+            && request.resource.data.role == 'member'
+          )
+        );
+        // Man kan forlate hagen selv; eieren kan fjerne andre.
+        // Eierens eget medlemskap slettes bare sammen med hagen.
+        allow delete: if signedIn() && (request.auth.uid == uid || isOwner(gardenId));
+      }
+
+      match /customLocations/{locationId} {
+        allow read, write: if signedIn() && isMember(gardenId);
+      }
+
+      match /plants/{plantId} {
+        allow read, write: if signedIn() && isMember(gardenId);
+
+        match /careEvents/{eventId} {
+          allow read, write: if signedIn() && isMember(gardenId);
+        }
+
+        match /photos/{photoId} {
+          allow read, write: if signedIn() && isMember(gardenId);
+        }
+      }
+    }
+  }
+}
