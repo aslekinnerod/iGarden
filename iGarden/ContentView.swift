@@ -22,7 +22,6 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var sortOrder: PlantSortOrder = .name
     @State private var showAddPlant = false
-    @State private var plantToEdit: Plant?
 
     private var filteredPlants: [Plant] {
         let query = searchText.trimmingCharacters(in: .whitespaces)
@@ -52,7 +51,7 @@ struct ContentView: View {
             List {
                 ForEach(filteredPlants) { plant in
                     NavigationLink {
-                        plantDetail(plant)
+                        PlantDetailView(plant: plant)
                     } label: {
                         PlantRowView(plant: plant)
                     }
@@ -89,32 +88,8 @@ struct ContentView: View {
             .sheet(isPresented: $showAddPlant) {
                 PlantFormView()
             }
-            .sheet(item: $plantToEdit) { plant in
-                PlantFormView(plant: plant)
-            }
         } detail: {
             Text("Velg en plante")
-        }
-    }
-
-    private func plantDetail(_ plant: Plant) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(plant.name).font(.title2.bold())
-            if let species = plant.species {
-                Text(species).italic().foregroundStyle(.secondary)
-            }
-            Text(plant.location.rawValue)
-            Text("Vannes hver \(plant.wateringIntervalDays). dag")
-            if !plant.notes.isEmpty {
-                Text(plant.notes).padding(.top, 4)
-            }
-        }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button("Rediger") { plantToEdit = plant }
-            }
         }
     }
 
