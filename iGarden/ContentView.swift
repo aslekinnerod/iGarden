@@ -4,7 +4,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 enum PlantSortOrder: String, CaseIterable, Identifiable {
     case name = "Navn"
@@ -19,9 +18,8 @@ enum PlantSortOrder: String, CaseIterable, Identifiable {
 }
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(AuthStore.self) private var authStore
-    @Query(sort: \Plant.name) private var plants: [Plant]
+    @Environment(GardenStore.self) private var gardenStore
 
     @State private var searchText = ""
     @State private var sortOrder: PlantSortOrder = .name
@@ -33,7 +31,7 @@ struct ContentView: View {
 
     private var filteredPlants: [Plant] {
         let query = searchText.trimmingCharacters(in: .whitespaces)
-        let matching = query.isEmpty ? plants : plants.filter { plant in
+        let matching = query.isEmpty ? gardenStore.plants : gardenStore.plants.filter { plant in
             plant.name.localizedCaseInsensitiveContains(query)
                 || plant.species?.localizedCaseInsensitiveContains(query) == true
         }
@@ -85,7 +83,15 @@ struct ContentView: View {
             .navigationTitle("Mine planter")
             .searchable(text: $searchText, prompt: "Søk på navn eller art")
             .overlay {
-                if plants.isEmpty {
+                if !gardenStore.isConfigured {
+                    ContentUnavailableView(
+                        "Skyen er ikke satt opp",
+                        systemImage: "icloud.slash",
+                        description: Text("GoogleService-Info.plist mangler i prosjektet.")
+                    )
+                } else if !gardenStore.isReady {
+                    ProgressView()
+                } else if gardenStore.plants.isEmpty {
                     ContentUnavailableView {
                         Label("Ingen planter ennå", systemImage: "leaf")
                     } description: {
@@ -101,12 +107,12 @@ struct ContentView: View {
                 }
             }
             .toolbar {
-                if authStore.isFirebaseConfigured {
+                if gardenStore.isConfigured {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             showAccount = true
                         } label: {
-                            Label("Konto", systemImage: authStore.isSignedIn ? "person.crop.circle.badge.checkmark" : "person.crop.circle")
+                            Label("Konto", systemImage: authStore.hasAccount ? "person.crop.circle.badge.checkmark" : "person.crop.circle")
                         }
                     }
                 }
@@ -154,6 +160,17 @@ struct ContentView: View {
                     showOnboarding = true
                 }
             }
+            .alert(
+                "Noe gikk galt",
+                isPresented: Binding(
+                    get: { gardenStore.errorMessage != nil },
+                    set: { if !$0 { gardenStore.errorMessage = nil } }
+                )
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(gardenStore.errorMessage ?? "")
+            }
         } detail: {
             Text("Velg en plante")
         }
@@ -168,8 +185,7 @@ struct ContentView: View {
             }
             .swipeActions(edge: .leading) {
                 Button {
-                    withAnimation { plant.markWatered() }
-                    NotificationManager.reschedule(for: plant)
+                    gardenStore.markWatered(plant)
                 } label: {
                     Label("Vannet", systemImage: "drop.fill")
                 }
@@ -177,8 +193,7 @@ struct ContentView: View {
             }
             .swipeActions(edge: .trailing) {
                 Button(role: .destructive) {
-                    NotificationManager.cancel(for: plant)
-                    withAnimation { modelContext.delete(plant) }
+                    gardenStore.deletePlant(plant)
                 } label: {
                     Label("Slett", systemImage: "trash")
                 }
@@ -217,23 +232,17 @@ struct PlantRowView: View {
         }
     }
 
-    @ViewBuilder
     private var thumbnail: some View {
-        if let image = plant.latestPhoto?.image {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 44, height: 44)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-        } else {
+        PlantPhotoView(path: plant.photoPath) {
             RoundedRectangle(cornerRadius: 8)
                 .fill(.green.opacity(0.12))
-                .frame(width: 44, height: 44)
                 .overlay {
                     Image(systemName: "leaf")
                         .foregroundStyle(.green.opacity(0.5))
                 }
         }
+        .frame(width: 44, height: 44)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
     private var statusColor: Color {
@@ -263,6 +272,6 @@ struct PlantRowView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Plant.self, inMemory: true)
         .environment(AuthStore())
+        .environment(GardenStore())
 }

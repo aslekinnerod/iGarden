@@ -4,15 +4,16 @@
 //
 
 import SwiftUI
-import SwiftData
 import PhotosUI
 
-// Bilde (APP-12) og stell-historikk (APP-11) legges til her senere.
 struct PlantDetailView: View {
-    @Environment(\.modelContext) private var modelContext
+    @Environment(GardenStore.self) private var gardenStore
+    @Environment(\.dismiss) private var dismiss
 
+    /// Øyeblikksbilde fra navigasjonen; den levende varianten hentes fra storen.
     let plant: Plant
 
+    @State private var detailStore = PlantDetailStore()
     @State private var showEditSheet = false
     @State private var showCareEventSheet = false
     @State private var showCamera = false
@@ -20,13 +21,14 @@ struct PlantDetailView: View {
     @State private var photoToView: PlantPhoto?
     @State private var showSlideshow = false
 
-    private var photoTimeline: [PlantPhoto] {
-        plant.photos.sorted { $0.date < $1.date }
+    /// Sanntidsversjonen av planten – oppdateres når andre medlemmer endrer den.
+    private var livePlant: Plant {
+        gardenStore.plants.first { $0.id == plant.id } ?? plant
     }
 
-    private var careHistory: [CareEvent] {
-        plant.careEvents.sorted { $0.date > $1.date }
-    }
+    private var careHistory: [CareEvent] { detailStore.careEvents }
+
+    private var photoTimeline: [PlantPhoto] { detailStore.photos }
 
     var body: some View {
         List {
@@ -38,7 +40,7 @@ struct PlantDetailView: View {
             Section {
                 wateringStatus
                 Button {
-                    waterNow()
+                    gardenStore.markWatered(livePlant)
                 } label: {
                     Label("Vannet nå", systemImage: "drop.fill")
                         .frame(maxWidth: .infinity)
@@ -51,19 +53,19 @@ struct PlantDetailView: View {
             }
 
             Section("Om planten") {
-                if let species = plant.species {
+                if let species = livePlant.species {
                     LabeledContent("Art", value: species)
                 }
-                LabeledContent("Plassering", value: plant.locationDisplayName)
-                LabeledContent("Anskaffet", value: plant.dateAcquired.formatted(date: .long, time: .omitted))
-                if let intervalDays = plant.wateringIntervalDays {
+                LabeledContent("Plassering", value: livePlant.locationDisplayName)
+                LabeledContent("Anskaffet", value: livePlant.dateAcquired.formatted(date: .long, time: .omitted))
+                if let intervalDays = livePlant.wateringIntervalDays {
                     LabeledContent("Vanningsintervall", value: String(localized: "Hver \(intervalDays). dag"))
                 }
             }
 
-            if !plant.notes.isEmpty {
+            if !livePlant.notes.isEmpty {
                 Section("Notater") {
-                    Text(plant.notes)
+                    Text(livePlant.notes)
                 }
             }
 
@@ -114,7 +116,7 @@ struct PlantDetailView: View {
                 }
             }
         }
-        .navigationTitle(plant.name)
+        .navigationTitle(livePlant.name)
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -122,10 +124,10 @@ struct PlantDetailView: View {
             }
         }
         .sheet(isPresented: $showEditSheet) {
-            PlantFormView(plant: plant)
+            PlantFormView(plant: livePlant)
         }
         .sheet(isPresented: $showCareEventSheet) {
-            CareEventFormView(plant: plant)
+            CareEventFormView(plant: livePlant)
         }
         .sheet(item: $photoToView) { photo in
             PhotoViewer(photo: photo)
@@ -133,18 +135,73 @@ struct PlantDetailView: View {
         .fullScreenCover(isPresented: $showSlideshow) {
             SlideshowView(photos: photoTimeline)
         }
+        .task {
+            guard let gardenId = gardenStore.garden?.id, let plantId = plant.id else { return }
+            detailStore.start(gardenId: gardenId, plantId: plantId)
+        }
+        .onDisappear {
+            detailStore.stop()
+        }
+        .onChange(of: gardenStore.plants) {
+            // Slettes planten av et annet medlem, lukkes detaljsiden.
+            if gardenStore.isReady, !gardenStore.plants.contains(where: { $0.id == plant.id }) {
+                dismiss()
+            }
+        }
+    }
+
+    private var statusColor: Color {
+        switch livePlant.wateringStatus {
+        case .overdue: .red
+        case .dueToday, .neverWatered: .orange
+        case .ok: .green
+        case .noSchedule: .secondary
+        }
+    }
+
+    private var statusIcon: String {
+        switch livePlant.wateringStatus {
+        case .noSchedule: "minus.circle.fill"
+        case .ok: "checkmark.circle.fill"
+        case .overdue, .dueToday, .neverWatered: "drop.triangle.fill"
+        }
+    }
+
+    private var wateringStatus: some View {
+        HStack(spacing: 12) {
+            Image(systemName: statusIcon)
+                .font(.title2)
+                .foregroundStyle(statusColor)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(statusTitle)
+                    .font(.headline)
+                if let lastWatered = livePlant.lastWatered {
+                    Text("Sist vannet \(lastWatered.formatted(.relative(presentation: .named)))")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+
+    private var statusTitle: String {
+        switch livePlant.wateringStatus {
+        case .neverWatered:
+            String(localized: "Ikke vannet ennå")
+        case .overdue:
+            String(localized: "Trenger vann – forfalt")
+        case .dueToday:
+            String(localized: "Vannes i dag")
+        case .ok:
+            String(localized: "Vannes \(livePlant.nextWateringDate!.formatted(.relative(presentation: .named)))")
+        case .noSchedule:
+            String(localized: "Ingen vanningsplan")
+        }
     }
 
     private var photoHeader: some View {
         ZStack(alignment: .bottomTrailing) {
-            if let image = plant.latestPhoto?.image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 220)
-                    .clipped()
-            } else {
+            PlantPhotoView(path: livePlant.photoPath) {
                 ZStack {
                     Rectangle()
                         .fill(.green.opacity(0.12))
@@ -152,8 +209,10 @@ struct PlantDetailView: View {
                         .font(.system(size: 56))
                         .foregroundStyle(.green.opacity(0.5))
                 }
-                .frame(height: 220)
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: 220)
+            .clipped()
 
             Menu {
                 if CameraPicker.isAvailable {
@@ -179,7 +238,7 @@ struct PlantDetailView: View {
         }
         .fullScreenCover(isPresented: $showCamera) {
             CameraPicker { image in
-                addPhoto(image)
+                Task { await gardenStore.addPhoto(image, to: livePlant) }
             }
             .ignoresSafeArea()
         }
@@ -187,13 +246,12 @@ struct PlantDetailView: View {
 
     private func timelineCell(_ photo: PlantPhoto) -> some View {
         VStack(spacing: 4) {
-            if let image = photo.image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 96, height: 96)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            PlantPhotoView(path: photo.storagePath) {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.green.opacity(0.12))
             }
+            .frame(width: 96, height: 96)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             Text(photo.date.formatted(date: .abbreviated, time: .omitted))
                 .font(.caption2)
                 .foregroundStyle(.secondary)
@@ -201,7 +259,7 @@ struct PlantDetailView: View {
         .onTapGesture { photoToView = photo }
         .contextMenu {
             Button(role: .destructive) {
-                withAnimation { modelContext.delete(photo) }
+                Task { await gardenStore.deletePhoto(photo, from: livePlant) }
             } label: {
                 Label("Slett bilde", systemImage: "trash")
             }
@@ -213,78 +271,13 @@ struct PlantDetailView: View {
         selectedPhotoItem = nil
         guard let data = try? await item.loadTransferable(type: Data.self),
               let image = UIImage(data: data) else { return }
-        addPhoto(image)
-    }
-
-    private func addPhoto(_ image: UIImage) {
-        guard let jpeg = image.downscaledJPEGData() else { return }
-        withAnimation {
-            plant.photos.append(PlantPhoto(imageData: jpeg))
-        }
+        await gardenStore.addPhoto(image, to: livePlant)
     }
 
     private func deleteCareEvents(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(careHistory[index])
-            }
+        for index in offsets {
+            gardenStore.deleteCareEvent(careHistory[index], from: livePlant)
         }
-    }
-
-    private var statusColor: Color {
-        switch plant.wateringStatus {
-        case .overdue: .red
-        case .dueToday, .neverWatered: .orange
-        case .ok: .green
-        case .noSchedule: .secondary
-        }
-    }
-
-    private var statusIcon: String {
-        switch plant.wateringStatus {
-        case .noSchedule: "minus.circle.fill"
-        case .ok: "checkmark.circle.fill"
-        case .overdue, .dueToday, .neverWatered: "drop.triangle.fill"
-        }
-    }
-
-    private var wateringStatus: some View {
-        HStack(spacing: 12) {
-            Image(systemName: statusIcon)
-                .font(.title2)
-                .foregroundStyle(statusColor)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(statusTitle)
-                    .font(.headline)
-                if let lastWatered = plant.lastWatered {
-                    Text("Sist vannet \(lastWatered.formatted(.relative(presentation: .named)))")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
-        }
-    }
-
-    private var statusTitle: String {
-        switch plant.wateringStatus {
-        case .neverWatered:
-            String(localized: "Ikke vannet ennå")
-        case .overdue:
-            String(localized: "Trenger vann – forfalt")
-        case .dueToday:
-            String(localized: "Vannes i dag")
-        case .ok:
-            String(localized: "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))")
-        case .noSchedule:
-            String(localized: "Ingen vanningsplan")
-        }
-    }
-
-    private func waterNow() {
-        withAnimation {
-            plant.markWatered()
-        }
-        NotificationManager.reschedule(for: plant)
     }
 }
 
@@ -296,12 +289,8 @@ struct PhotoViewer: View {
 
     var body: some View {
         NavigationStack {
-            Group {
-                if let image = photo.image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-                }
+            PlantPhotoView(path: photo.storagePath) {
+                ProgressView()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
@@ -343,7 +332,7 @@ struct CareEventRow: View {
 
 #Preview {
     NavigationStack {
-        PlantDetailView(plant: Plant(name: "Monstera", species: "Monstera deliciosa", wateringIntervalDays: 7))
+        PlantDetailView(plant: Plant(id: "preview", name: "Monstera", species: "Monstera deliciosa"))
     }
-    .modelContainer(for: Plant.self, inMemory: true)
+    .environment(GardenStore())
 }

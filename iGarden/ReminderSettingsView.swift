@@ -4,12 +4,11 @@
 //
 
 import SwiftUI
-import SwiftData
 
 /// Innstillinger for vanningsvarsler: av/på og tidspunkt på dagen.
 struct ReminderSettingsView: View {
+    @Environment(GardenStore.self) private var gardenStore
     @Environment(\.dismiss) private var dismiss
-    @Query private var plants: [Plant]
 
     @AppStorage(NotificationSettings.enabledKey) private var remindersEnabled = true
     @AppStorage(NotificationSettings.minutesKey) private var reminderMinutes = 9 * 60
@@ -47,13 +46,13 @@ struct ReminderSettingsView: View {
                     Button("Ferdig") { dismiss() }
                 }
             }
-            .onChange(of: remindersEnabled) { NotificationManager.rescheduleAll(plants) }
-            .onChange(of: reminderMinutes) { NotificationManager.rescheduleAll(plants) }
+            .onChange(of: remindersEnabled) { NotificationManager.rescheduleAll(gardenStore.plants) }
+            .onChange(of: reminderMinutes) { NotificationManager.rescheduleAll(gardenStore.plants) }
         }
     }
 }
 
 #Preview {
     ReminderSettingsView()
-        .modelContainer(for: Plant.self, inMemory: true)
+        .environment(GardenStore())
 }

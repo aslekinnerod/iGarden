@@ -20,7 +20,7 @@ struct AccountView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if authStore.isSignedIn {
+                if authStore.hasAccount {
                     signedInView
                 } else {
                     signedOutView

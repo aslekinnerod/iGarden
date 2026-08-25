@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 /// Fullskjerms avspilling av veksttidslinjen: hvert bilde vises i 2 sekunder
 /// og fader over til neste. Avsluttes automatisk etter siste bilde, eller
@@ -14,6 +15,7 @@ struct SlideshowView: View {
     let photos: [PlantPhoto]
 
     @State private var index = 0
+    @State private var images: [String: UIImage] = [:]
 
     private static let secondsPerPhoto: Double = 2
     private static let fadeDuration: Double = 0.6
@@ -22,12 +24,15 @@ struct SlideshowView: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            if let image = photos[index].image {
+            if let image = images[photos[index].storagePath] {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
                     .id(index)
                     .transition(.opacity)
+            } else {
+                ProgressView()
+                    .tint(.white)
             }
 
             VStack {
@@ -57,6 +62,12 @@ struct SlideshowView: View {
     }
 
     private func play() async {
+        // Bildene lastes (fra cache eller Storage) før avspillingen starter.
+        for photo in photos {
+            if let image = await ImageStore.shared.image(forPath: photo.storagePath) {
+                images[photo.storagePath] = image
+            }
+        }
         while !Task.isCancelled {
             try? await Task.sleep(for: .seconds(Self.secondsPerPhoto))
             guard !Task.isCancelled else { return }

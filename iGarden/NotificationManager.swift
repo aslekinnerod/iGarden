@@ -21,11 +21,11 @@ enum NotificationSettings {
 }
 
 /// Planlegger lokale vanningsvarsler. Tillatelse bes om ved første
-/// planlegging, ikke ved appstart.
+/// planlegging, ikke ved appstart. Plantens Firestore-id er varselidentifikator.
 enum NotificationManager {
     /// Planlegger (eller fjerner og planlegger på nytt) varselet for én plante.
     static func reschedule(for plant: Plant) {
-        let id = plant.reminderId.uuidString
+        guard let id = plant.id else { return }
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [id])
 
@@ -52,8 +52,8 @@ enum NotificationManager {
     }
 
     static func cancel(for plant: Plant) {
-        UNUserNotificationCenter.current()
-            .removePendingNotificationRequests(withIdentifiers: [plant.reminderId.uuidString])
+        guard let id = plant.id else { return }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
     }
 
     /// Brukes når innstillingene endres: fjerner alt og planlegger på nytt.

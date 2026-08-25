@@ -4,10 +4,10 @@
 //
 
 import SwiftUI
-import SwiftData
 
 /// Sheet for å registrere en stell-hendelse på en plante.
 struct CareEventFormView: View {
+    @Environment(GardenStore.self) private var gardenStore
     @Environment(\.dismiss) private var dismiss
 
     let plant: Plant
@@ -43,17 +43,12 @@ struct CareEventFormView: View {
 
     private func save() {
         let event = CareEvent(type: type, date: date, note: note.trimmingCharacters(in: .whitespacesAndNewlines))
-        plant.careEvents.append(event)
-        // En vanning bakover i tid skal ikke overskrive en nyere registrering.
-        if type == .watering, date > (plant.lastWatered ?? .distantPast) {
-            plant.lastWatered = date
-            NotificationManager.reschedule(for: plant)
-        }
+        gardenStore.addCareEvent(event, to: plant)
         dismiss()
     }
 }
 
 #Preview {
-    CareEventFormView(plant: Plant(name: "Monstera"))
-        .modelContainer(for: Plant.self, inMemory: true)
+    CareEventFormView(plant: Plant(id: "preview", name: "Monstera"))
+        .environment(GardenStore())
 }

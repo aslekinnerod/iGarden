@@ -9,6 +9,61 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "You're seeing your own locations. Delete them all to get the default list back." } }
       }
     },
+    "Min hage" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "My Garden" } }
+      }
+    },
+    "Skyen er ikke satt opp" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cloud not set up" } }
+      }
+    },
+    "GoogleService-Info.plist mangler i prosjektet." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "GoogleService-Info.plist is missing from the project." } }
+      }
+    },
+    "Kunne ikke koble til skyen. Sjekk nettforbindelsen og prøv igjen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not connect to the cloud. Check your connection and try again." } }
+      }
+    },
+    "Kunne ikke laste hagen din. Prøv igjen senere." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not load your garden. Please try again later." } }
+      }
+    },
+    "Kunne ikke lagre planten." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not save the plant." } }
+      }
+    },
+    "Kunne ikke registrere vanningen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not log the watering." } }
+      }
+    },
+    "Kunne ikke registrere stellet." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not log the care event." } }
+      }
+    },
+    "Kunne ikke laste opp bildet." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not upload the photo." } }
+      }
+    },
+    "Kunne ikke slette bildet." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not delete the photo." } }
+      }
+    },
+    "Kunne ikke lagre plasseringen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not save the location." } }
+      }
+    },
     "Konto" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Account" } }

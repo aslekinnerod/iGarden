@@ -4,25 +4,16 @@
 //
 
 import Foundation
-import SwiftData
 import Testing
+import FirebaseFirestore
 @testable import iGarden
 
 @MainActor
 struct PlantTests {
-    private func makeContext() throws -> ModelContext {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(
-            for: Plant.self, CareEvent.self, PlantPhoto.self,
-            configurations: config
-        )
-        return ModelContext(container)
-    }
-
     // MARK: - Vanningslogikk
 
     @Test func nesteVanningsdatoBeregnesFraSistVannetPlussIntervall() throws {
-        let plant = Plant(name: "Test", wateringIntervalDays: 7)
+        var plant = Plant(name: "Test", wateringIntervalDays: 7)
         let lastWatered = Date(timeIntervalSince1970: 1_700_000_000)
         plant.lastWatered = lastWatered
 
@@ -39,7 +30,7 @@ struct PlantTests {
     }
 
     @Test func forfaltNaarNesteVanningErPassertMedMerEnnEnDag() throws {
-        let plant = Plant(name: "Test", wateringIntervalDays: 7)
+        var plant = Plant(name: "Test", wateringIntervalDays: 7)
         plant.lastWatered = Calendar.current.date(byAdding: .day, value: -10, to: .now)
 
         #expect(plant.wateringStatus == .overdue)
@@ -47,7 +38,7 @@ struct PlantTests {
     }
 
     @Test func vannesIDagNaarNesteVanningErIDag() throws {
-        let plant = Plant(name: "Test", wateringIntervalDays: 7)
+        var plant = Plant(name: "Test", wateringIntervalDays: 7)
         plant.lastWatered = Calendar.current.date(byAdding: .day, value: -7, to: .now)
 
         #expect(plant.wateringStatus == .dueToday)
@@ -55,7 +46,7 @@ struct PlantTests {
     }
 
     @Test func okNaarNesteVanningErFremITid() throws {
-        let plant = Plant(name: "Test", wateringIntervalDays: 7)
+        var plant = Plant(name: "Test", wateringIntervalDays: 7)
         plant.lastWatered = .now
 
         #expect(plant.wateringStatus == .ok)
@@ -63,7 +54,7 @@ struct PlantTests {
     }
 
     @Test func utenVanningsplanTrengerAldriVann() throws {
-        let plant = Plant(name: "Hageplante", wateringIntervalDays: nil)
+        var plant = Plant(name: "Hageplante", wateringIntervalDays: nil)
         plant.lastWatered = Calendar.current.date(byAdding: .day, value: -30, to: .now)
 
         #expect(plant.wateringStatus == .noSchedule)
@@ -71,63 +62,63 @@ struct PlantTests {
         #expect(plant.nextWateringDate == nil)
     }
 
-    @Test func markWateredSetterSistVannetOgLoggerHendelse() throws {
-        let context = try makeContext()
+    @Test func markingWateredSetterSistVannetUtenAaEndreOriginalen() throws {
         let plant = Plant(name: "Test", wateringIntervalDays: 7)
-        context.insert(plant)
+        let watered = plant.markingWatered()
 
-        plant.markWatered()
-
-        #expect(plant.lastWatered != nil)
-        #expect(plant.careEvents.count == 1)
-        #expect(plant.careEvents.first?.type == .watering)
-        #expect(plant.wateringStatus == .ok)
+        #expect(watered.lastWatered != nil)
+        #expect(watered.wateringStatus == .ok)
+        #expect(plant.lastWatered == nil)
     }
 
-    // MARK: - CRUD og relasjoner
+    @Test func markingWateredBakoverITidBrukerOppgittDato() throws {
+        let plant = Plant(name: "Test", wateringIntervalDays: 7)
+        let date = Date(timeIntervalSince1970: 1_700_000_000)
 
-    @Test func planterKanOpprettesOgSlettes() throws {
-        let context = try makeContext()
-        context.insert(Plant(name: "A"))
-        context.insert(Plant(name: "B"))
-        try context.save()
-
-        var plants = try context.fetch(FetchDescriptor<Plant>())
-        #expect(plants.count == 2)
-
-        context.delete(plants[0])
-        try context.save()
-
-        plants = try context.fetch(FetchDescriptor<Plant>())
-        #expect(plants.count == 1)
+        #expect(plant.markingWatered(at: date).lastWatered == date)
     }
 
-    @Test func slettingAvPlanteKaskadeSletterStellHendelser() throws {
-        let context = try makeContext()
-        let plant = Plant(name: "Test")
-        context.insert(plant)
-        plant.markWatered()
-        plant.careEvents.append(CareEvent(type: .fertilizing))
-        try context.save()
+    // MARK: - Modellkoding (Firestore bruker Codable)
 
-        #expect(try context.fetch(FetchDescriptor<CareEvent>()).count == 2)
+    @Test func plantKodesTilRiktigLagringsformat() throws {
+        var plant = Plant(
+            id: "skal-ikke-lagres",
+            name: "Monstera",
+            species: "Monstera deliciosa",
+            location: "Vinterhagen",
+            notes: "Trives i skygge",
+            wateringIntervalDays: nil,
+            photoPath: "gardens/g/plants/p/foto.jpg"
+        )
+        plant.lastWatered = Date(timeIntervalSince1970: 1_700_000_000)
 
-        context.delete(plant)
-        try context.save()
+        // @DocumentID kan bare dekodes fra et ekte Firestore-dokument,
+        // så her verifiseres selve lagringsformatet i stedet.
+        let encoded = try Firestore.Encoder().encode(plant)
 
-        #expect(try context.fetch(FetchDescriptor<CareEvent>()).isEmpty)
+        #expect(encoded["name"] as? String == "Monstera")
+        #expect(encoded["species"] as? String == "Monstera deliciosa")
+        #expect(encoded["location"] as? String == "Vinterhagen")
+        #expect(encoded["wateringIntervalDays"] == nil)
+        #expect(encoded["lastWatered"] != nil)
+        #expect(encoded["photoPath"] as? String == "gardens/g/plants/p/foto.jpg")
+        // Dokument-id-en er adressen til dokumentet og skal ikke inn i innholdet.
+        #expect(encoded["id"] == nil)
     }
 
-    @Test func nyesteBildeVelgesSomLatestPhoto() throws {
-        let context = try makeContext()
-        let plant = Plant(name: "Test")
-        context.insert(plant)
+    @Test func careEventTypeBrukerNorskeRaaverdierSomLagringsformat() throws {
+        // Råverdiene er lagringsformat i Firestore og må ikke endres.
+        #expect(CareEventType.watering.rawValue == "Vanning")
+        #expect(CareEventType.fertilizing.rawValue == "Gjødsling")
+        #expect(CareEventType.repotting.rawValue == "Ompotting")
+        #expect(CareEventType.pruning.rawValue == "Beskjæring")
+    }
 
-        let old = PlantPhoto(imageData: Data([1]), date: Date(timeIntervalSince1970: 1_000))
-        let new = PlantPhoto(imageData: Data([2]), date: Date(timeIntervalSince1970: 2_000))
-        plant.photos.append(old)
-        plant.photos.append(new)
+    @Test func egneOgInnebygdePlasseringerVisesRiktig() throws {
+        let custom = Plant(name: "Test", location: "Vinterhagen")
 
-        #expect(plant.latestPhoto?.date == new.date)
+        // Egne navn vises som de er; innebygde har localizable-nøkkel.
+        #expect(custom.locationDisplayName == "Vinterhagen")
+        #expect(PlantLocation.allCases.contains { $0.rawValue == Plant(name: "T").location })
     }
 }

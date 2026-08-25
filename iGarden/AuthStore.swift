@@ -16,7 +16,8 @@ import FirebaseAuth
 final class AuthStore {
     private(set) var user: User?
 
-    var isSignedIn: Bool { user != nil }
+    /// Sann når brukeren har en ekte konto (ikke bare den automatiske anonyme).
+    var hasAccount: Bool { user != nil && user?.isAnonymous == false }
 
     /// Firebase er bare konfigurert når GoogleService-Info.plist ligger i appen.
     var isFirebaseConfigured: Bool { FirebaseApp.app() != nil }
@@ -58,7 +59,21 @@ final class AuthStore {
             rawNonce: nonce,
             fullName: appleCredential.fullName
         )
-        try await Auth.auth().signIn(with: credential)
+        // Den automatiske anonyme kontoen kobles til Apple-identiteten,
+        // slik at hagen brukeren allerede har beholdes.
+        if let current = Auth.auth().currentUser, current.isAnonymous {
+            do {
+                let linked = try await current.link(with: credential)
+                user = linked.user
+            } catch let error as NSError
+                where error.code == AuthErrorCode.credentialAlreadyInUse.rawValue {
+                // Apple-id-en har allerede en konto fra før – logg inn på den.
+                let existing = (error.userInfo[AuthErrorUserInfoUpdatedCredentialKey] as? AuthCredential) ?? credential
+                try await Auth.auth().signIn(with: existing)
+            }
+        } else {
+            try await Auth.auth().signIn(with: credential)
+        }
     }
 
     func signOut() throws {

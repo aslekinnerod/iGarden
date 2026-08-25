@@ -4,12 +4,11 @@
 //
 
 import SwiftUI
-import SwiftData
 
 /// Skjema for å registrere en ny plante eller redigere en eksisterende.
 /// Feltene holdes i lokal state slik at Avbryt ikke endrer noe.
 struct PlantFormView: View {
-    @Environment(\.modelContext) private var modelContext
+    @Environment(GardenStore.self) private var gardenStore
     @Environment(\.dismiss) private var dismiss
 
     /// Planten som redigeres, eller nil for ny plante.
@@ -110,33 +109,30 @@ struct PlantFormView: View {
 
     private func save() {
         let trimmedSpecies = species.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let plant {
-            plant.name = trimmedName
-            plant.species = trimmedSpecies.isEmpty ? nil : trimmedSpecies
-            plant.location = location
-            plant.dateAcquired = dateAcquired
-            plant.notes = notes
-            plant.wateringIntervalDays = hasWateringSchedule ? wateringIntervalDays : nil
-            // Endret intervall eller navn påvirker varselet.
-            NotificationManager.reschedule(for: plant)
+        if var updated = plant {
+            updated.name = trimmedName
+            updated.species = trimmedSpecies.isEmpty ? nil : trimmedSpecies
+            updated.location = location
+            updated.dateAcquired = dateAcquired
+            updated.notes = notes
+            updated.wateringIntervalDays = hasWateringSchedule ? wateringIntervalDays : nil
+            gardenStore.updatePlant(updated)
         } else {
-            let newPlant = Plant(
+            gardenStore.addPlant(Plant(
                 name: trimmedName,
                 species: trimmedSpecies.isEmpty ? nil : trimmedSpecies,
                 location: location,
                 dateAcquired: dateAcquired,
                 notes: notes,
                 wateringIntervalDays: hasWateringSchedule ? wateringIntervalDays : nil
-            )
-            modelContext.insert(newPlant)
+            ))
         }
         dismiss()
     }
 
     private func deletePlant() {
         if let plant {
-            NotificationManager.cancel(for: plant)
-            modelContext.delete(plant)
+            gardenStore.deletePlant(plant)
         }
         dismiss()
     }
@@ -144,5 +140,5 @@ struct PlantFormView: View {
 
 #Preview("Ny plante") {
     PlantFormView()
-        .modelContainer(for: Plant.self, inMemory: true)
+        .environment(GardenStore())
 }

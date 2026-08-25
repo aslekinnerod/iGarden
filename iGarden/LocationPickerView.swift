@@ -4,18 +4,18 @@
 //
 
 import SwiftUI
-import SwiftData
 
 /// Velger for plassering: viser brukerens egne plasseringer hvis de finnes,
 /// ellers den forhåndsutfylte listen. Egne plasseringer kan legges til og slettes.
 struct LocationPickerView: View {
-    @Environment(\.modelContext) private var modelContext
+    @Environment(GardenStore.self) private var gardenStore
     @Environment(\.dismiss) private var dismiss
-    @Query(sort: \CustomLocation.name) private var customLocations: [CustomLocation]
 
     @Binding var selection: String
 
     @State private var newName = ""
+
+    private var customLocations: [CustomLocation] { gardenStore.customLocations }
 
     private var usesCustomLocations: Bool { !customLocations.isEmpty }
 
@@ -79,7 +79,7 @@ struct LocationPickerView: View {
         if let existing = customLocations.first(where: { $0.name.localizedCaseInsensitiveCompare(name) == .orderedSame }) {
             selection = existing.name
         } else {
-            modelContext.insert(CustomLocation(name: name))
+            gardenStore.addCustomLocation(named: name)
             selection = name
         }
         newName = ""
@@ -87,10 +87,8 @@ struct LocationPickerView: View {
     }
 
     private func deleteCustomLocations(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(customLocations[index])
-            }
+        for index in offsets {
+            gardenStore.deleteCustomLocation(customLocations[index])
         }
     }
 }
@@ -99,5 +97,5 @@ struct LocationPickerView: View {
     NavigationStack {
         LocationPickerView(selection: .constant(PlantLocation.livingRoom.rawValue))
     }
-    .modelContainer(for: CustomLocation.self, inMemory: true)
+    .environment(GardenStore())
 }
