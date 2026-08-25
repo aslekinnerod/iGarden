@@ -94,9 +94,19 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete account" } }
       }
     },
-    "Bekreft med Apple for å slette kontoen. Dette kan ikke angres." : {
+    "Bekreft innloggingen på nytt for å slette kontoen. Dette kan ikke angres." : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Confirm with Apple to delete the account. This cannot be undone." } }
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Confirm your sign-in again to delete the account. This cannot be undone." } }
+      }
+    },
+    "Logg inn med Google" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in with Google" } }
+      }
+    },
+    "Bekreft med Google" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Confirm with Google" } }
       }
     },
     "Noe gikk galt" : {

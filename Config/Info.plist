@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- URL-scheme for Google Sign-In-tilbakekallet (REVERSED_CLIENT_ID
+	     fra GoogleService-Info.plist). Resten av Info.plist genereres av Xcode. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.649257119024-3pb4evgrlu31h3imbrfd8ljv8coplhu8</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

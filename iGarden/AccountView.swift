@@ -60,21 +60,52 @@ struct AccountView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
             Spacer()
-            SignInWithAppleButton(.signIn) { request in
-                authStore.prepareRequest(request)
-            } onCompletion: { result in
-                Task {
-                    do {
+            VStack(spacing: 12) {
+                SignInWithAppleButton(.signIn) { request in
+                    authStore.prepareRequest(request)
+                } onCompletion: { result in
+                    handleAuthTask {
                         try await authStore.signIn(with: result)
-                    } catch {
-                        errorMessage = error.localizedDescription
                     }
                 }
+                .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                .frame(height: 50)
+
+                googleButton("Logg inn med Google") {
+                    try await authStore.signInWithGoogle()
+                }
             }
-            .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-            .frame(height: 50)
         }
         .padding(24)
+    }
+
+    /// Google-knapp i samme stil som Apple-knappen.
+    private func googleButton(_ title: LocalizedStringKey, action: @escaping () async throws -> Void) -> some View {
+        Button {
+            handleAuthTask(action)
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "g.circle.fill")
+                    .font(.title3)
+                Text(title)
+                    .font(.system(size: 19, weight: .medium))
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+        }
+        .foregroundStyle(colorScheme == .dark ? .black : .white)
+        .background(colorScheme == .dark ? Color.white : Color.black, in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    /// Kjører en innloggingsflyt; avbrutt innlogging vises ikke som feil.
+    private func handleAuthTask(_ action: @escaping () async throws -> Void) {
+        Task {
+            do {
+                try await action()
+            } catch where !AuthStore.isCancellation(error) {
+                errorMessage = error.localizedDescription
+            } catch {}
+        }
     }
 
     private var signedInView: some View {
@@ -100,25 +131,31 @@ struct AccountView: View {
 
             Section {
                 if confirmingDeletion {
-                    Text("Bekreft med Apple for å slette kontoen. Dette kan ikke angres.")
+                    Text("Bekreft innloggingen på nytt for å slette kontoen. Dette kan ikke angres.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                    SignInWithAppleButton(.continue) { request in
-                        authStore.prepareRequest(request)
-                    } onCompletion: { result in
-                        Task {
-                            do {
+                    if authStore.providerIds.contains("apple.com") {
+                        SignInWithAppleButton(.continue) { request in
+                            authStore.prepareRequest(request)
+                        } onCompletion: { result in
+                            handleAuthTask {
                                 try await authStore.deleteAccount(reauthorizedWith: result)
                                 dismiss()
-                            } catch {
-                                errorMessage = error.localizedDescription
                             }
                         }
+                        .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                        .frame(height: 44)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
                     }
-                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-                    .frame(height: 44)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets())
+                    if authStore.providerIds.contains("google.com") {
+                        googleButton("Bekreft med Google") {
+                            try await authStore.deleteAccountWithGoogle()
+                            dismiss()
+                        }
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
+                    }
                 } else {
                     Button("Slett konto", role: .destructive) {
                         withAnimation { confirmingDeletion = true }

@@ -10,6 +10,7 @@
 		68BB000530383CE600A55448 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 68BB000230383CE600A55448 /* FirebaseAuth */; };
 		68BB000630383CE600A55448 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 68BB000330383CE600A55448 /* FirebaseFirestore */; };
 		68BB000730383CE600A55448 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 68BB000430383CE600A55448 /* FirebaseStorage */; };
+		68CC000330383CE600A55448 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 68CC000230383CE600A55448 /* GoogleSignIn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 				68BB000530383CE600A55448 /* FirebaseAuth in Frameworks */,
 				68BB000630383CE600A55448 /* FirebaseFirestore in Frameworks */,
 				68BB000730383CE600A55448 /* FirebaseStorage in Frameworks */,
+				68CC000330383CE600A55448 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +104,7 @@
 				68BB000230383CE600A55448 /* FirebaseAuth */,
 				68BB000330383CE600A55448 /* FirebaseFirestore */,
 				68BB000430383CE600A55448 /* FirebaseStorage */,
+				68CC000230383CE600A55448 /* GoogleSignIn */,
 			);
 			productName = iGarden;
 			productReference = 6853E5F430383CE600A55448 /* iGarden.app */;
@@ -161,6 +164,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				68BB000130383CE600A55448 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				68CC000130383CE600A55448 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6853E5F530383CE600A55448 /* Products */;
@@ -348,6 +352,7 @@
 				DEVELOPMENT_TEAM = UEVSN8X7G2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "iGarden bruker kameraet til å ta bilder av plantene dine.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -382,6 +387,7 @@
 				DEVELOPMENT_TEAM = UEVSN8X7G2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "iGarden bruker kameraet til å ta bilder av plantene dine.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -490,6 +496,14 @@
 				minimumVersion = 12.0.0;
 			};
 		};
+		68CC000130383CE600A55448 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -507,6 +521,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68BB000130383CE600A55448 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		68CC000230383CE600A55448 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68CC000130383CE600A55448 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

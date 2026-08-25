@@ -5,6 +5,7 @@
 
 import SwiftUI
 import FirebaseCore
+import GoogleSignIn
 
 @main
 struct iGardenApp: App {
@@ -28,6 +29,10 @@ struct iGardenApp: App {
                 .environment(gardenStore)
                 .onAppear {
                     gardenStore.start()
+                }
+                .onOpenURL { url in
+                    // Google Sign-In-tilbakekallet (URL-scheme i Info.plist).
+                    GIDSignIn.sharedInstance.handle(url)
                 }
         }
     }

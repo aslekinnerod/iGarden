@@ -2,16 +2,20 @@
 //  AuthStore.swift
 //  iGarden
 //
+//  Innloggingstilstand og innloggingsflyt mot Firebase Auth.
+//  Støtter Sign in with Apple (nonce-basert) og Google Sign-In.
+//  Begge LINKER den automatiske anonyme kontoen, så hagen beholdes.
+//
 
 import Foundation
+import UIKit
 import Security
 import CryptoKit
 import AuthenticationServices
 import FirebaseCore
 import FirebaseAuth
+import GoogleSignIn
 
-/// Innloggingstilstand og Sign in with Apple-flyt mot Firebase Auth.
-/// Nonce-basert etter Firebases anbefalte oppskrift.
 @Observable
 final class AuthStore {
     private(set) var user: User?
@@ -21,6 +25,11 @@ final class AuthStore {
 
     /// Firebase er bare konfigurert når GoogleService-Info.plist ligger i appen.
     var isFirebaseConfigured: Bool { FirebaseApp.app() != nil }
+
+    /// Innloggingsleverandørene på kontoen ("apple.com" / "google.com").
+    var providerIds: [String] {
+        user?.providerData.map(\.providerID) ?? []
+    }
 
     private var currentNonce: String?
     private var listenerHandle: AuthStateDidChangeListenerHandle?
@@ -43,6 +52,45 @@ final class AuthStore {
         }
     }
 
+    /// Avbrutt innlogging skal ikke vises som feil.
+    static func isCancellation(_ error: Error) -> Bool {
+        let nsError = error as NSError
+        if nsError.domain == ASAuthorizationError.errorDomain,
+           nsError.code == ASAuthorizationError.canceled.rawValue {
+            return true
+        }
+        if nsError.domain == kGIDSignInErrorDomain,
+           nsError.code == GIDSignInError.canceled.rawValue {
+            return true
+        }
+        return false
+    }
+
+    // MARK: - Felles
+
+    /// Den automatiske anonyme kontoen kobles til den nye identiteten,
+    /// slik at hagen brukeren allerede har beholdes. Er identiteten alt
+    /// i bruk, logges det inn på den eksisterende kontoen i stedet.
+    private func linkOrSignIn(with credential: AuthCredential) async throws {
+        if let current = Auth.auth().currentUser, current.isAnonymous {
+            do {
+                let linked = try await current.link(with: credential)
+                user = linked.user
+            } catch let error as NSError
+                where error.code == AuthErrorCode.credentialAlreadyInUse.rawValue {
+                let existing = (error.userInfo[AuthErrorUserInfoUpdatedCredentialKey] as? AuthCredential) ?? credential
+                try await Auth.auth().signIn(with: existing)
+            }
+        } else {
+            try await Auth.auth().signIn(with: credential)
+        }
+    }
+
+    func signOut() throws {
+        GIDSignIn.sharedInstance.signOut()
+        try Auth.auth().signOut()
+    }
+
     // MARK: - Sign in with Apple
 
     func prepareRequest(_ request: ASAuthorizationAppleIDRequest) {
@@ -59,25 +107,7 @@ final class AuthStore {
             rawNonce: nonce,
             fullName: appleCredential.fullName
         )
-        // Den automatiske anonyme kontoen kobles til Apple-identiteten,
-        // slik at hagen brukeren allerede har beholdes.
-        if let current = Auth.auth().currentUser, current.isAnonymous {
-            do {
-                let linked = try await current.link(with: credential)
-                user = linked.user
-            } catch let error as NSError
-                where error.code == AuthErrorCode.credentialAlreadyInUse.rawValue {
-                // Apple-id-en har allerede en konto fra før – logg inn på den.
-                let existing = (error.userInfo[AuthErrorUserInfoUpdatedCredentialKey] as? AuthCredential) ?? credential
-                try await Auth.auth().signIn(with: existing)
-            }
-        } else {
-            try await Auth.auth().signIn(with: credential)
-        }
-    }
-
-    func signOut() throws {
-        try Auth.auth().signOut()
+        try await linkOrSignIn(with: credential)
     }
 
     /// Sletting krever fersk innlogging, så brukeren bekrefter med en ny
@@ -109,6 +139,52 @@ final class AuthStore {
             }
             return (appleCredential, idToken, nonce)
         }
+    }
+
+    // MARK: - Google Sign-In
+
+    func signInWithGoogle() async throws {
+        let credential = try await googleCredential()
+        try await linkOrSignIn(with: credential)
+    }
+
+    /// Sletting bekreftet med en fersk Google-innlogging.
+    func deleteAccountWithGoogle() async throws {
+        guard let user = Auth.auth().currentUser else { throw AuthError.invalidCredential }
+        let credential = try await googleCredential()
+        try await user.reauthenticate(with: credential)
+        try await user.delete()
+        GIDSignIn.sharedInstance.signOut()
+    }
+
+    private func googleCredential() async throws -> AuthCredential {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            throw AuthError.invalidCredential
+        }
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
+        guard let presenter = Self.topViewController() else {
+            throw AuthError.invalidCredential
+        }
+        let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenter)
+        guard let idToken = result.user.idToken?.tokenString else {
+            throw AuthError.invalidCredential
+        }
+        return GoogleAuthProvider.credential(
+            withIDToken: idToken,
+            accessToken: result.user.accessToken.tokenString
+        )
+    }
+
+    private static func topViewController() -> UIViewController? {
+        let scene = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
+        var viewController = scene?.keyWindow?.rootViewController
+            ?? scene?.windows.first?.rootViewController
+        while let presented = viewController?.presentedViewController {
+            viewController = presented
+        }
+        return viewController
     }
 
     // MARK: - Nonce
