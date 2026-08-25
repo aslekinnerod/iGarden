@@ -13,6 +13,7 @@ struct iGardenApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Plant.self,
+            CareEvent.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

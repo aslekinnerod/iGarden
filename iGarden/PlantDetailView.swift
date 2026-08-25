@@ -8,9 +8,16 @@ import SwiftData
 
 // Bilde (APP-12) og stell-historikk (APP-11) legges til her senere.
 struct PlantDetailView: View {
+    @Environment(\.modelContext) private var modelContext
+
     let plant: Plant
 
     @State private var showEditSheet = false
+    @State private var showCareEventSheet = false
+
+    private var careHistory: [CareEvent] {
+        plant.careEvents.sorted { $0.date > $1.date }
+    }
 
     var body: some View {
         List {
@@ -43,6 +50,29 @@ struct PlantDetailView: View {
                     Text(plant.notes)
                 }
             }
+
+            Section {
+                if careHistory.isEmpty {
+                    Text("Ingen stell registrert ennå")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(careHistory) { event in
+                        CareEventRow(event: event)
+                    }
+                    .onDelete(perform: deleteCareEvents)
+                }
+            } header: {
+                HStack {
+                    Text("Stell-historikk")
+                    Spacer()
+                    Button {
+                        showCareEventSheet = true
+                    } label: {
+                        Label("Registrer stell", systemImage: "plus.circle")
+                            .labelStyle(.iconOnly)
+                    }
+                }
+            }
         }
         .navigationTitle(plant.name)
         .navigationBarTitleDisplayMode(.large)
@@ -53,6 +83,17 @@ struct PlantDetailView: View {
         }
         .sheet(isPresented: $showEditSheet) {
             PlantFormView(plant: plant)
+        }
+        .sheet(isPresented: $showCareEventSheet) {
+            CareEventFormView(plant: plant)
+        }
+    }
+
+    private func deleteCareEvents(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                modelContext.delete(careHistory[index])
+            }
         }
     }
 
@@ -99,6 +140,31 @@ struct PlantDetailView: View {
             plant.markWatered()
         }
         // APP-11: opprett også en CareEvent her når stell-loggen finnes.
+    }
+}
+
+struct CareEventRow: View {
+    let event: CareEvent
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: event.type.icon)
+                .foregroundStyle(.secondary)
+                .frame(width: 20)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(event.type.rawValue)
+                HStack(spacing: 4) {
+                    Text(event.date.formatted(date: .abbreviated, time: .omitted))
+                    if !event.note.isEmpty {
+                        Text("·")
+                        Text(event.note)
+                            .lineLimit(1)
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
+        }
     }
 }
 

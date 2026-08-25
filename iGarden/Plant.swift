@@ -31,6 +31,9 @@ final class Plant {
     var wateringIntervalDays: Int
     var lastWatered: Date?
 
+    @Relationship(deleteRule: .cascade, inverse: \CareEvent.plant)
+    var careEvents: [CareEvent] = []
+
     init(
         name: String,
         species: String? = nil,
@@ -67,6 +70,7 @@ final class Plant {
 
     func markWatered() {
         lastWatered = .now
+        careEvents.append(CareEvent(type: .watering))
     }
 }
 
