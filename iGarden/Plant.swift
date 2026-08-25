@@ -31,6 +31,9 @@ final class Plant {
     var wateringIntervalDays: Int
     var lastWatered: Date?
 
+    /// Stabil identifikator for plantens vanningsvarsel.
+    var reminderId: UUID = UUID()
+
     @Relationship(deleteRule: .cascade, inverse: \CareEvent.plant)
     var careEvents: [CareEvent] = []
 

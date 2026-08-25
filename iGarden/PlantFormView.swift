@@ -106,6 +106,8 @@ struct PlantFormView: View {
             plant.dateAcquired = dateAcquired
             plant.notes = notes
             plant.wateringIntervalDays = wateringIntervalDays
+            // Endret intervall eller navn påvirker varselet.
+            NotificationManager.reschedule(for: plant)
         } else {
             let newPlant = Plant(
                 name: trimmedName,
@@ -122,6 +124,7 @@ struct PlantFormView: View {
 
     private func deletePlant() {
         if let plant {
+            NotificationManager.cancel(for: plant)
             modelContext.delete(plant)
         }
         dismiss()

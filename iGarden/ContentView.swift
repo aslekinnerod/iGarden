@@ -21,6 +21,7 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var sortOrder: PlantSortOrder = .name
     @State private var showAddPlant = false
+    @State private var showReminderSettings = false
 
     private var filteredPlants: [Plant] {
         let query = searchText.trimmingCharacters(in: .whitespaces)
@@ -76,6 +77,13 @@ struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showReminderSettings = true
+                    } label: {
+                        Label("Varsler", systemImage: "bell")
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
                         Picker("Sortering", selection: $sortOrder) {
                             ForEach(PlantSortOrder.allCases) { order in
@@ -97,6 +105,9 @@ struct ContentView: View {
             .sheet(isPresented: $showAddPlant) {
                 PlantFormView()
             }
+            .sheet(isPresented: $showReminderSettings) {
+                ReminderSettingsView()
+            }
         } detail: {
             Text("Velg en plante")
         }
@@ -112,6 +123,7 @@ struct ContentView: View {
             .swipeActions(edge: .leading) {
                 Button {
                     withAnimation { plant.markWatered() }
+                    NotificationManager.reschedule(for: plant)
                 } label: {
                     Label("Vannet", systemImage: "drop.fill")
                 }
@@ -119,6 +131,7 @@ struct ContentView: View {
             }
             .swipeActions(edge: .trailing) {
                 Button(role: .destructive) {
+                    NotificationManager.cancel(for: plant)
                     withAnimation { modelContext.delete(plant) }
                 } label: {
                     Label("Slett", systemImage: "trash")

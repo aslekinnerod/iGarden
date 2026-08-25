@@ -139,7 +139,7 @@ struct PlantDetailView: View {
         withAnimation {
             plant.markWatered()
         }
-        // APP-11: opprett også en CareEvent her når stell-loggen finnes.
+        NotificationManager.reschedule(for: plant)
     }
 }
 

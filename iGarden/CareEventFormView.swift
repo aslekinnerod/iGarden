@@ -47,6 +47,7 @@ struct CareEventFormView: View {
         // En vanning bakover i tid skal ikke overskrive en nyere registrering.
         if type == .watering, date > (plant.lastWatered ?? .distantPast) {
             plant.lastWatered = date
+            NotificationManager.reschedule(for: plant)
         }
         dismiss()
     }
