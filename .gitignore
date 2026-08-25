@@ -1,0 +1,6 @@
+# Firebase-konfigurasjon holdes utenfor repoet (inneholder API-nøkler)
+iGarden/GoogleService-Info.plist
+
+# Xcode
+xcuserdata/
+DerivedData/

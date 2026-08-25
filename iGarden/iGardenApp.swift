@@ -7,9 +7,18 @@
 
 import SwiftUI
 import SwiftData
+import FirebaseCore
 
 @main
 struct iGardenApp: App {
+    init() {
+        // Konfigureres bare når GoogleService-Info.plist ligger i prosjektet,
+        // slik at appen også kjører i utviklingsmiljø uten Firebase.
+        if Bundle.main.url(forResource: "GoogleService-Info", withExtension: "plist") != nil {
+            FirebaseApp.configure()
+        }
+    }
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Plant.self,
