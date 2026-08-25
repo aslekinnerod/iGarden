@@ -9,6 +9,11 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "You're seeing your own locations. Delete them all to get the default list back." } }
       }
     },
+    "Spill av" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Play" } }
+      }
+    },
     "Ingen vanningsplan" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "No watering schedule" } }

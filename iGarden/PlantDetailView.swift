@@ -18,6 +18,7 @@ struct PlantDetailView: View {
     @State private var showCamera = false
     @State private var selectedPhotoItem: PhotosPickerItem?
     @State private var photoToView: PlantPhoto?
+    @State private var showSlideshow = false
 
     private var photoTimeline: [PlantPhoto] {
         plant.photos.sorted { $0.date < $1.date }
@@ -67,7 +68,7 @@ struct PlantDetailView: View {
             }
 
             if photoTimeline.count > 1 {
-                Section("Veksttidslinje") {
+                Section {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(alignment: .top, spacing: 12) {
                             ForEach(photoTimeline) { photo in
@@ -75,6 +76,17 @@ struct PlantDetailView: View {
                             }
                         }
                         .padding(.vertical, 4)
+                    }
+                } header: {
+                    HStack {
+                        Text("Veksttidslinje")
+                        Spacer()
+                        Button {
+                            showSlideshow = true
+                        } label: {
+                            Label("Spill av", systemImage: "play.circle.fill")
+                                .labelStyle(.iconOnly)
+                        }
                     }
                 }
             }
@@ -117,6 +129,9 @@ struct PlantDetailView: View {
         }
         .sheet(item: $photoToView) { photo in
             PhotoViewer(photo: photo)
+        }
+        .fullScreenCover(isPresented: $showSlideshow) {
+            SlideshowView(photos: photoTimeline)
         }
     }
 
