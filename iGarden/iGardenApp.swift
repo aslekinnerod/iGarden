@@ -31,8 +31,17 @@ struct iGardenApp: App {
                     gardenStore.start()
                 }
                 .onOpenURL { url in
-                    // Google Sign-In-tilbakekallet (URL-scheme i Info.plist).
-                    GIDSignIn.sharedInstance.handle(url)
+                    if url.scheme == "igarden" {
+                        // Invitasjonslenke: igarden://join?code=XXXXXX
+                        if url.host() == "join",
+                           let code = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                               .queryItems?.first(where: { $0.name == "code" })?.value {
+                            gardenStore.pendingInviteCode = code
+                        }
+                    } else {
+                        // Google Sign-In-tilbakekallet (URL-scheme i Info.plist).
+                        GIDSignIn.sharedInstance.handle(url)
+                    }
                 }
         }
     }

@@ -185,6 +185,25 @@ struct Garden: Codable, Identifiable, Hashable {
     var createdAt: Date
 }
 
+struct GardenMember: Codable, Identifiable, Hashable {
+    /// Dokument-id er brukerens uid.
+    @DocumentID var id: String?
+    var role: String
+    var joinedAt: Date
+    /// Skrives av medlemmet selv ved innmelding – users/-dokumenter er private.
+    var displayName: String?
+    var inviteCode: String?
+
+    var isOwner: Bool { role == "owner" }
+}
+
+struct GardenInvite: Codable {
+    var gardenId: String
+    var createdBy: String
+    var expiresAt: Date
+    var role: String
+}
+
 extension UIImage {
     /// Nedskalerer til maks 1200 px lengste side og komprimerer til JPEG,
     /// så Storage ikke fylles av kamerabilder i full oppløsning.

@@ -26,6 +26,8 @@ struct ContentView: View {
     @State private var showAddPlant = false
     @State private var showReminderSettings = false
     @State private var showAccount = false
+    @State private var showSharing = false
+    @State private var sharingPrefilledCode = ""
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var showOnboarding = false
 
@@ -110,6 +112,14 @@ struct ContentView: View {
                 if gardenStore.isConfigured {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
+                            sharingPrefilledCode = ""
+                            showSharing = true
+                        } label: {
+                            Label("Del hagen", systemImage: "person.2")
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
                             showAccount = true
                         } label: {
                             Label("Konto", systemImage: authStore.hasAccount ? "person.crop.circle.badge.checkmark" : "person.crop.circle")
@@ -150,6 +160,17 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showAccount) {
                 AccountView()
+            }
+            .sheet(isPresented: $showSharing) {
+                GardenSharingView(prefilledCode: sharingPrefilledCode)
+            }
+            .onChange(of: gardenStore.pendingInviteCode) {
+                // Invitasjonslenke åpnet: vis delingssiden med koden utfylt.
+                if let code = gardenStore.pendingInviteCode {
+                    gardenStore.pendingInviteCode = nil
+                    sharingPrefilledCode = code
+                    showSharing = true
+                }
             }
             .sheet(isPresented: $showOnboarding) {
                 OnboardingView()

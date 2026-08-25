@@ -9,6 +9,151 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "You're seeing your own locations. Delete them all to get the default list back." } }
       }
     },
+    "Del hagen" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share garden" } }
+      }
+    },
+    "Hagen" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Garden" } }
+      }
+    },
+    "Medlemmer" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Members" } }
+      }
+    },
+    "Inviter" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Invite" } }
+      }
+    },
+    "Lag invitasjonskode" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Create invite code" } }
+      }
+    },
+    "Del invitasjonen" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share the invite" } }
+      }
+    },
+    "Gyldig i 7 dager." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Valid for 7 days." } }
+      }
+    },
+    "Alle med koden kan bli med i hagen og se og stelle plantene." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Anyone with the code can join the garden and see and care for the plants." } }
+      }
+    },
+    "Bli med i en annen hage" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Join another garden" } }
+      }
+    },
+    "Invitasjonskode" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Invite code" } }
+      }
+    },
+    "Bli med" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Join" } }
+      }
+    },
+    "Du bytter til den delte hagen. Din egen hage blir liggende og kan ikke nås før du forlater den delte." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You switch to the shared garden. Your own garden stays behind and can't be reached until you leave the shared one." } }
+      }
+    },
+    "Forlat hagen" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leave garden" } }
+      }
+    },
+    "Forlate hagen?" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leave the garden?" } }
+      }
+    },
+    "Forlat" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leave" } }
+      }
+    },
+    "Du mister tilgangen til plantene i denne hagen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You lose access to the plants in this garden." } }
+      }
+    },
+    "Fjerne %@?" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove %@?" } }
+      }
+    },
+    "Fjern" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove" } }
+      }
+    },
+    "medlemmet" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "the member" } }
+      }
+    },
+    "Eier" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Owner" } }
+      }
+    },
+    "Medlem" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Member" } }
+      }
+    },
+    "Deg" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You" } }
+      }
+    },
+    "Gartner uten navn" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Gardener without a name" } }
+      }
+    },
+    "Logg inn først" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in first" } }
+      }
+    },
+    "For å dele hagen eller bli med i andres må du være logget inn med Apple eller Google. Bruk konto-knappen på hovedskjermen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "To share your garden or join others you need to be signed in with Apple or Google. Use the account button on the main screen." } }
+      }
+    },
+    "Bli med i hagen min i iGarden! Åpne igarden://join?code=%@ eller skriv inn koden %@ under «Del hagen»." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Join my garden in iGarden! Open igarden://join?code=%1$@ or enter the code %2$@ under “Share garden”." } }
+      }
+    },
+    "Fant ingen gyldig invitasjon med den koden. Sjekk koden, eller be om en ny – koder utløper etter 7 dager." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No valid invite found for that code. Check the code, or ask for a new one – codes expire after 7 days." } }
+      }
+    },
+    "Du er allerede medlem av denne hagen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You are already a member of this garden." } }
+      }
+    },
+    "Kunne ikke forlate hagen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not leave the garden." } }
+      }
+    },
     "Min hage" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "My Garden" } }

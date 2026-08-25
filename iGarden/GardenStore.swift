@@ -18,14 +18,24 @@ final class GardenStore {
     private(set) var garden: Garden?
     private(set) var plants: [Plant] = []
     private(set) var customLocations: [CustomLocation] = []
+    private(set) var members: [GardenMember] = []
     /// Sann når hagen er funnet/opprettet og lytterne er koblet på.
     private(set) var isReady = false
     var errorMessage: String?
+    /// Invitasjonskode mottatt via igarden://join-lenke, venter på bekreftelse.
+    var pendingInviteCode: String?
 
     private var plantsListener: ListenerRegistration?
     private var locationsListener: ListenerRegistration?
+    private var membersListener: ListenerRegistration?
     private var authListener: AuthStateDidChangeListenerHandle?
     private var startedForUid: String?
+
+    var currentUserId: String? { Auth.auth().currentUser?.uid }
+
+    var isOwner: Bool {
+        garden?.ownerId == currentUserId
+    }
 
     var isConfigured: Bool { FirebaseApp.app() != nil }
 
@@ -76,29 +86,36 @@ final class GardenStore {
             let userRef = db.collection("users").document(uid)
             let userDoc = try await userRef.getDocument()
 
-            let gardenId: String
             if let existing = userDoc.data()?["primaryGardenId"] as? String {
-                gardenId = existing
-            } else {
-                // Sekvensielt, ikke batch: reglene for medlemsdokumentet
-                // krever at hagedokumentet allerede finnes.
-                let newGarden = db.collection("gardens").document()
-                try await newGarden.setData([
-                    "name": String(localized: "Min hage"),
-                    "ownerId": uid,
-                    "createdAt": Timestamp(date: .now),
-                ])
-                try await newGarden.collection("members").document(uid).setData([
-                    "role": "owner",
-                    "joinedAt": Timestamp(date: .now),
-                ])
-                try await userRef.setData(["primaryGardenId": newGarden.documentID], merge: true)
-                gardenId = newGarden.documentID
+                // Mistet tilgang (fjernet av eier) eller slettet hage
+                // faller igjennom til å opprette en ny egen hage.
+                if let gardenDoc = try? await db.collection("gardens").document(existing).getDocument(),
+                   gardenDoc.exists,
+                   let loaded = try? gardenDoc.data(as: Garden.self) {
+                    garden = loaded
+                    attachListeners(gardenId: existing)
+                    return
+                }
             }
 
-            let gardenDoc = try await db.collection("gardens").document(gardenId).getDocument()
+            // Sekvensielt, ikke batch: reglene for medlemsdokumentet
+            // krever at hagedokumentet allerede finnes.
+            let newGarden = db.collection("gardens").document()
+            try await newGarden.setData([
+                "name": String(localized: "Min hage"),
+                "ownerId": uid,
+                "createdAt": Timestamp(date: .now),
+            ])
+            try await newGarden.collection("members").document(uid).setData([
+                "role": "owner",
+                "joinedAt": Timestamp(date: .now),
+                "displayName": Auth.auth().currentUser?.displayName as Any,
+            ])
+            try await userRef.setData(["primaryGardenId": newGarden.documentID], merge: true)
+
+            let gardenDoc = try await newGarden.getDocument()
             garden = try gardenDoc.data(as: Garden.self)
-            attachListeners(gardenId: gardenId)
+            attachListeners(gardenId: newGarden.documentID)
         } catch {
             errorMessage = String(localized: "Kunne ikke laste hagen din. Prøv igjen senere.")
         }
@@ -123,16 +140,27 @@ final class GardenStore {
                     self?.customLocations = locations
                 }
             }
+
+        membersListener = gardenRef.collection("members").order(by: "joinedAt")
+            .addSnapshotListener { [weak self] snapshot, _ in
+                let members = snapshot?.documents.compactMap { try? $0.data(as: GardenMember.self) } ?? []
+                Task { @MainActor in
+                    self?.members = members
+                }
+            }
     }
 
     private func detachListeners() {
         plantsListener?.remove()
         locationsListener?.remove()
+        membersListener?.remove()
         plantsListener = nil
         locationsListener = nil
+        membersListener = nil
         garden = nil
         plants = []
         customLocations = []
+        members = []
         isReady = false
     }
 
@@ -254,6 +282,91 @@ final class GardenStore {
             }
         } catch {
             errorMessage = String(localized: "Kunne ikke slette bildet.")
+        }
+    }
+
+    // MARK: - Deling og medlemmer
+
+    enum InviteError: LocalizedError {
+        case invalidCode
+        case ownGarden
+
+        var errorDescription: String? {
+            switch self {
+            case .invalidCode:
+                String(localized: "Fant ingen gyldig invitasjon med den koden. Sjekk koden, eller be om en ny – koder utløper etter 7 dager.")
+            case .ownGarden:
+                String(localized: "Du er allerede medlem av denne hagen.")
+            }
+        }
+    }
+
+    /// Lager en invitasjonskode som er gyldig i 7 dager. Kun eieren.
+    func createInvite() async throws -> String {
+        guard let gardenId = garden?.id, let uid = currentUserId else {
+            throw InviteError.invalidCode
+        }
+        // Kort kode uten lett forvekslbare tegn (I/O/0/1).
+        let charset = Array("ABCDEFGHJKLMNPQRSTUVWXYZ23456789")
+        var code: String
+        repeat {
+            code = String((0..<6).map { _ in charset.randomElement()! })
+        } while try await db.collection("invites").document(code).getDocument().exists
+
+        try await db.collection("invites").document(code).setData([
+            "gardenId": gardenId,
+            "createdBy": uid,
+            "expiresAt": Timestamp(date: Calendar.current.date(byAdding: .day, value: 7, to: .now)!),
+            "role": "member",
+        ])
+        return code
+    }
+
+    /// Melder brukeren inn i hagen invitasjonskoden peker på, og bytter
+    /// til den som primærhage. Brukerens egen hage blir liggende urørt.
+    func joinGarden(withCode rawCode: String) async throws {
+        guard let uid = currentUserId else { throw InviteError.invalidCode }
+        let code = rawCode.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        let inviteDoc = try await db.collection("invites").document(code).getDocument()
+        guard inviteDoc.exists,
+              let invite = try? inviteDoc.data(as: GardenInvite.self),
+              invite.expiresAt > .now else {
+            throw InviteError.invalidCode
+        }
+        guard invite.gardenId != garden?.id else { throw InviteError.ownGarden }
+
+        try await db.collection("gardens").document(invite.gardenId)
+            .collection("members").document(uid).setData([
+                "role": "member",
+                "joinedAt": Timestamp(date: .now),
+                "inviteCode": code,
+                "displayName": Auth.auth().currentUser?.displayName as Any,
+            ])
+        try await db.collection("users").document(uid)
+            .setData(["primaryGardenId": invite.gardenId], merge: true)
+
+        detachListeners()
+        await bootstrap(uid: uid)
+    }
+
+    /// Eieren fjerner et annet medlem fra hagen.
+    func removeMember(_ member: GardenMember) {
+        guard let gardenRef, let uid = member.id, uid != currentUserId else { return }
+        gardenRef.collection("members").document(uid).delete()
+    }
+
+    /// Et medlem forlater hagen og får sin egen hage tilbake (eller en ny).
+    func leaveGarden() async {
+        guard let gardenRef, let uid = currentUserId, !isOwner else { return }
+        do {
+            try await gardenRef.collection("members").document(uid).delete()
+            try await db.collection("users").document(uid)
+                .setData(["primaryGardenId": FieldValue.delete()], merge: true)
+            detachListeners()
+            await bootstrap(uid: uid)
+        } catch {
+            errorMessage = String(localized: "Kunne ikke forlate hagen.")
         }
     }
 
