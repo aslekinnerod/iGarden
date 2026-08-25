@@ -9,6 +9,51 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "You're seeing your own locations. Delete them all to get the default list back." } }
       }
     },
+    "Konto" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Account" } }
+      }
+    },
+    "Logg inn for å dele hagen din" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in to share your garden" } }
+      }
+    },
+    "Med en konto kan du invitere andre til å stelle plantene sammen med deg. Appen fungerer som vanlig uten innlogging." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "With an account you can invite others to care for the plants together with you. The app works as usual without signing in." } }
+      }
+    },
+    "E-post" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Email" } }
+      }
+    },
+    "Logg ut" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign out" } }
+      }
+    },
+    "Slett konto" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete account" } }
+      }
+    },
+    "Bekreft med Apple for å slette kontoen. Dette kan ikke angres." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Confirm with Apple to delete the account. This cannot be undone." } }
+      }
+    },
+    "Noe gikk galt" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Something went wrong" } }
+      }
+    },
+    "Innloggingen kunne ikke fullføres. Prøv igjen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The sign-in could not be completed. Please try again." } }
+      }
+    },
     "Spill av" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Play" } }

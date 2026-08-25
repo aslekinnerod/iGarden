@@ -20,12 +20,14 @@ enum PlantSortOrder: String, CaseIterable, Identifiable {
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AuthStore.self) private var authStore
     @Query(sort: \Plant.name) private var plants: [Plant]
 
     @State private var searchText = ""
     @State private var sortOrder: PlantSortOrder = .name
     @State private var showAddPlant = false
     @State private var showReminderSettings = false
+    @State private var showAccount = false
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var showOnboarding = false
 
@@ -99,6 +101,15 @@ struct ContentView: View {
                 }
             }
             .toolbar {
+                if authStore.isFirebaseConfigured {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            showAccount = true
+                        } label: {
+                            Label("Konto", systemImage: authStore.isSignedIn ? "person.crop.circle.badge.checkmark" : "person.crop.circle")
+                        }
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         showReminderSettings = true
@@ -130,6 +141,9 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showReminderSettings) {
                 ReminderSettingsView()
+            }
+            .sheet(isPresented: $showAccount) {
+                AccountView()
             }
             .sheet(isPresented: $showOnboarding) {
                 OnboardingView()
@@ -250,4 +264,5 @@ struct PlantRowView: View {
 #Preview {
     ContentView()
         .modelContainer(for: Plant.self, inMemory: true)
+        .environment(AuthStore())
 }
