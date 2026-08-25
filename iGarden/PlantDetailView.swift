@@ -17,6 +17,11 @@ struct PlantDetailView: View {
     @State private var showCareEventSheet = false
     @State private var showCamera = false
     @State private var selectedPhotoItem: PhotosPickerItem?
+    @State private var photoToView: PlantPhoto?
+
+    private var photoTimeline: [PlantPhoto] {
+        plant.photos.sorted { $0.date < $1.date }
+    }
 
     private var careHistory: [CareEvent] {
         plant.careEvents.sorted { $0.date > $1.date }
@@ -59,6 +64,19 @@ struct PlantDetailView: View {
                 }
             }
 
+            if photoTimeline.count > 1 {
+                Section("Veksttidslinje") {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .top, spacing: 12) {
+                            ForEach(photoTimeline) { photo in
+                                timelineCell(photo)
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
+            }
+
             Section {
                 if careHistory.isEmpty {
                     Text("Ingen stell registrert ennå")
@@ -94,6 +112,9 @@ struct PlantDetailView: View {
         }
         .sheet(isPresented: $showCareEventSheet) {
             CareEventFormView(plant: plant)
+        }
+        .sheet(item: $photoToView) { photo in
+            PhotoViewer(photo: photo)
         }
     }
 
@@ -144,6 +165,29 @@ struct PlantDetailView: View {
                 addPhoto(image)
             }
             .ignoresSafeArea()
+        }
+    }
+
+    private func timelineCell(_ photo: PlantPhoto) -> some View {
+        VStack(spacing: 4) {
+            if let image = photo.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 96, height: 96)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            Text(photo.date.formatted(date: .abbreviated, time: .omitted))
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .onTapGesture { photoToView = photo }
+        .contextMenu {
+            Button(role: .destructive) {
+                withAnimation { modelContext.delete(photo) }
+            } label: {
+                Label("Slett bilde", systemImage: "trash")
+            }
         }
     }
 
@@ -213,6 +257,34 @@ struct PlantDetailView: View {
             plant.markWatered()
         }
         NotificationManager.reschedule(for: plant)
+    }
+}
+
+/// Enkel fullvisning av ett bilde med dato.
+struct PhotoViewer: View {
+    @Environment(\.dismiss) private var dismiss
+
+    let photo: PlantPhoto
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                if let image = photo.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.black)
+            .navigationTitle(photo.date.formatted(date: .long, time: .omitted))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Ferdig") { dismiss() }
+                }
+            }
+        }
     }
 }
 
