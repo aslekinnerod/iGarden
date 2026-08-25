@@ -47,7 +47,7 @@ struct PlantFormView: View {
                     TextField("Art / latinsk navn", text: $species)
                     Picker("Plassering", selection: $location) {
                         ForEach(PlantLocation.allCases) { location in
-                            Text(location.rawValue).tag(location)
+                            Text(location.displayName).tag(location)
                         }
                     }
                     DatePicker("Anskaffet", selection: $dateAcquired, in: ...Date.now, displayedComponents: .date)
@@ -73,7 +73,7 @@ struct PlantFormView: View {
                     }
                 }
             }
-            .navigationTitle(isEditing ? "Rediger plante" : "Ny plante")
+            .navigationTitle(isEditing ? String(localized: "Rediger plante") : String(localized: "Ny plante"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -85,7 +85,7 @@ struct PlantFormView: View {
                 }
             }
             .confirmationDialog(
-                "Slette \(trimmedName.isEmpty ? "planten" : trimmedName)?",
+                "Slette \(trimmedName.isEmpty ? String(localized: "planten") : trimmedName)?",
                 isPresented: $showDeleteConfirmation,
                 titleVisibility: .visible
             ) {

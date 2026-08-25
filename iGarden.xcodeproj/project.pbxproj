@@ -138,10 +138,11 @@
 				};
 			};
 			buildConfigurationList = 6853E5EF30383CE600A55448 /* Build configuration list for PBXProject "iGarden" */;
-			developmentRegion = en;
+			developmentRegion = nb;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				nb,
 				Base,
 			);
 			mainGroup = 6853E5EB30383CE600A55448;

@@ -53,9 +53,9 @@ struct PlantDetailView: View {
                 if let species = plant.species {
                     LabeledContent("Art", value: species)
                 }
-                LabeledContent("Plassering", value: plant.location.rawValue)
+                LabeledContent("Plassering", value: plant.location.displayName)
                 LabeledContent("Anskaffet", value: plant.dateAcquired.formatted(date: .long, time: .omitted))
-                LabeledContent("Vanningsintervall", value: "Hver \(plant.wateringIntervalDays). dag")
+                LabeledContent("Vanningsintervall", value: String(localized: "Hver \(plant.wateringIntervalDays). dag"))
             }
 
             if !plant.notes.isEmpty {
@@ -242,13 +242,13 @@ struct PlantDetailView: View {
     private var statusTitle: String {
         switch plant.wateringStatus {
         case .neverWatered:
-            "Ikke vannet ennå"
+            String(localized: "Ikke vannet ennå")
         case .overdue:
-            "Trenger vann – forfalt"
+            String(localized: "Trenger vann – forfalt")
         case .dueToday:
-            "Vannes i dag"
+            String(localized: "Vannes i dag")
         case .ok:
-            "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))"
+            String(localized: "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))")
         }
     }
 
@@ -297,7 +297,7 @@ struct CareEventRow: View {
                 .foregroundStyle(.secondary)
                 .frame(width: 20)
             VStack(alignment: .leading, spacing: 2) {
-                Text(event.type.rawValue)
+                Text(event.type.displayName)
                 HStack(spacing: 4) {
                     Text(event.date.formatted(date: .abbreviated, time: .omitted))
                     if !event.note.isEmpty {

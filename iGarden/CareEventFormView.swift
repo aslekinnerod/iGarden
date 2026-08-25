@@ -21,7 +21,7 @@ struct CareEventFormView: View {
             Form {
                 Picker("Type", selection: $type) {
                     ForEach(CareEventType.allCases) { type in
-                        Label(type.rawValue, systemImage: type.icon).tag(type)
+                        Label(type.displayName, systemImage: type.icon).tag(type)
                     }
                 }
                 DatePicker("Dato", selection: $date, in: ...Date.now)

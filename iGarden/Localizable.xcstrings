@@ -1,0 +1,425 @@
+{
+  "sourceLanguage" : "nb",
+  "strings" : {
+    "%@ trenger vann 🌱" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ needs water 🌱" } }
+      }
+    },
+    "Alle planter" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "All plants" } }
+      }
+    },
+    "Anskaffet" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Acquired" } }
+      }
+    },
+    "Annet" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Other" } }
+      }
+    },
+    "Appen holder styr på hvem som trenger vann, og varsler deg når det er på tide." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The app keeps track of who needs water and notifies you when it's time." } }
+      }
+    },
+    "Art" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Species" } }
+      }
+    },
+    "Art / latinsk navn" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Species / Latin name" } }
+      }
+    },
+    "Avbryt" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } }
+      }
+    },
+    "Bad" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bathroom" } }
+      }
+    },
+    "Balkong" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Balcony" } }
+      }
+    },
+    "Beskjæring" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pruning" } }
+      }
+    },
+    "Dato" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Date" } }
+      }
+    },
+    "Dette kan ikke angres." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "This cannot be undone." } }
+      }
+    },
+    "Drivhus" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Greenhouse" } }
+      }
+    },
+    "Du får ett varsel per plante den dagen den skal vannes." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You get one notification per plant on the day it needs watering." } }
+      }
+    },
+    "Ferdig" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Done" } }
+      }
+    },
+    "Forfalt – skulle vannes %@" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overdue – should have been watered %@" } }
+      }
+    },
+    "Følg veksten" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Follow the growth" } }
+      }
+    },
+    "Gang" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hallway" } }
+      }
+    },
+    "Gjødsling" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fertilizing" } }
+      }
+    },
+    "Hage" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Garden" } }
+      }
+    },
+    "Hold vanningen i rute" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Stay on top of watering" } }
+      }
+    },
+    "Hver %lld. dag" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : { "stringUnit" : { "state" : "translated", "value" : "Every day" } },
+              "other" : { "stringUnit" : { "state" : "translated", "value" : "Every %lld days" } }
+            }
+          }
+        }
+      }
+    },
+    "Ikke vannet ennå" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not watered yet" } }
+      }
+    },
+    "Ingen planter ennå" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No plants yet" } }
+      }
+    },
+    "Ingen stell registrert ennå" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No care logged yet" } }
+      }
+    },
+    "Kjøkken" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kitchen" } }
+      }
+    },
+    "Kom i gang" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Get started" } }
+      }
+    },
+    "Kontor" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Office" } }
+      }
+    },
+    "Lagre" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Save" } }
+      }
+    },
+    "Legg til bilde" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add photo" } }
+      }
+    },
+    "Legg til din første plante" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add your first plant" } }
+      }
+    },
+    "Legg til plante" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add plant" } }
+      }
+    },
+    "Legg til plantene dine, så hjelper iGarden deg å holde dem i live." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add your plants and iGarden will help you keep them alive." } }
+      }
+    },
+    "Mine planter" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "My Plants" } }
+      }
+    },
+    "Navn" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Name" } }
+      }
+    },
+    "Navn, plassering, bilde og hvor ofte de skal vannes." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Name, location, photo, and how often they need watering." } }
+      }
+    },
+    "Neste vanning" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Next watering" } }
+      }
+    },
+    "Notat (valgfritt)" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Note (optional)" } }
+      }
+    },
+    "Notater" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Notes" } }
+      }
+    },
+    "Ny plante" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "New plant" } }
+      }
+    },
+    "Om planten" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "About the plant" } }
+      }
+    },
+    "Ompotting" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repotting" } }
+      }
+    },
+    "planten" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "the plant" } }
+      }
+    },
+    "Plassering" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Location" } }
+      }
+    },
+    "På tide å vanne" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Time to water" } }
+      }
+    },
+    "Rediger" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Edit" } }
+      }
+    },
+    "Rediger plante" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Edit plant" } }
+      }
+    },
+    "Registrer plantene dine" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Register your plants" } }
+      }
+    },
+    "Registrer stell" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Log care" } }
+      }
+    },
+    "Sist vannet" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Last watered" } }
+      }
+    },
+    "Sist vannet %@" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Last watered %@" } }
+      }
+    },
+    "Slett" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete" } }
+      }
+    },
+    "Slett bilde" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete photo" } }
+      }
+    },
+    "Slett plante" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete plant" } }
+      }
+    },
+    "Slette %@?" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete %@?" } }
+      }
+    },
+    "Sortering" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sort by" } }
+      }
+    },
+    "Soverom" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bedroom" } }
+      }
+    },
+    "Stell-historikk" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Care history" } }
+      }
+    },
+    "Stue" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Living room" } }
+      }
+    },
+    "Søk på navn eller art" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Search by name or species" } }
+      }
+    },
+    "Ta bilde" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Take photo" } }
+      }
+    },
+    "Ta bilder underveis og se utviklingen på tidslinjen." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Take photos along the way and watch the progress on the timeline." } }
+      }
+    },
+    "Tidspunkt" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Time of day" } }
+      }
+    },
+    "Trenger vann" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Needs water" } }
+      }
+    },
+    "Trenger vann – forfalt" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Needs water – overdue" } }
+      }
+    },
+    "Type" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Type" } }
+      }
+    },
+    "Vanning" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering" } }
+      }
+    },
+    "Vanningsintervall" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering interval" } }
+      }
+    },
+    "Vanningspåminnelser" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering reminders" } }
+      }
+    },
+    "Vannes %@" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Water %@" } }
+      }
+    },
+    "Vannes hver %lld. dag" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : { "stringUnit" : { "state" : "translated", "value" : "Watered every day" } },
+              "other" : { "stringUnit" : { "state" : "translated", "value" : "Watered every %lld days" } }
+            }
+          }
+        }
+      }
+    },
+    "Vannes i dag" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Water today" } }
+      }
+    },
+    "Vannet" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watered" } }
+      }
+    },
+    "Vannet nå" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watered now" } }
+      }
+    },
+    "Varsler" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Notifications" } }
+      }
+    },
+    "Velg en plante" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Select a plant" } }
+      }
+    },
+    "Velg fra biblioteket" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choose from library" } }
+      }
+    },
+    "Velkommen til iGarden" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Welcome to iGarden" } }
+      }
+    },
+    "Veksttidslinje" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Growth timeline" } }
+      }
+    },
+    "Øvrige planter" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Other plants" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

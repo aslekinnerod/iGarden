@@ -1,0 +1,13 @@
+{
+  "sourceLanguage" : "nb",
+  "strings" : {
+    "NSCameraUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "iGarden uses the camera to take photos of your plants." } },
+        "nb" : { "stringUnit" : { "state" : "translated", "value" : "iGarden bruker kameraet til å ta bilder av plantene dine." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

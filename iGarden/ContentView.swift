@@ -12,6 +12,10 @@ enum PlantSortOrder: String, CaseIterable, Identifiable {
     case nextWatering = "Neste vanning"
 
     var id: String { rawValue }
+
+    var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
 }
 
 struct ContentView: View {
@@ -65,7 +69,7 @@ struct ContentView: View {
                     }
                 }
                 if !plantsNotNeedingWater.isEmpty {
-                    Section(plantsNeedingWater.isEmpty ? "Alle planter" : "Øvrige planter") {
+                    Section(plantsNeedingWater.isEmpty ? String(localized: "Alle planter") : String(localized: "Øvrige planter")) {
                         plantRows(plantsNotNeedingWater)
                     }
                 }
@@ -100,7 +104,7 @@ struct ContentView: View {
                     Menu {
                         Picker("Sortering", selection: $sortOrder) {
                             ForEach(PlantSortOrder.allCases) { order in
-                                Text(order.rawValue).tag(order)
+                                Text(order.displayName).tag(order)
                             }
                         }
                     } label: {
@@ -175,7 +179,7 @@ struct PlantRowView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(plant.name)
                 HStack(spacing: 4) {
-                    Text(plant.location.rawValue)
+                    Text(plant.location.displayName)
                         .foregroundStyle(.secondary)
                     Text("·")
                         .foregroundStyle(.secondary)
@@ -217,13 +221,13 @@ struct PlantRowView: View {
     private var statusText: String {
         switch plant.wateringStatus {
         case .neverWatered:
-            "Ikke vannet ennå"
+            String(localized: "Ikke vannet ennå")
         case .overdue:
-            "Forfalt – skulle vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))"
+            String(localized: "Forfalt – skulle vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))")
         case .dueToday:
-            "Vannes i dag"
+            String(localized: "Vannes i dag")
         case .ok:
-            "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))"
+            String(localized: "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))")
         }
     }
 }

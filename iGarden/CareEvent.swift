@@ -14,6 +14,11 @@ enum CareEventType: String, Codable, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    /// Råverdien er lagringsformat og må ikke endres; visningen lokaliseres her.
+    var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
+
     var icon: String {
         switch self {
         case .watering: "drop.fill"

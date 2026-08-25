@@ -43,8 +43,8 @@ enum NotificationManager {
         Task {
             guard await requestAuthorizationIfNeeded() else { return }
             let content = UNMutableNotificationContent()
-            content.title = "På tide å vanne"
-            content.body = "\(plantName) trenger vann 🌱"
+            content.title = String(localized: "På tide å vanne")
+            content.body = String(localized: "\(plantName) trenger vann 🌱")
             content.sound = .default
             let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
             try? await center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))

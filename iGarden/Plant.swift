@@ -19,6 +19,11 @@ enum PlantLocation: String, Codable, CaseIterable, Identifiable {
     case other = "Annet"
 
     var id: String { rawValue }
+
+    /// Råverdien er lagringsformat og må ikke endres; visningen lokaliseres her.
+    var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
 }
 
 @Model
