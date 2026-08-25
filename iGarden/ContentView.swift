@@ -2,54 +2,67 @@
 //  ContentView.swift
 //  iGarden
 //
-//  Created by Asle Kinnerød on 21/08/2026.
-//
 
 import SwiftUI
 import SwiftData
 
+// Midlertidig enkel liste – erstattes av planteliste med søk/sortering (APP-7)
+// og skjema for ny plante (APP-6).
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query(sort: \Plant.name) private var plants: [Plant]
 
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(items) { item in
+                ForEach(plants) { plant in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(plant.name).font(.title2.bold())
+                            if let species = plant.species {
+                                Text(species).italic().foregroundStyle(.secondary)
+                            }
+                            Text(plant.location.rawValue)
+                            Text("Vannes hver \(plant.wateringIntervalDays). dag")
+                        }
+                        .padding()
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        VStack(alignment: .leading) {
+                            Text(plant.name)
+                            Text(plant.location.rawValue)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
+                .onDelete(perform: deletePlants)
             }
+            .navigationTitle("Mine planter")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
                 ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                    Button(action: addPlant) {
+                        Label("Legg til plante", systemImage: "plus")
                     }
                 }
             }
         } detail: {
-            Text("Select an item")
+            Text("Velg en plante")
         }
     }
 
-    private func addItem() {
+    private func addPlant() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
+            modelContext.insert(Plant(name: "Ny plante \(plants.count + 1)"))
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
+    private func deletePlants(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(items[index])
+                modelContext.delete(plants[index])
             }
         }
     }
@@ -57,5 +70,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Plant.self, inMemory: true)
 }
