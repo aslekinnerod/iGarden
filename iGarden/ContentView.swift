@@ -22,6 +22,8 @@ struct ContentView: View {
     @State private var sortOrder: PlantSortOrder = .name
     @State private var showAddPlant = false
     @State private var showReminderSettings = false
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+    @State private var showOnboarding = false
 
     private var filteredPlants: [Plant] {
         let query = searchText.trimmingCharacters(in: .whitespaces)
@@ -71,7 +73,18 @@ struct ContentView: View {
             .navigationTitle("Mine planter")
             .searchable(text: $searchText, prompt: "Søk på navn eller art")
             .overlay {
-                if filteredPlants.isEmpty && !searchText.isEmpty {
+                if plants.isEmpty {
+                    ContentUnavailableView {
+                        Label("Ingen planter ennå", systemImage: "leaf")
+                    } description: {
+                        Text("Legg til plantene dine, så hjelper iGarden deg å holde dem i live.")
+                    } actions: {
+                        Button("Legg til din første plante") {
+                            showAddPlant = true
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                } else if filteredPlants.isEmpty && !searchText.isEmpty {
                     ContentUnavailableView.search(text: searchText)
                 }
             }
@@ -107,6 +120,15 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showReminderSettings) {
                 ReminderSettingsView()
+            }
+            .sheet(isPresented: $showOnboarding) {
+                OnboardingView()
+            }
+            .onAppear {
+                if !hasSeenOnboarding {
+                    hasSeenOnboarding = true
+                    showOnboarding = true
+                }
             }
         } detail: {
             Text("Velg en plante")
