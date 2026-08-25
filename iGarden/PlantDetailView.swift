@@ -5,6 +5,7 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 // Bilde (APP-12) og stell-historikk (APP-11) legges til her senere.
 struct PlantDetailView: View {
@@ -14,6 +15,8 @@ struct PlantDetailView: View {
 
     @State private var showEditSheet = false
     @State private var showCareEventSheet = false
+    @State private var showCamera = false
+    @State private var selectedPhotoItem: PhotosPickerItem?
 
     private var careHistory: [CareEvent] {
         plant.careEvents.sorted { $0.date > $1.date }
@@ -21,6 +24,11 @@ struct PlantDetailView: View {
 
     var body: some View {
         List {
+            Section {
+                photoHeader
+                    .listRowInsets(EdgeInsets())
+            }
+
             Section {
                 wateringStatus
                 Button {
@@ -86,6 +94,71 @@ struct PlantDetailView: View {
         }
         .sheet(isPresented: $showCareEventSheet) {
             CareEventFormView(plant: plant)
+        }
+    }
+
+    private var photoHeader: some View {
+        ZStack(alignment: .bottomTrailing) {
+            if let image = plant.latestPhoto?.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 220)
+                    .clipped()
+            } else {
+                ZStack {
+                    Rectangle()
+                        .fill(.green.opacity(0.12))
+                    Image(systemName: "leaf")
+                        .font(.system(size: 56))
+                        .foregroundStyle(.green.opacity(0.5))
+                }
+                .frame(height: 220)
+            }
+
+            Menu {
+                if CameraPicker.isAvailable {
+                    Button {
+                        showCamera = true
+                    } label: {
+                        Label("Ta bilde", systemImage: "camera")
+                    }
+                }
+                PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
+                    Label("Velg fra biblioteket", systemImage: "photo.on.rectangle")
+                }
+            } label: {
+                Label("Legg til bilde", systemImage: "camera.fill")
+                    .labelStyle(.iconOnly)
+                    .padding(10)
+                    .background(.thinMaterial, in: Circle())
+                    .padding(10)
+            }
+        }
+        .onChange(of: selectedPhotoItem) {
+            Task { await importSelectedPhoto() }
+        }
+        .fullScreenCover(isPresented: $showCamera) {
+            CameraPicker { image in
+                addPhoto(image)
+            }
+            .ignoresSafeArea()
+        }
+    }
+
+    private func importSelectedPhoto() async {
+        guard let item = selectedPhotoItem else { return }
+        selectedPhotoItem = nil
+        guard let data = try? await item.loadTransferable(type: Data.self),
+              let image = UIImage(data: data) else { return }
+        addPhoto(image)
+    }
+
+    private func addPhoto(_ image: UIImage) {
+        guard let jpeg = image.downscaledJPEGData() else { return }
+        withAnimation {
+            plant.photos.append(PlantPhoto(imageData: jpeg))
         }
     }
 

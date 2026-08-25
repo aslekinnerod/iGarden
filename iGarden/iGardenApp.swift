@@ -14,6 +14,7 @@ struct iGardenApp: App {
         let schema = Schema([
             Plant.self,
             CareEvent.self,
+            PlantPhoto.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

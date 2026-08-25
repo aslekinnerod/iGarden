@@ -37,6 +37,9 @@ final class Plant {
     @Relationship(deleteRule: .cascade, inverse: \CareEvent.plant)
     var careEvents: [CareEvent] = []
 
+    @Relationship(deleteRule: .cascade, inverse: \PlantPhoto.plant)
+    var photos: [PlantPhoto] = []
+
     init(
         name: String,
         species: String? = nil,
@@ -70,6 +73,10 @@ final class Plant {
     }
 
     var needsWater: Bool { wateringStatus != .ok }
+
+    var latestPhoto: PlantPhoto? {
+        photos.max { $0.date < $1.date }
+    }
 
     func markWatered() {
         lastWatered = .now

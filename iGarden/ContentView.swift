@@ -146,6 +146,7 @@ struct PlantRowView: View {
 
     var body: some View {
         HStack(spacing: 10) {
+            thumbnail
             Image(systemName: "drop.fill")
                 .foregroundStyle(statusColor)
                 .font(.footnote)
@@ -161,6 +162,25 @@ struct PlantRowView: View {
                 }
                 .font(.caption)
             }
+        }
+    }
+
+    @ViewBuilder
+    private var thumbnail: some View {
+        if let image = plant.latestPhoto?.image {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 44, height: 44)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        } else {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(.green.opacity(0.12))
+                .frame(width: 44, height: 44)
+                .overlay {
+                    Image(systemName: "leaf")
+                        .foregroundStyle(.green.opacity(0.5))
+                }
         }
     }
 
