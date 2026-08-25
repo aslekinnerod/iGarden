@@ -1,11 +1,33 @@
 {
   "sourceLanguage" : "nb",
   "strings" : {
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iGarden"
+          }
+        }
+      }
+    },
     "NSCameraUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "iGarden uses the camera to take photos of your plants." } },
-        "nb" : { "stringUnit" : { "state" : "translated", "value" : "iGarden bruker kameraet til å ta bilder av plantene dine." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iGarden uses the camera to take photos of your plants."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iGarden bruker kameraet til å ta bilder av plantene dine."
+          }
+        }
       }
     }
   },

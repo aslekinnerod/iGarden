@@ -179,7 +179,7 @@ struct PlantRowView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(plant.name)
                 HStack(spacing: 4) {
-                    Text(plant.location.displayName)
+                    Text(plant.locationDisplayName)
                         .foregroundStyle(.secondary)
                     Text("·")
                         .foregroundStyle(.secondary)

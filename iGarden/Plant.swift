@@ -6,6 +6,8 @@
 import Foundation
 import SwiftData
 
+/// Forhåndsutfylt plasseringsliste. Brukes bare til å foreslå valg –
+/// planter lagrer plasseringen som streng, slik at egne navn også fungerer.
 enum PlantLocation: String, Codable, CaseIterable, Identifiable {
     case livingRoom = "Stue"
     case kitchen = "Kjøkken"
@@ -24,13 +26,19 @@ enum PlantLocation: String, Codable, CaseIterable, Identifiable {
     var displayName: String {
         String(localized: String.LocalizationValue(rawValue))
     }
+
+    /// Lokaliserer innebygde plasseringsnavn; egne navn vises som de er
+    /// (ukjente nøkler faller tilbake til seg selv).
+    static func displayName(for storedName: String) -> String {
+        String(localized: String.LocalizationValue(storedName))
+    }
 }
 
 @Model
 final class Plant {
     var name: String
     var species: String?
-    var location: PlantLocation
+    var location: String
     var dateAcquired: Date
     var notes: String
     var wateringIntervalDays: Int
@@ -48,7 +56,7 @@ final class Plant {
     init(
         name: String,
         species: String? = nil,
-        location: PlantLocation = .livingRoom,
+        location: String = PlantLocation.livingRoom.rawValue,
         dateAcquired: Date = .now,
         notes: String = "",
         wateringIntervalDays: Int = 7,
@@ -81,6 +89,10 @@ final class Plant {
 
     var latestPhoto: PlantPhoto? {
         photos.max { $0.date < $1.date }
+    }
+
+    var locationDisplayName: String {
+        PlantLocation.displayName(for: location)
     }
 
     func markWatered() {

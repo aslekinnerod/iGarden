@@ -53,7 +53,7 @@ struct PlantDetailView: View {
                 if let species = plant.species {
                     LabeledContent("Art", value: species)
                 }
-                LabeledContent("Plassering", value: plant.location.displayName)
+                LabeledContent("Plassering", value: plant.locationDisplayName)
                 LabeledContent("Anskaffet", value: plant.dateAcquired.formatted(date: .long, time: .omitted))
                 LabeledContent("Vanningsintervall", value: String(localized: "Hver \(plant.wateringIntervalDays). dag"))
             }

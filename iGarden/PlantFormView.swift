@@ -17,7 +17,7 @@ struct PlantFormView: View {
 
     @State private var name: String
     @State private var species: String
-    @State private var location: PlantLocation
+    @State private var location: String
     @State private var dateAcquired: Date
     @State private var notes: String
     @State private var wateringIntervalDays: Int
@@ -27,7 +27,7 @@ struct PlantFormView: View {
         self.plant = plant
         _name = State(initialValue: plant?.name ?? "")
         _species = State(initialValue: plant?.species ?? "")
-        _location = State(initialValue: plant?.location ?? .livingRoom)
+        _location = State(initialValue: plant?.location ?? PlantLocation.livingRoom.rawValue)
         _dateAcquired = State(initialValue: plant?.dateAcquired ?? .now)
         _notes = State(initialValue: plant?.notes ?? "")
         _wateringIntervalDays = State(initialValue: plant?.wateringIntervalDays ?? 7)
@@ -45,10 +45,10 @@ struct PlantFormView: View {
                 Section("Om planten") {
                     TextField("Navn", text: $name)
                     TextField("Art / latinsk navn", text: $species)
-                    Picker("Plassering", selection: $location) {
-                        ForEach(PlantLocation.allCases) { location in
-                            Text(location.displayName).tag(location)
-                        }
+                    NavigationLink {
+                        LocationPickerView(selection: $location)
+                    } label: {
+                        LabeledContent("Plassering", value: PlantLocation.displayName(for: location))
                     }
                     DatePicker("Anskaffet", selection: $dateAcquired, in: ...Date.now, displayedComponents: .date)
                 }
