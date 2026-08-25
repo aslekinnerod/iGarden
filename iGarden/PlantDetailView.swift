@@ -56,11 +56,19 @@ struct PlantDetailView: View {
         }
     }
 
+    private var statusColor: Color {
+        switch plant.wateringStatus {
+        case .overdue: .red
+        case .dueToday, .neverWatered: .orange
+        case .ok: .green
+        }
+    }
+
     private var wateringStatus: some View {
         HStack(spacing: 12) {
             Image(systemName: plant.needsWater ? "drop.triangle.fill" : "checkmark.circle.fill")
                 .font(.title2)
-                .foregroundStyle(plant.needsWater ? .orange : .green)
+                .foregroundStyle(statusColor)
             VStack(alignment: .leading, spacing: 2) {
                 Text(statusTitle)
                     .font(.headline)
@@ -74,18 +82,21 @@ struct PlantDetailView: View {
     }
 
     private var statusTitle: String {
-        guard let next = plant.nextWateringDate else {
-            return "Ikke vannet ennå"
+        switch plant.wateringStatus {
+        case .neverWatered:
+            "Ikke vannet ennå"
+        case .overdue:
+            "Trenger vann – forfalt"
+        case .dueToday:
+            "Vannes i dag"
+        case .ok:
+            "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))"
         }
-        if plant.needsWater {
-            return "Trenger vann"
-        }
-        return "Vannes \(next.formatted(.relative(presentation: .named)))"
     }
 
     private func waterNow() {
         withAnimation {
-            plant.lastWatered = .now
+            plant.markWatered()
         }
         // APP-11: opprett også en CareEvent her når stell-loggen finnes.
     }

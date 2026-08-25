@@ -14,7 +14,6 @@ enum PlantSortOrder: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-// Detaljvisningen er en plassholder frem til APP-8.
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Plant.name) private var plants: [Plant]
@@ -46,17 +45,27 @@ struct ContentView: View {
         }
     }
 
+    private var plantsNeedingWater: [Plant] {
+        filteredPlants.filter(\.needsWater)
+    }
+
+    private var plantsNotNeedingWater: [Plant] {
+        filteredPlants.filter { !$0.needsWater }
+    }
+
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(filteredPlants) { plant in
-                    NavigationLink {
-                        PlantDetailView(plant: plant)
-                    } label: {
-                        PlantRowView(plant: plant)
+                if !plantsNeedingWater.isEmpty {
+                    Section("Trenger vann") {
+                        plantRows(plantsNeedingWater)
                     }
                 }
-                .onDelete(perform: deletePlants)
+                if !plantsNotNeedingWater.isEmpty {
+                    Section(plantsNeedingWater.isEmpty ? "Alle planter" : "Øvrige planter") {
+                        plantRows(plantsNotNeedingWater)
+                    }
+                }
             }
             .navigationTitle("Mine planter")
             .searchable(text: $searchText, prompt: "Søk på navn eller art")
@@ -93,10 +102,27 @@ struct ContentView: View {
         }
     }
 
-    private func deletePlants(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(filteredPlants[index])
+    private func plantRows(_ plants: [Plant]) -> some View {
+        ForEach(plants) { plant in
+            NavigationLink {
+                PlantDetailView(plant: plant)
+            } label: {
+                PlantRowView(plant: plant)
+            }
+            .swipeActions(edge: .leading) {
+                Button {
+                    withAnimation { plant.markWatered() }
+                } label: {
+                    Label("Vannet", systemImage: "drop.fill")
+                }
+                .tint(.blue)
+            }
+            .swipeActions(edge: .trailing) {
+                Button(role: .destructive) {
+                    withAnimation { modelContext.delete(plant) }
+                } label: {
+                    Label("Slett", systemImage: "trash")
+                }
             }
         }
     }
@@ -106,26 +132,44 @@ struct PlantRowView: View {
     let plant: Plant
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(plant.name)
-            HStack(spacing: 4) {
-                Text(plant.location.rawValue)
-                Text("·")
-                Text(nextWateringText)
+        HStack(spacing: 10) {
+            Image(systemName: "drop.fill")
+                .foregroundStyle(statusColor)
+                .font(.footnote)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(plant.name)
+                HStack(spacing: 4) {
+                    Text(plant.location.rawValue)
+                        .foregroundStyle(.secondary)
+                    Text("·")
+                        .foregroundStyle(.secondary)
+                    Text(statusText)
+                        .foregroundStyle(plant.needsWater ? statusColor : .secondary)
+                }
+                .font(.caption)
             }
-            .font(.caption)
-            .foregroundStyle(.secondary)
         }
     }
 
-    private var nextWateringText: String {
-        guard let next = plant.nextWateringDate else {
-            return "Ikke vannet ennå"
+    private var statusColor: Color {
+        switch plant.wateringStatus {
+        case .overdue: .red
+        case .dueToday, .neverWatered: .orange
+        case .ok: .green
         }
-        if next <= .now {
-            return "Trenger vann"
+    }
+
+    private var statusText: String {
+        switch plant.wateringStatus {
+        case .neverWatered:
+            "Ikke vannet ennå"
+        case .overdue:
+            "Forfalt – skulle vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))"
+        case .dueToday:
+            "Vannes i dag"
+        case .ok:
+            "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))"
         }
-        return "Vannes \(next.formatted(.relative(presentation: .named)))"
     }
 }
 

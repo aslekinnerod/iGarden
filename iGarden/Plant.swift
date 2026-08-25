@@ -56,8 +56,23 @@ final class Plant {
         return Calendar.current.date(byAdding: .day, value: wateringIntervalDays, to: lastWatered)
     }
 
-    var needsWater: Bool {
-        guard let nextWateringDate else { return true }
-        return nextWateringDate <= .now
+    var wateringStatus: WateringStatus {
+        guard let nextWateringDate else { return .neverWatered }
+        if Calendar.current.isDateInToday(nextWateringDate) { return .dueToday }
+        if nextWateringDate < .now { return .overdue }
+        return .ok
     }
+
+    var needsWater: Bool { wateringStatus != .ok }
+
+    func markWatered() {
+        lastWatered = .now
+    }
+}
+
+enum WateringStatus {
+    case overdue
+    case dueToday
+    case neverWatered
+    case ok
 }
