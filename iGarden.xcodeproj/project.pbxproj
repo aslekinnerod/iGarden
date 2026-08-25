@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		6853E8FC303DBC2900A55448 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6853E5EC30383CE600A55448 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6853E5F330383CE600A55448;
+			remoteInfo = iGarden;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		6853E5F430383CE600A55448 /* iGarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iGarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		68AA000130383CE600A55448 /* iGardenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iGardenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +27,22 @@
 			path = iGarden;
 			sourceTree = "<group>";
 		};
+		68AA000230383CE600A55448 /* iGardenTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = iGardenTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		6853E5F130383CE600A55448 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68AA000330383CE600A55448 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				6853E5F630383CE600A55448 /* iGarden */,
+				68AA000230383CE600A55448 /* iGardenTests */,
 				6853E5F530383CE600A55448 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				6853E5F430383CE600A55448 /* iGarden.app */,
+				68AA000130383CE600A55448 /* iGardenTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +95,29 @@
 			productReference = 6853E5F430383CE600A55448 /* iGarden.app */;
 			productType = "com.apple.product-type.application";
 		};
+		68AA000630383CE600A55448 /* iGardenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68AA000730383CE600A55448 /* Build configuration list for PBXNativeTarget "iGardenTests" */;
+			buildPhases = (
+				68AA000430383CE600A55448 /* Sources */,
+				68AA000330383CE600A55448 /* Frameworks */,
+				68AA000530383CE600A55448 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				68AA000830383CE600A55448 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				68AA000230383CE600A55448 /* iGardenTests */,
+			);
+			name = iGardenTests;
+			packageProductDependencies = (
+			);
+			productName = iGardenTests;
+			productReference = 68AA000130383CE600A55448 /* iGardenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +130,10 @@
 				TargetAttributes = {
 					6853E5F330383CE600A55448 = {
 						CreatedOnToolsVersion = 26.0;
+					};
+					68AA000630383CE600A55448 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 6853E5F330383CE600A55448;
 					};
 				};
 			};
@@ -100,12 +152,20 @@
 			projectRoot = "";
 			targets = (
 				6853E5F330383CE600A55448 /* iGarden */,
+				68AA000630383CE600A55448 /* iGardenTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6853E5F230383CE600A55448 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68AA000530383CE600A55448 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +182,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		68AA000430383CE600A55448 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		68AA000830383CE600A55448 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6853E5F330383CE600A55448 /* iGarden */;
+			targetProxy = 6853E8FC303DBC2900A55448 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		6853E5FF30383CE700A55448 /* Debug */ = {
@@ -312,6 +387,50 @@
 			};
 			name = Release;
 		};
+		68AA000A30383CE700A55448 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UEVSN8X7G2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = no.abk.iGardenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iGarden.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iGarden";
+			};
+			name = Debug;
+		};
+		68AA000B30383CE700A55448 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UEVSN8X7G2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = no.abk.iGardenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iGarden.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iGarden";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -329,6 +448,15 @@
 			buildConfigurations = (
 				6853E60230383CE700A55448 /* Debug */,
 				6853E60330383CE700A55448 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		68AA000730383CE600A55448 /* Build configuration list for PBXNativeTarget "iGardenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68AA000A30383CE700A55448 /* Debug */,
+				68AA000B30383CE700A55448 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
