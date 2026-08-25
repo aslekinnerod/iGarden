@@ -20,6 +20,7 @@ struct PlantFormView: View {
     @State private var location: String
     @State private var dateAcquired: Date
     @State private var notes: String
+    @State private var hasWateringSchedule: Bool
     @State private var wateringIntervalDays: Int
     @State private var showDeleteConfirmation = false
 
@@ -30,6 +31,7 @@ struct PlantFormView: View {
         _location = State(initialValue: plant?.location ?? PlantLocation.livingRoom.rawValue)
         _dateAcquired = State(initialValue: plant?.dateAcquired ?? .now)
         _notes = State(initialValue: plant?.notes ?? "")
+        _hasWateringSchedule = State(initialValue: plant.map { $0.wateringIntervalDays != nil } ?? true)
         _wateringIntervalDays = State(initialValue: plant?.wateringIntervalDays ?? 7)
     }
 
@@ -53,9 +55,18 @@ struct PlantFormView: View {
                     DatePicker("Anskaffet", selection: $dateAcquired, in: ...Date.now, displayedComponents: .date)
                 }
 
-                Section("Vanning") {
-                    Stepper(value: $wateringIntervalDays, in: 1...60) {
-                        Text("Hver \(wateringIntervalDays). dag")
+                Section {
+                    Toggle("Vanningsplan", isOn: $hasWateringSchedule.animation())
+                    if hasWateringSchedule {
+                        Stepper(value: $wateringIntervalDays, in: 1...60) {
+                            Text("Hver \(wateringIntervalDays). dag")
+                        }
+                    }
+                } header: {
+                    Text("Vanning")
+                } footer: {
+                    if !hasWateringSchedule {
+                        Text("Uten vanningsplan får planten ingen påminnelser og vises ikke under «Trenger vann». Passer for uteplanter som klarer seg selv.")
                     }
                 }
 
@@ -105,7 +116,7 @@ struct PlantFormView: View {
             plant.location = location
             plant.dateAcquired = dateAcquired
             plant.notes = notes
-            plant.wateringIntervalDays = wateringIntervalDays
+            plant.wateringIntervalDays = hasWateringSchedule ? wateringIntervalDays : nil
             // Endret intervall eller navn påvirker varselet.
             NotificationManager.reschedule(for: plant)
         } else {
@@ -115,7 +126,7 @@ struct PlantFormView: View {
                 location: location,
                 dateAcquired: dateAcquired,
                 notes: notes,
-                wateringIntervalDays: wateringIntervalDays
+                wateringIntervalDays: hasWateringSchedule ? wateringIntervalDays : nil
             )
             modelContext.insert(newPlant)
         }

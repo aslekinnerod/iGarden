@@ -46,10 +46,16 @@ struct ContentView: View {
                 ($0.lastWatered ?? .distantPast) < ($1.lastWatered ?? .distantPast)
             }
         case .nextWatering:
+            // Aldri vannet først (venter lengst), uten vanningsplan sist.
             return matching.sorted {
-                ($0.nextWateringDate ?? .distantPast) < ($1.nextWateringDate ?? .distantPast)
+                nextWateringSortKey($0) < nextWateringSortKey($1)
             }
         }
+    }
+
+    private func nextWateringSortKey(_ plant: Plant) -> Date {
+        guard plant.wateringStatus != .noSchedule else { return .distantFuture }
+        return plant.nextWateringDate ?? .distantPast
     }
 
     private var plantsNeedingWater: [Plant] {
@@ -170,21 +176,27 @@ struct ContentView: View {
 struct PlantRowView: View {
     let plant: Plant
 
+    private var hasSchedule: Bool { plant.wateringStatus != .noSchedule }
+
     var body: some View {
         HStack(spacing: 10) {
             thumbnail
-            Image(systemName: "drop.fill")
-                .foregroundStyle(statusColor)
-                .font(.footnote)
+            if hasSchedule {
+                Image(systemName: "drop.fill")
+                    .foregroundStyle(statusColor)
+                    .font(.footnote)
+            }
             VStack(alignment: .leading, spacing: 2) {
                 Text(plant.name)
                 HStack(spacing: 4) {
                     Text(plant.locationDisplayName)
                         .foregroundStyle(.secondary)
-                    Text("·")
-                        .foregroundStyle(.secondary)
-                    Text(statusText)
-                        .foregroundStyle(plant.needsWater ? statusColor : .secondary)
+                    if hasSchedule {
+                        Text("·")
+                            .foregroundStyle(.secondary)
+                        Text(statusText)
+                            .foregroundStyle(plant.needsWater ? statusColor : .secondary)
+                    }
                 }
                 .font(.caption)
             }
@@ -215,6 +227,7 @@ struct PlantRowView: View {
         case .overdue: .red
         case .dueToday, .neverWatered: .orange
         case .ok: .green
+        case .noSchedule: .secondary
         }
     }
 
@@ -228,6 +241,8 @@ struct PlantRowView: View {
             String(localized: "Vannes i dag")
         case .ok:
             String(localized: "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))")
+        case .noSchedule:
+            ""
         }
     }
 }

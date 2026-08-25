@@ -55,7 +55,9 @@ struct PlantDetailView: View {
                 }
                 LabeledContent("Plassering", value: plant.locationDisplayName)
                 LabeledContent("Anskaffet", value: plant.dateAcquired.formatted(date: .long, time: .omitted))
-                LabeledContent("Vanningsintervall", value: String(localized: "Hver \(plant.wateringIntervalDays). dag"))
+                if let intervalDays = plant.wateringIntervalDays {
+                    LabeledContent("Vanningsintervall", value: String(localized: "Hver \(intervalDays). dag"))
+                }
             }
 
             if !plant.notes.isEmpty {
@@ -219,12 +221,21 @@ struct PlantDetailView: View {
         case .overdue: .red
         case .dueToday, .neverWatered: .orange
         case .ok: .green
+        case .noSchedule: .secondary
+        }
+    }
+
+    private var statusIcon: String {
+        switch plant.wateringStatus {
+        case .noSchedule: "minus.circle.fill"
+        case .ok: "checkmark.circle.fill"
+        case .overdue, .dueToday, .neverWatered: "drop.triangle.fill"
         }
     }
 
     private var wateringStatus: some View {
         HStack(spacing: 12) {
-            Image(systemName: plant.needsWater ? "drop.triangle.fill" : "checkmark.circle.fill")
+            Image(systemName: statusIcon)
                 .font(.title2)
                 .foregroundStyle(statusColor)
             VStack(alignment: .leading, spacing: 2) {
@@ -249,6 +260,8 @@ struct PlantDetailView: View {
             String(localized: "Vannes i dag")
         case .ok:
             String(localized: "Vannes \(plant.nextWateringDate!.formatted(.relative(presentation: .named)))")
+        case .noSchedule:
+            String(localized: "Ingen vanningsplan")
         }
     }
 

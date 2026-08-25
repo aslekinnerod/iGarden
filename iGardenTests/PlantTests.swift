@@ -62,6 +62,15 @@ struct PlantTests {
         #expect(!plant.needsWater)
     }
 
+    @Test func utenVanningsplanTrengerAldriVann() throws {
+        let plant = Plant(name: "Hageplante", wateringIntervalDays: nil)
+        plant.lastWatered = Calendar.current.date(byAdding: .day, value: -30, to: .now)
+
+        #expect(plant.wateringStatus == .noSchedule)
+        #expect(!plant.needsWater)
+        #expect(plant.nextWateringDate == nil)
+    }
+
     @Test func markWateredSetterSistVannetOgLoggerHendelse() throws {
         let context = try makeContext()
         let plant = Plant(name: "Test", wateringIntervalDays: 7)

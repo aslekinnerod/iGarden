@@ -9,6 +9,21 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "You're seeing your own locations. Delete them all to get the default list back." } }
       }
     },
+    "Ingen vanningsplan" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No watering schedule" } }
+      }
+    },
+    "Vanningsplan" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering schedule" } }
+      }
+    },
+    "Uten vanningsplan får planten ingen påminnelser og vises ikke under «Trenger vann». Passer for uteplanter som klarer seg selv." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Without a watering schedule the plant gets no reminders and never appears under “Needs water”. Suitable for outdoor plants that manage on their own." } }
+      }
+    },
     "Egen plassering" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Custom location" } }

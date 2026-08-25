@@ -41,7 +41,9 @@ final class Plant {
     var location: String
     var dateAcquired: Date
     var notes: String
-    var wateringIntervalDays: Int
+    /// Dager mellom vanninger. nil betyr ingen vanningsplan (N/A),
+    /// typisk uteplanter som klarer seg selv.
+    var wateringIntervalDays: Int?
     var lastWatered: Date?
 
     /// Stabil identifikator for plantens vanningsvarsel.
@@ -59,7 +61,7 @@ final class Plant {
         location: String = PlantLocation.livingRoom.rawValue,
         dateAcquired: Date = .now,
         notes: String = "",
-        wateringIntervalDays: Int = 7,
+        wateringIntervalDays: Int? = 7,
         lastWatered: Date? = nil
     ) {
         self.name = name
@@ -72,20 +74,26 @@ final class Plant {
     }
 
     /// Neste vanningsdato, beregnet fra sist vannet + intervall.
-    /// Uten registrert vanning regnes planten som klar for vanning nå.
+    /// Uten vanningsplan eller registrert vanning finnes ingen dato.
     var nextWateringDate: Date? {
-        guard let lastWatered else { return nil }
+        guard let wateringIntervalDays, let lastWatered else { return nil }
         return Calendar.current.date(byAdding: .day, value: wateringIntervalDays, to: lastWatered)
     }
 
     var wateringStatus: WateringStatus {
+        guard wateringIntervalDays != nil else { return .noSchedule }
         guard let nextWateringDate else { return .neverWatered }
         if Calendar.current.isDateInToday(nextWateringDate) { return .dueToday }
         if nextWateringDate < .now { return .overdue }
         return .ok
     }
 
-    var needsWater: Bool { wateringStatus != .ok }
+    var needsWater: Bool {
+        switch wateringStatus {
+        case .overdue, .dueToday, .neverWatered: true
+        case .ok, .noSchedule: false
+        }
+    }
 
     var latestPhoto: PlantPhoto? {
         photos.max { $0.date < $1.date }
@@ -106,4 +114,6 @@ enum WateringStatus {
     case dueToday
     case neverWatered
     case ok
+    /// Ingen vanningsplan (N/A) – planten følges ikke opp automatisk.
+    case noSchedule
 }
