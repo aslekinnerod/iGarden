@@ -21,6 +21,8 @@ struct PlantFormView: View {
     @State private var notes: String
     @State private var hasWateringSchedule: Bool
     @State private var wateringIntervalDays: Int
+    @State private var phLow: Double?
+    @State private var phHigh: Double?
     @State private var showDeleteConfirmation = false
 
     init(plant: Plant? = nil) {
@@ -32,6 +34,8 @@ struct PlantFormView: View {
         _notes = State(initialValue: plant?.notes ?? "")
         _hasWateringSchedule = State(initialValue: plant.map { $0.wateringIntervalDays != nil } ?? true)
         _wateringIntervalDays = State(initialValue: plant?.wateringIntervalDays ?? 7)
+        _phLow = State(initialValue: plant?.preferredPHLow)
+        _phHigh = State(initialValue: plant?.preferredPHHigh)
     }
 
     private var isEditing: Bool { plant != nil }
@@ -67,6 +71,52 @@ struct PlantFormView: View {
                     if !hasWateringSchedule {
                         Text("Uten vanningsplan får planten ingen påminnelser og vises ikke under «Trenger vann». Passer for uteplanter som klarer seg selv.")
                     }
+                }
+
+                Section {
+                    if let low = phLow, let high = phHigh {
+                        Stepper(
+                            "Fra pH \(low.formatted(.number.precision(.fractionLength(1))))",
+                            value: Binding(
+                                get: { phLow ?? 6.0 },
+                                set: { phLow = $0; if $0 > (phHigh ?? $0) { phHigh = $0 } }
+                            ),
+                            in: 3.5...9.0,
+                            step: 0.1
+                        )
+                        Stepper(
+                            "Til pH \(high.formatted(.number.precision(.fractionLength(1))))",
+                            value: Binding(
+                                get: { phHigh ?? 7.0 },
+                                set: { phHigh = $0; if $0 < (phLow ?? $0) { phLow = $0 } }
+                            ),
+                            in: 3.5...9.0,
+                            step: 0.1
+                        )
+                        Button("Fjern pH-preferanse", role: .destructive) {
+                            phLow = nil
+                            phHigh = nil
+                        }
+                    } else if let match = SoilDatabase.match(name: name, species: species) {
+                        Button {
+                            phLow = match.low
+                            phHigh = match.high
+                        } label: {
+                            Label(
+                                String(localized: "Bruk \(match.name): pH \(match.low.formatted(.number.precision(.fractionLength(1))))–\(match.high.formatted(.number.precision(.fractionLength(1))))"),
+                                systemImage: "sparkles"
+                            )
+                        }
+                    } else {
+                        Button("Angi pH-preferanse manuelt") {
+                            phLow = 6.0
+                            phHigh = 7.0
+                        }
+                    }
+                } header: {
+                    Text("Jord (pH)")
+                } footer: {
+                    Text("Brukes av Smart hage til å foreslå riktig bed. Fylles inn automatisk for kjente planter når du lagrer.")
                 }
 
                 Section("Notater") {
@@ -109,6 +159,10 @@ struct PlantFormView: View {
 
     private func save() {
         let trimmedSpecies = species.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Er pH-preferansen ikke satt, hentes den automatisk fra plantedatabasen.
+        let match = SoilDatabase.match(name: trimmedName, species: trimmedSpecies)
+        let effectivePHLow = phLow ?? match?.low
+        let effectivePHHigh = phHigh ?? match?.high
         if var updated = plant {
             updated.name = trimmedName
             updated.species = trimmedSpecies.isEmpty ? nil : trimmedSpecies
@@ -116,6 +170,8 @@ struct PlantFormView: View {
             updated.dateAcquired = dateAcquired
             updated.notes = notes
             updated.wateringIntervalDays = hasWateringSchedule ? wateringIntervalDays : nil
+            updated.preferredPHLow = effectivePHLow
+            updated.preferredPHHigh = effectivePHHigh
             gardenStore.updatePlant(updated)
         } else {
             gardenStore.addPlant(Plant(
@@ -124,7 +180,9 @@ struct PlantFormView: View {
                 location: location,
                 dateAcquired: dateAcquired,
                 notes: notes,
-                wateringIntervalDays: hasWateringSchedule ? wateringIntervalDays : nil
+                wateringIntervalDays: hasWateringSchedule ? wateringIntervalDays : nil,
+                preferredPHLow: effectivePHLow,
+                preferredPHHigh: effectivePHHigh
             ))
         }
         dismiss()

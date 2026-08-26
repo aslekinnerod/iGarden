@@ -61,6 +61,10 @@ struct PlantDetailView: View {
                 if let intervalDays = livePlant.wateringIntervalDays {
                     LabeledContent("Vanningsintervall", value: String(localized: "Hver \(intervalDays). dag"))
                 }
+                if let phText = livePlant.preferredPHText {
+                    LabeledContent("Jord (pH)", value: phText)
+                }
+                soilFitRow
             }
 
             if !livePlant.notes.isEmpty {
@@ -146,6 +150,40 @@ struct PlantDetailView: View {
             // Slettes planten av et annet medlem, lukkes detaljsiden.
             if gardenStore.isReady, !gardenStore.plants.contains(where: { $0.id == plant.id }) {
                 dismiss()
+            }
+        }
+    }
+
+    /// Trivselsvurdering mot bedets målte pH, når begge deler finnes.
+    @ViewBuilder
+    private var soilFitRow: some View {
+        if let bed = gardenStore.customLocations.first(where: { $0.name == livePlant.location }),
+           let bedPH = bed.soilPH {
+            let fit = SoilFit.evaluate(plant: livePlant, bedPH: bedPH)
+            switch fit {
+            case .good:
+                Label {
+                    Text("Trives i jorden her (pH \(bedPH.formatted(.number.precision(.fractionLength(1)))))")
+                } icon: {
+                    Image(systemName: "checkmark.seal.fill")
+                        .foregroundStyle(.green)
+                }
+            case .tooAcidic:
+                Label {
+                    Text("Jorden her er for sur (pH \(bedPH.formatted(.number.precision(.fractionLength(1))))) – se Smart hage")
+                } icon: {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                }
+            case .tooAlkaline:
+                Label {
+                    Text("Jorden her er for kalkrik (pH \(bedPH.formatted(.number.precision(.fractionLength(1))))) – se Smart hage")
+                } icon: {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                }
+            case .unknown:
+                EmptyView()
             }
         }
     }

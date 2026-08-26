@@ -58,6 +58,9 @@ struct Plant: Codable, Identifiable, Hashable {
     var lastWatered: Date?
     /// Storage-sti til nyeste bilde, denormalisert for liste/detalj-header.
     var photoPath: String?
+    /// Foretrukket jord-pH (fra plantedatabasen eller manuelt satt).
+    var preferredPHLow: Double?
+    var preferredPHHigh: Double?
 
     init(
         id: String? = nil,
@@ -68,7 +71,9 @@ struct Plant: Codable, Identifiable, Hashable {
         notes: String = "",
         wateringIntervalDays: Int? = 7,
         lastWatered: Date? = nil,
-        photoPath: String? = nil
+        photoPath: String? = nil,
+        preferredPHLow: Double? = nil,
+        preferredPHHigh: Double? = nil
     ) {
         self.id = id
         self.name = name
@@ -79,6 +84,8 @@ struct Plant: Codable, Identifiable, Hashable {
         self.wateringIntervalDays = wateringIntervalDays
         self.lastWatered = lastWatered
         self.photoPath = photoPath
+        self.preferredPHLow = preferredPHLow
+        self.preferredPHHigh = preferredPHHigh
     }
 
     /// Neste vanningsdato, beregnet fra sist vannet + intervall.
@@ -170,11 +177,14 @@ struct CustomLocation: Codable, Identifiable, Hashable {
     @DocumentID var id: String?
     var name: String
     var createdAt: Date
+    /// Målt jord-pH i bedet, brukes av Smart hage-anbefalingene.
+    var soilPH: Double?
 
-    init(id: String? = nil, name: String, createdAt: Date = .now) {
+    init(id: String? = nil, name: String, createdAt: Date = .now, soilPH: Double? = nil) {
         self.id = id
         self.name = name
         self.createdAt = createdAt
+        self.soilPH = soilPH
     }
 }
 

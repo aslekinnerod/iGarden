@@ -386,4 +386,16 @@ final class GardenStore {
         guard let gardenRef, let id = location.id else { return }
         gardenRef.collection("customLocations").document(id).delete()
     }
+
+    /// Setter (eller fjerner) målt jord-pH på et bed.
+    func setSoilPH(_ ph: Double?, for location: CustomLocation) {
+        guard let gardenRef, let id = location.id else { return }
+        var updated = location
+        updated.soilPH = ph.map { ($0 * 10).rounded() / 10 }
+        do {
+            try gardenRef.collection("customLocations").document(id).setData(from: updated)
+        } catch {
+            errorMessage = String(localized: "Kunne ikke lagre plasseringen.")
+        }
+    }
 }

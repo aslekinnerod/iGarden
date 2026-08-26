@@ -114,6 +114,62 @@ struct PlantTests {
         #expect(CareEventType.pruning.rawValue == "Beskjæring")
     }
 
+    // MARK: - Smart hage (jord-pH)
+
+    @Test func plantedatabasenFinnerPreferanseFraNavn() throws {
+        let match = SoilDatabase.match(name: "Rhododendron ved trappen", species: nil)
+        #expect(match?.name == "Rhododendron")
+        #expect(match?.low == 4.5)
+        #expect(match?.high == 6.0)
+    }
+
+    @Test func plantedatabasenFinnerPreferanseFraLatinskArt() throws {
+        let match = SoilDatabase.match(name: "Busken min", species: "Vaccinium myrtillus")
+        #expect(match?.name == "Blåbær")
+    }
+
+    @Test func lengsteSoekeordVinner() throws {
+        // «Gressløk» skal ikke matches som «gress» (plen).
+        let match = SoilDatabase.match(name: "Gressløk", species: nil)
+        #expect(match?.name == "Gressløk")
+    }
+
+    @Test func jordvurderingSkillerSurtOgKalkrikt() throws {
+        let plant = Plant(name: "Blåbær", preferredPHLow: 4.0, preferredPHHigh: 5.5)
+
+        #expect(SoilFit.evaluate(plant: plant, bedPH: 5.0) == .good)
+        #expect(SoilFit.evaluate(plant: plant, bedPH: 3.5) == .tooAcidic)
+        #expect(SoilFit.evaluate(plant: plant, bedPH: 7.0) == .tooAlkaline)
+        #expect(SoilFit.evaluate(plant: plant, bedPH: nil) == .unknown)
+        #expect(SoilFit.evaluate(plant: Plant(name: "Ukjent"), bedPH: 6.0) == .unknown)
+    }
+
+    @Test func anbefalingForeslaarBedMedRiktigPH() throws {
+        let surtBed = CustomLocation(id: "a", name: "Surbed", soilPH: 4.8)
+        let kalkBed = CustomLocation(id: "b", name: "Kalkbed", soilPH: 7.2)
+        let blaabaer = Plant(id: "p1", name: "Blåbær", location: "Kalkbed", preferredPHLow: 4.0, preferredPHHigh: 5.5)
+        let lavendel = Plant(id: "p2", name: "Lavendel", location: "Kalkbed", preferredPHLow: 6.5, preferredPHHigh: 7.5)
+
+        let recommendations = SoilAdvisor.recommendations(plants: [blaabaer, lavendel], beds: [surtBed, kalkBed])
+
+        // Blåbæret står for kalkrikt og skal flyttes til surbedet;
+        // lavendelen trives og skal ikke nevnes.
+        #expect(recommendations.count == 1)
+        #expect(recommendations.first?.plant.name == "Blåbær")
+        #expect(recommendations.first?.fit == .tooAlkaline)
+        #expect(recommendations.first?.suggestedBed?.name == "Surbed")
+    }
+
+    @Test func anbefalingUtenPassendeBedGirIngenForslag() throws {
+        let kalkBed = CustomLocation(id: "b", name: "Kalkbed", soilPH: 7.2)
+        let blaabaer = Plant(id: "p1", name: "Blåbær", location: "Kalkbed", preferredPHLow: 4.0, preferredPHHigh: 5.5)
+
+        let recommendations = SoilAdvisor.recommendations(plants: [blaabaer], beds: [kalkBed])
+
+        #expect(recommendations.count == 1)
+        #expect(recommendations.first?.suggestedBed == nil)
+    }
+
     @Test func egneOgInnebygdePlasseringerVisesRiktig() throws {
         let custom = Plant(name: "Test", location: "Vinterhagen")
 

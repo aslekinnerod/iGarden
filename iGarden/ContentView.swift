@@ -43,6 +43,7 @@ struct ContentView: View {
     @State private var showReminderSettings = false
     @State private var showAccount = false
     @State private var showSharing = false
+    @State private var showSmartGarden = false
     @State private var sharingPrefilledCode = ""
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var showOnboarding = false
@@ -154,6 +155,13 @@ struct ContentView: View {
                 if gardenStore.isConfigured {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
+                            showSmartGarden = true
+                        } label: {
+                            Label("Smart hage", systemImage: "sparkles")
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
                             sharingPrefilledCode = ""
                             showSharing = true
                         } label: {
@@ -211,6 +219,9 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showSharing) {
                 GardenSharingView(prefilledCode: sharingPrefilledCode)
+            }
+            .sheet(isPresented: $showSmartGarden) {
+                SmartGardenView()
             }
             .onChange(of: gardenStore.pendingInviteCode) {
                 // Invitasjonslenke åpnet: vis delingssiden med koden utfylt.
