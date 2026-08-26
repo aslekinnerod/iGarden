@@ -117,21 +117,48 @@ struct PlantTests {
     // MARK: - Smart hage (jord-pH)
 
     @Test func plantedatabasenFinnerPreferanseFraNavn() throws {
-        let match = SoilDatabase.match(name: "Rhododendron ved trappen", species: nil)
+        let match = PlantDatabase.match(name: "Rhododendron ved trappen", species: nil)
         #expect(match?.name == "Rhododendron")
-        #expect(match?.low == 4.5)
-        #expect(match?.high == 6.0)
+        #expect(match?.phLow == 4.5)
+        #expect(match?.phHigh == 6.0)
     }
 
     @Test func plantedatabasenFinnerPreferanseFraLatinskArt() throws {
-        let match = SoilDatabase.match(name: "Busken min", species: "Vaccinium myrtillus")
+        let match = PlantDatabase.match(name: "Busken min", species: "Vaccinium myrtillus")
         #expect(match?.name == "Blåbær")
     }
 
     @Test func lengsteSoekeordVinner() throws {
         // «Gressløk» skal ikke matches som «gress» (plen).
-        let match = SoilDatabase.match(name: "Gressløk", species: nil)
+        let match = PlantDatabase.match(name: "Gressløk", species: nil)
         #expect(match?.name == "Gressløk")
+    }
+
+    @Test func databasenHarRundt300Planter() throws {
+        #expect(PlantDatabase.plants.count >= 280)
+        // Ingen duplikatnavn.
+        #expect(Set(PlantDatabase.plants.map(\.name)).count == PlantDatabase.plants.count)
+        // Alle pH-områder er gyldige.
+        #expect(PlantDatabase.plants.allSatisfy { $0.phLow < $0.phHigh && $0.phLow >= 3.5 && $0.phHigh <= 9 })
+    }
+
+    @Test func soekPrioritererPrefikstreff() throws {
+        let results = PlantDatabase.search("rho")
+        #expect(results.first?.name == "Rhododendron")
+
+        // Delstrengtreff finnes også, men etter prefikstreffene.
+        let bær = PlantDatabase.search("bær")
+        #expect(!bær.isEmpty)
+    }
+
+    @Test func soekTaalerStoreBokstaverOgAksenter() throws {
+        #expect(PlantDatabase.search("BLÅBÆR").first?.name == "Blåbær")
+        #expect(PlantDatabase.search("blabaer").first?.name == "Blåbær")
+    }
+
+    @Test func soekMatcherLatinskeNavnOgAliaser() throws {
+        #expect(PlantDatabase.search("lavandula").contains { $0.name == "Lavendel" })
+        #expect(PlantDatabase.search("georgin").contains { $0.name == "Dahlia" })
     }
 
     @Test func jordvurderingSkillerSurtOgKalkrikt() throws {

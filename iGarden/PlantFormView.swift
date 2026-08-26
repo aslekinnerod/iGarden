@@ -24,6 +24,18 @@ struct PlantFormView: View {
     @State private var phLow: Double?
     @State private var phHigh: Double?
     @State private var showDeleteConfirmation = false
+    /// Navnet fra sist valgte databaseforslag – skjuler trefflisten
+    /// til brukeren skriver noe annet.
+    @State private var appliedSuggestionName: String?
+
+    private var nameSuggestions: [PlantInfo] {
+        let query = name.trimmingCharacters(in: .whitespaces)
+        guard query.count >= 2, query != appliedSuggestionName else { return [] }
+        let results = PlantDatabase.search(query)
+        // Ikke mas når eneste treff allerede står i feltet.
+        if results.count == 1, results[0].name.folded == query.folded { return [] }
+        return Array(results.prefix(6))
+    }
 
     init(plant: Plant? = nil) {
         self.plant = plant
@@ -49,6 +61,31 @@ struct PlantFormView: View {
             Form {
                 Section("Om planten") {
                     TextField("Navn", text: $name)
+                        .autocorrectionDisabled()
+                    ForEach(nameSuggestions, id: \.name) { info in
+                        Button {
+                            applySuggestion(info)
+                        } label: {
+                            HStack {
+                                Image(systemName: "leaf.circle")
+                                    .foregroundStyle(.green)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text(info.name)
+                                        .foregroundStyle(.primary)
+                                    if let latin = info.latinName {
+                                        Text(latin)
+                                            .font(.caption)
+                                            .italic()
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                                Spacer()
+                                Text("pH \(info.phRangeText)")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
                     TextField("Art / latinsk navn", text: $species)
                     NavigationLink {
                         LocationPickerView(selection: $location)
@@ -97,13 +134,13 @@ struct PlantFormView: View {
                             phLow = nil
                             phHigh = nil
                         }
-                    } else if let match = SoilDatabase.match(name: name, species: species) {
+                    } else if let match = PlantDatabase.match(name: name, species: species) {
                         Button {
-                            phLow = match.low
-                            phHigh = match.high
+                            phLow = match.phLow
+                            phHigh = match.phHigh
                         } label: {
                             Label(
-                                String(localized: "Bruk \(match.name): pH \(match.low.formatted(.number.precision(.fractionLength(1))))–\(match.high.formatted(.number.precision(.fractionLength(1))))"),
+                                String(localized: "Bruk \(match.name): pH \(match.phLow.formatted(.number.precision(.fractionLength(1))))–\(match.phHigh.formatted(.number.precision(.fractionLength(1))))"),
                                 systemImage: "sparkles"
                             )
                         }
@@ -160,9 +197,9 @@ struct PlantFormView: View {
     private func save() {
         let trimmedSpecies = species.trimmingCharacters(in: .whitespacesAndNewlines)
         // Er pH-preferansen ikke satt, hentes den automatisk fra plantedatabasen.
-        let match = SoilDatabase.match(name: trimmedName, species: trimmedSpecies)
-        let effectivePHLow = phLow ?? match?.low
-        let effectivePHHigh = phHigh ?? match?.high
+        let match = PlantDatabase.match(name: trimmedName, species: trimmedSpecies)
+        let effectivePHLow = phLow ?? match?.phLow
+        let effectivePHHigh = phHigh ?? match?.phHigh
         if var updated = plant {
             updated.name = trimmedName
             updated.species = trimmedSpecies.isEmpty ? nil : trimmedSpecies
@@ -186,6 +223,16 @@ struct PlantFormView: View {
             ))
         }
         dismiss()
+    }
+
+    private func applySuggestion(_ info: PlantInfo) {
+        name = info.name
+        if species.trimmingCharacters(in: .whitespaces).isEmpty, let latin = info.latinName {
+            species = latin
+        }
+        phLow = info.phLow
+        phHigh = info.phHigh
+        appliedSuggestionName = info.name
     }
 
     private func deletePlant() {

@@ -4,12 +4,57 @@
     "·" : {
 
     },
+    "%@ (pH %@) er for kalkrikt – planten vil ha pH %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (pH %2$@) is too alkaline – the plant prefers pH %3$@."
+          }
+        }
+      }
+    },
+    "%@ (pH %@) er for surt – planten vil ha pH %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (pH %2$@) is too acidic – the plant prefers pH %3$@."
+          }
+        }
+      }
+    },
     "%@ trenger vann 🌱" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ needs water 🌱"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "%lld planter trives der de står." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld plant thrives where it is."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld plants thrive where they are."
+                }
+              }
+            }
           }
         }
       }
@@ -30,6 +75,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "All plants"
+          }
+        }
+      }
+    },
+    "Alle vurderte planter står i jord de trives i." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All assessed plants are in soil they thrive in."
+          }
+        }
+      }
+    },
+    "Anbefalinger" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recommendations"
+          }
+        }
+      }
+    },
+    "Angi pH-preferanse manuelt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set pH preference manually"
           }
         }
       }
@@ -118,6 +193,16 @@
         }
       }
     },
+    "Bed og jord" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beds and soil"
+          }
+        }
+      }
+    },
     "Bekreft innloggingen på nytt for å slette kontoen. Dette kan ikke angres." : {
       "localizations" : {
         "en" : {
@@ -179,6 +264,26 @@
         }
       }
     },
+    "Bruk %@: pH %@–%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use %1$@: pH %2$@–%3$@"
+          }
+        }
+      }
+    },
+    "Brukes av Smart hage til å foreslå riktig bed. Fylles inn automatisk for kjente planter når du lagrer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Used by Smart Garden to suggest the right bed. Filled in automatically for known plants when you save."
+          }
+        }
+      }
+    },
     "Dato" : {
       "localizations" : {
         "en" : {
@@ -197,168 +302,6 @@
             "value" : "You"
           }
         }
-      }
-    },
-    "Smart hage" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Smart Garden" } }
-      }
-    },
-    "Bed og jord" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Beds and soil" } }
-      }
-    },
-    "Anbefalinger" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Recommendations" } }
-      }
-    },
-    "Ingen bed ennå" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "No beds yet" } }
-      }
-    },
-    "Legg til egne plasseringer (bed) i planteskjemaet, så kan du måle og registrere jord-pH her." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add your own locations (beds) in the plant form, then measure and record soil pH here." } }
-      }
-    },
-    "Mål pH med en jordtester og juster verdien her. Uten pH kan ikke bedet vurderes." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Measure pH with a soil tester and adjust the value here. Without pH the bed can't be assessed." } }
-      }
-    },
-    "pH ikke målt" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "pH not measured" } }
-      }
-    },
-    "Fjern pH" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clear pH" } }
-      }
-    },
-    "sur jord" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "acidic soil" } }
-      }
-    },
-    "svakt sur jord" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "slightly acidic soil" } }
-      }
-    },
-    "nøytral jord" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "neutral soil" } }
-      }
-    },
-    "kalkrik jord" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "alkaline soil" } }
-      }
-    },
-    "Alle vurderte planter står i jord de trives i." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "All assessed plants are in soil they thrive in." } }
-      }
-    },
-    "Ingen planter å vurdere ennå. Sett pH på bedene og pH-preferanse på plantene, så dukker anbefalingene opp her." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "No plants to assess yet. Set pH on the beds and pH preference on the plants, and recommendations will appear here." } }
-      }
-    },
-    "%lld planter trives der de står." : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : { "stringUnit" : { "state" : "translated", "value" : "%lld plant thrives where it is." } },
-              "other" : { "stringUnit" : { "state" : "translated", "value" : "%lld plants thrive where they are." } }
-            }
-          }
-        }
-      }
-    },
-    "Flytt til %@ (pH %@)" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Move to %1$@ (pH %2$@)" } }
-      }
-    },
-    "Ingen av bedene dine har passende pH – vurder å justere jorden eller lage et nytt bed." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "None of your beds have a suitable pH – consider amending the soil or creating a new bed." } }
-      }
-    },
-    "%@ (pH %@) er for surt – planten vil ha pH %@." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "%1$@ (pH %2$@) is too acidic – the plant prefers pH %3$@." } }
-      }
-    },
-    "%@ (pH %@) er for kalkrikt – planten vil ha pH %@." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "%1$@ (pH %2$@) is too alkaline – the plant prefers pH %3$@." } }
-      }
-    },
-    "Jord (pH)" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Soil (pH)" } }
-      }
-    },
-    "Fra pH %@" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "From pH %@" } }
-      }
-    },
-    "Til pH %@" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "To pH %@" } }
-      }
-    },
-    "Fjern pH-preferanse" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clear pH preference" } }
-      }
-    },
-    "Bruk %@: pH %@–%@" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Use %1$@: pH %2$@–%3$@" } }
-      }
-    },
-    "Angi pH-preferanse manuelt" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Set pH preference manually" } }
-      }
-    },
-    "Brukes av Smart hage til å foreslå riktig bed. Fylles inn automatisk for kjente planter når du lagrer." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Used by Smart Garden to suggest the right bed. Filled in automatically for known plants when you save." } }
-      }
-    },
-    "Trives i jorden her (pH %@)" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Thrives in the soil here (pH %@)" } }
-      }
-    },
-    "Jorden her er for sur (pH %@) – se Smart hage" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "The soil here is too acidic (pH %@) – see Smart Garden" } }
-      }
-    },
-    "Jorden her er for kalkrik (pH %@) – se Smart hage" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "The soil here is too alkaline (pH %@) – see Smart Garden" } }
-      }
-    },
-    "Gruppering" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Grouping" } }
-      }
-    },
-    "Vanningsstatus" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering status" } }
       }
     },
     "Del hagen" : {
@@ -512,12 +455,42 @@
         }
       }
     },
+    "Fjern pH" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear pH"
+          }
+        }
+      }
+    },
+    "Fjern pH-preferanse" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear pH preference"
+          }
+        }
+      }
+    },
     "Fjerne %@?" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove %@?"
+          }
+        }
+      }
+    },
+    "Flytt til %@ (pH %@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move to %1$@ (pH %2$@)"
           }
         }
       }
@@ -583,6 +556,16 @@
         }
       }
     },
+    "Fra pH %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From pH %@"
+          }
+        }
+      }
+    },
     "Gang" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -621,6 +604,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "GoogleService-Info.plist is missing from the project."
+          }
+        }
+      }
+    },
+    "Gruppering" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grouping"
           }
         }
       }
@@ -699,6 +692,36 @@
         }
       }
     },
+    "Ingen av bedene dine har passende pH – vurder å justere jorden eller lage et nytt bed." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None of your beds have a suitable pH – consider amending the soil or creating a new bed."
+          }
+        }
+      }
+    },
+    "Ingen bed ennå" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No beds yet"
+          }
+        }
+      }
+    },
+    "Ingen planter å vurdere ennå. Sett pH på bedene og pH-preferanse på plantene, så dukker anbefalingene opp her." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No plants to assess yet. Set pH on the beds and pH preference on the plants, and recommendations will appear here."
+          }
+        }
+      }
+    },
     "Ingen planter ennå" : {
       "localizations" : {
         "en" : {
@@ -755,6 +778,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Invite"
+          }
+        }
+      }
+    },
+    "Jord (pH)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soil (pH)"
+          }
+        }
+      }
+    },
+    "Jorden her er for kalkrik (pH %@) – se Smart hage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The soil here is too alkaline (pH %@) – see Smart Garden"
+          }
+        }
+      }
+    },
+    "Jorden her er for sur (pH %@) – se Smart hage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The soil here is too acidic (pH %@) – see Smart Garden"
+          }
+        }
+      }
+    },
+    "kalkrik jord" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "alkaline soil"
           }
         }
       }
@@ -941,6 +1004,16 @@
         }
       }
     },
+    "Legg til egne plasseringer (bed) i planteskjemaet, så kan du måle og registrere jord-pH her." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add your own locations (beds) in the plant form, then measure and record soil pH here."
+          }
+        }
+      }
+    },
     "Legg til plante" : {
       "localizations" : {
         "en" : {
@@ -997,6 +1070,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sign out"
+          }
+        }
+      }
+    },
+    "Mål pH med en jordtester og juster verdien her. Uten pH kan ikke bedet vurderes." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Measure pH with a soil tester and adjust the value here. Without pH the bed can't be assessed."
           }
         }
       }
@@ -1133,6 +1216,16 @@
         }
       }
     },
+    "nøytral jord" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "neutral soil"
+          }
+        }
+      }
+    },
     "Ny plante" : {
       "localizations" : {
         "en" : {
@@ -1183,6 +1276,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Time to water"
+          }
+        }
+      }
+    },
+    "pH" : {
+
+    },
+    "pH %@ · %@" : {
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "pH %1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "pH ikke målt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pH not measured"
           }
         }
       }
@@ -1329,6 +1445,16 @@
         }
       }
     },
+    "Smart hage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smart Garden"
+          }
+        }
+      }
+    },
     "Søk på navn eller art" : {
       "localizations" : {
         "en" : {
@@ -1391,6 +1517,26 @@
         }
       }
     },
+    "sur jord" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "acidic soil"
+          }
+        }
+      }
+    },
+    "svakt sur jord" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "slightly acidic soil"
+          }
+        }
+      }
+    },
     "Ta bilde" : {
       "localizations" : {
         "en" : {
@@ -1422,6 +1568,16 @@
         }
       }
     },
+    "Til pH %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To pH %@"
+          }
+        }
+      }
+    },
     "Trenger vann" : {
       "localizations" : {
         "en" : {
@@ -1438,6 +1594,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Needs water – overdue"
+          }
+        }
+      }
+    },
+    "Trives i jorden her (pH %@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thrives in the soil here (pH %@)"
           }
         }
       }
@@ -1561,6 +1727,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Watering schedule"
+          }
+        }
+      }
+    },
+    "Vanningsstatus" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watering status"
           }
         }
       }

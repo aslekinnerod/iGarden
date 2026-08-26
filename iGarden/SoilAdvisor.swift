@@ -2,91 +2,12 @@
 //  SoilAdvisor.swift
 //  iGarden
 //
-//  Jordsmonn-logikken bak «Smart hage»: en innebygd database over vanlige
-//  hageplanters pH-preferanser, vurdering av hvordan en plante trives i
-//  bedet den står i, og forslag til bed med bedre egnet jord.
+//  Jordsmonn-logikken bak «Smart hage»: vurdering av hvordan en plante
+//  trives i bedet den står i, og forslag til bed med bedre egnet jord.
+//  Plantedatabasen med pH-preferanser ligger i PlantDatabase.swift.
 //
 
 import Foundation
-
-struct SoilPreference {
-    /// Visningsnavn på treffet, f.eks. «Rhododendron».
-    let name: String
-    /// Søkeord som matches mot plantens navn og art (små bokstaver).
-    let keywords: [String]
-    let low: Double
-    let high: Double
-}
-
-enum SoilDatabase {
-    /// Kuratert liste over vanlige hageplanter med foretrukket jord-pH.
-    /// Norske og latinske navn som søkeord.
-    static let entries: [SoilPreference] = [
-        SoilPreference(name: "Rhododendron", keywords: ["rhododendron"], low: 4.5, high: 6.0),
-        SoilPreference(name: "Asalea", keywords: ["asalea", "azalea"], low: 4.5, high: 6.0),
-        SoilPreference(name: "Blåbær", keywords: ["blåbær", "vaccinium"], low: 4.0, high: 5.5),
-        SoilPreference(name: "Tyttebær", keywords: ["tyttebær"], low: 4.5, high: 5.5),
-        SoilPreference(name: "Røsslyng", keywords: ["røsslyng", "lyng", "calluna", "erica"], low: 4.5, high: 5.5),
-        SoilPreference(name: "Hortensia", keywords: ["hortensia", "hydrangea"], low: 5.0, high: 6.5),
-        SoilPreference(name: "Kamelia", keywords: ["kamelia", "camellia"], low: 5.0, high: 6.5),
-        SoilPreference(name: "Magnolia", keywords: ["magnolia"], low: 5.5, high: 6.5),
-        SoilPreference(name: "Bregne", keywords: ["bregne"], low: 5.0, high: 6.5),
-        SoilPreference(name: "Astilbe", keywords: ["astilbe"], low: 5.5, high: 6.5),
-        SoilPreference(name: "Lupin", keywords: ["lupin"], low: 5.5, high: 7.0),
-        SoilPreference(name: "Potet", keywords: ["potet", "solanum tuberosum"], low: 5.0, high: 6.5),
-        SoilPreference(name: "Jordbær", keywords: ["jordbær", "fragaria"], low: 5.5, high: 6.5),
-        SoilPreference(name: "Bringebær", keywords: ["bringebær", "rubus idaeus"], low: 5.5, high: 6.5),
-        SoilPreference(name: "Rips og solbær", keywords: ["rips", "solbær", "ribes"], low: 6.0, high: 6.5),
-        SoilPreference(name: "Dill", keywords: ["dill"], low: 5.5, high: 6.5),
-        SoilPreference(name: "Mais", keywords: ["mais", "zea mays"], low: 5.5, high: 7.0),
-        SoilPreference(name: "Gressplen", keywords: ["gress", "plen"], low: 5.5, high: 7.0),
-        SoilPreference(name: "Tomat", keywords: ["tomat", "lycopersicum"], low: 6.0, high: 6.8),
-        SoilPreference(name: "Agurk", keywords: ["agurk", "cucumis"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Squash", keywords: ["squash", "cucurbita"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Gulrot", keywords: ["gulrot", "daucus"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Salat", keywords: ["salat", "lactuca"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Løk", keywords: ["løk", "allium cepa"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Gressløk", keywords: ["gressløk"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Purre", keywords: ["purre"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Persille", keywords: ["persille"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Basilikum", keywords: ["basilikum", "ocimum"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Mynte", keywords: ["mynte", "mentha"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Rosmarin", keywords: ["rosmarin"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Rose", keywords: ["rose", "rosa "], low: 6.0, high: 7.0),
-        SoilPreference(name: "Tulipan", keywords: ["tulipan", "tulipa"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Narsiss", keywords: ["narsiss", "påskelilje", "narcissus"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Iris", keywords: ["iris"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Solsikke", keywords: ["solsikke", "helianthus"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Hosta", keywords: ["hosta"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Eple", keywords: ["eple", "malus"], low: 6.0, high: 7.0),
-        SoilPreference(name: "Plomme", keywords: ["plomme", "prunus"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Erter", keywords: ["ert", "pisum"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Bønner", keywords: ["bønne", "phaseolus"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Rødbet", keywords: ["rødbet", "beta vulgaris"], low: 6.0, high: 7.5),
-        SoilPreference(name: "Timian", keywords: ["timian", "thymus"], low: 6.5, high: 7.5),
-        SoilPreference(name: "Lavendel", keywords: ["lavendel", "lavandula"], low: 6.5, high: 7.5),
-        SoilPreference(name: "Pion", keywords: ["pion", "paeonia"], low: 6.5, high: 7.5),
-        SoilPreference(name: "Klematis", keywords: ["klematis", "clematis"], low: 6.5, high: 7.5),
-        SoilPreference(name: "Syrin", keywords: ["syrin", "syringa"], low: 6.5, high: 7.5),
-        SoilPreference(name: "Kål", keywords: ["kål", "brassica"], low: 6.5, high: 7.5),
-        SoilPreference(name: "Spinat", keywords: ["spinat", "spinacia"], low: 6.5, high: 7.5),
-    ]
-
-    /// Finner pH-preferanse fra plantens navn og art. Lengste søkeord
-    /// vinner, så «gressløk» ikke matches som «gress».
-    static func match(name: String, species: String?) -> SoilPreference? {
-        let haystack = (name + " " + (species ?? "")).lowercased()
-        var best: (entry: SoilPreference, keywordLength: Int)?
-        for entry in entries {
-            for keyword in entry.keywords where haystack.contains(keyword) {
-                if keyword.count > (best?.keywordLength ?? 0) {
-                    best = (entry, keyword.count)
-                }
-            }
-        }
-        return best?.entry
-    }
-}
 
 enum SoilFit: Equatable {
     /// Bedets pH ligger i plantens foretrukne område.
