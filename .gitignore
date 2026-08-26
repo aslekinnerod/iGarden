@@ -1,6 +1,9 @@
 # Firebase-konfigurasjon holdes utenfor repoet (inneholder API-nøkler)
 iGarden/GoogleService-Info.plist
 
+# Issuetracker SDK-nøkkel
+iGarden/IssuetrackerConfig.plist
+
 # Xcode
 xcuserdata/
 DerivedData/

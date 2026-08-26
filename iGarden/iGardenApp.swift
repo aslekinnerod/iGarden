@@ -6,6 +6,7 @@
 import SwiftUI
 import FirebaseCore
 import GoogleSignIn
+import IssuetrackerSDK
 
 @main
 struct iGardenApp: App {
@@ -17,6 +18,13 @@ struct iGardenApp: App {
         // slik at appen også bygger i utviklingsmiljø uten Firebase.
         if Bundle.main.url(forResource: "GoogleService-Info", withExtension: "plist") != nil {
             FirebaseApp.configure()
+        }
+        // Feilrapportering rett fra appen (rist enheten). Nøkkelen ligger i
+        // gitignorerte IssuetrackerConfig.plist – hoppes over hvis den mangler.
+        if let configURL = Bundle.main.url(forResource: "IssuetrackerConfig", withExtension: "plist"),
+           let config = NSDictionary(contentsOf: configURL),
+           let apiKey = config["API_KEY"] as? String {
+            Issuetracker.configure(apiKey: apiKey)
         }
         _authStore = State(initialValue: AuthStore())
         _gardenStore = State(initialValue: GardenStore())

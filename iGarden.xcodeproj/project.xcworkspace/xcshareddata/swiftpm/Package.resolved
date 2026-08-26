@@ -1,5 +1,5 @@
 {
-  "originHash" : "7ed78cec4688813732ed048994a6c24c5c081e333197fce4007040cea0ee7d0c",
+  "originHash" : "806330ae0154576199e92eec1addb97ff96b6da0bbec871dfb18185c46843f36",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -116,6 +116,15 @@
       "state" : {
         "revision" : "040d087ac2267d2ddd4cca36c757d1c6a05fdbfe",
         "version" : "101.0.0"
+      }
+    },
+    {
+      "identity" : "issuetracker-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/aslekinnerod/issuetracker-sdk-ios.git",
+      "state" : {
+        "revision" : "caafa1ea3ec8377eb8614a384148c7d596e6c53b",
+        "version" : "0.5.1"
       }
     },
     {

@@ -11,6 +11,7 @@
 		68BB000630383CE600A55448 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 68BB000330383CE600A55448 /* FirebaseFirestore */; };
 		68BB000730383CE600A55448 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 68BB000430383CE600A55448 /* FirebaseStorage */; };
 		68CC000330383CE600A55448 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 68CC000230383CE600A55448 /* GoogleSignIn */; };
+		68DD000330383CE600A55448 /* IssuetrackerSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 68DD000230383CE600A55448 /* IssuetrackerSDK */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 				68BB000630383CE600A55448 /* FirebaseFirestore in Frameworks */,
 				68BB000730383CE600A55448 /* FirebaseStorage in Frameworks */,
 				68CC000330383CE600A55448 /* GoogleSignIn in Frameworks */,
+				68DD000330383CE600A55448 /* IssuetrackerSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +107,7 @@
 				68BB000330383CE600A55448 /* FirebaseFirestore */,
 				68BB000430383CE600A55448 /* FirebaseStorage */,
 				68CC000230383CE600A55448 /* GoogleSignIn */,
+				68DD000230383CE600A55448 /* IssuetrackerSDK */,
 			);
 			productName = iGarden;
 			productReference = 6853E5F430383CE600A55448 /* iGarden.app */;
@@ -165,6 +168,7 @@
 			packageReferences = (
 				68BB000130383CE600A55448 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				68CC000130383CE600A55448 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				68DD000130383CE600A55448 /* XCRemoteSwiftPackageReference "issuetracker-sdk-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6853E5F530383CE600A55448 /* Products */;
@@ -504,6 +508,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		68DD000130383CE600A55448 /* XCRemoteSwiftPackageReference "issuetracker-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aslekinnerod/issuetracker-sdk-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -526,6 +538,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68CC000130383CE600A55448 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
+		};
+		68DD000230383CE600A55448 /* IssuetrackerSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68DD000130383CE600A55448 /* XCRemoteSwiftPackageReference "issuetracker-sdk-ios" */;
+			productName = IssuetrackerSDK;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
