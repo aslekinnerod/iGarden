@@ -17,12 +17,28 @@ enum PlantSortOrder: String, CaseIterable, Identifiable {
     }
 }
 
+enum PlantGrouping: String, CaseIterable, Identifiable {
+    case location = "Plassering"
+    case wateringStatus = "Vanningsstatus"
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
+}
+
 struct ContentView: View {
     @Environment(AuthStore.self) private var authStore
     @Environment(GardenStore.self) private var gardenStore
 
     @State private var searchText = ""
     @State private var sortOrder: PlantSortOrder = .name
+    @AppStorage("plantGrouping") private var groupingRaw = PlantGrouping.location.rawValue
+
+    private var grouping: PlantGrouping {
+        PlantGrouping(rawValue: groupingRaw) ?? .location
+    }
     @State private var showAddPlant = false
     @State private var showReminderSettings = false
     @State private var showAccount = false
@@ -68,17 +84,43 @@ struct ContentView: View {
         filteredPlants.filter { !$0.needsWater }
     }
 
+    /// Én seksjon per rom/bed, sortert på lokalisert visningsnavn.
+    private var locationGroups: [(location: String, plants: [Plant])] {
+        Dictionary(grouping: filteredPlants, by: \.location)
+            .map { (location: $0.key, plants: $0.value) }
+            .sorted {
+                PlantLocation.displayName(for: $0.location)
+                    .localizedCaseInsensitiveCompare(PlantLocation.displayName(for: $1.location)) == .orderedAscending
+            }
+    }
+
     var body: some View {
         NavigationSplitView {
             List {
-                if !plantsNeedingWater.isEmpty {
-                    Section("Trenger vann") {
-                        plantRows(plantsNeedingWater)
+                switch grouping {
+                case .location:
+                    ForEach(locationGroups, id: \.location) { group in
+                        Section {
+                            plantRows(group.plants)
+                        } header: {
+                            HStack {
+                                Text(PlantLocation.displayName(for: group.location))
+                                Spacer()
+                                Text("\(group.plants.count)")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
                     }
-                }
-                if !plantsNotNeedingWater.isEmpty {
-                    Section(plantsNeedingWater.isEmpty ? String(localized: "Alle planter") : String(localized: "Øvrige planter")) {
-                        plantRows(plantsNotNeedingWater)
+                case .wateringStatus:
+                    if !plantsNeedingWater.isEmpty {
+                        Section("Trenger vann") {
+                            plantRows(plantsNeedingWater)
+                        }
+                    }
+                    if !plantsNotNeedingWater.isEmpty {
+                        Section(plantsNeedingWater.isEmpty ? String(localized: "Alle planter") : String(localized: "Øvrige planter")) {
+                            plantRows(plantsNotNeedingWater)
+                        }
                     }
                 }
             }
@@ -135,6 +177,12 @@ struct ContentView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
+                        Picker("Gruppering", selection: $groupingRaw) {
+                            ForEach(PlantGrouping.allCases) { grouping in
+                                Text(grouping.displayName).tag(grouping.rawValue)
+                            }
+                        }
+                        Divider()
                         Picker("Sortering", selection: $sortOrder) {
                             ForEach(PlantSortOrder.allCases) { order in
                                 Text(order.displayName).tag(order)

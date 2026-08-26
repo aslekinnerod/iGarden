@@ -4,307 +4,22 @@
     "·" : {
 
     },
-    "Du ser dine egne plasseringer. Slett alle for å få tilbake standardlisten." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "You're seeing your own locations. Delete them all to get the default list back." } }
-      }
-    },
-    "Del hagen" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share garden" } }
-      }
-    },
-    "Hagen" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Garden" } }
-      }
-    },
-    "Medlemmer" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Members" } }
-      }
-    },
-    "Inviter" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Invite" } }
-      }
-    },
-    "Lag invitasjonskode" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Create invite code" } }
-      }
-    },
-    "Del invitasjonen" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share the invite" } }
-      }
-    },
-    "Gyldig i 7 dager." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Valid for 7 days." } }
-      }
-    },
-    "Alle med koden kan bli med i hagen og se og stelle plantene." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Anyone with the code can join the garden and see and care for the plants." } }
-      }
-    },
-    "Bli med i en annen hage" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Join another garden" } }
-      }
-    },
-    "Invitasjonskode" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Invite code" } }
-      }
-    },
-    "Bli med" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Join" } }
-      }
-    },
-    "Du bytter til den delte hagen. Din egen hage blir liggende og kan ikke nås før du forlater den delte." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "You switch to the shared garden. Your own garden stays behind and can't be reached until you leave the shared one." } }
-      }
-    },
-    "Forlat hagen" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leave garden" } }
-      }
-    },
-    "Forlate hagen?" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leave the garden?" } }
-      }
-    },
-    "Forlat" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leave" } }
-      }
-    },
-    "Du mister tilgangen til plantene i denne hagen." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "You lose access to the plants in this garden." } }
-      }
-    },
-    "Fjerne %@?" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove %@?" } }
-      }
-    },
-    "Fjern" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove" } }
-      }
-    },
-    "medlemmet" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "the member" } }
-      }
-    },
-    "Eier" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Owner" } }
-      }
-    },
-    "Medlem" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Member" } }
-      }
-    },
-    "Deg" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "You" } }
-      }
-    },
-    "Gartner uten navn" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Gardener without a name" } }
-      }
-    },
-    "Logg inn først" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in first" } }
-      }
-    },
-    "For å dele hagen eller bli med i andres må du være logget inn med Apple eller Google. Bruk konto-knappen på hovedskjermen." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "To share your garden or join others you need to be signed in with Apple or Google. Use the account button on the main screen." } }
-      }
-    },
-    "Bli med i hagen min i iGarden! Åpne igarden://join?code=%@ eller skriv inn koden %@ under «Del hagen»." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Join my garden in iGarden! Open igarden://join?code=%1$@ or enter the code %2$@ under “Share garden”." } }
-      }
-    },
-    "Fant ingen gyldig invitasjon med den koden. Sjekk koden, eller be om en ny – koder utløper etter 7 dager." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "No valid invite found for that code. Check the code, or ask for a new one – codes expire after 7 days." } }
-      }
-    },
-    "Du er allerede medlem av denne hagen." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "You are already a member of this garden." } }
-      }
-    },
-    "Kunne ikke forlate hagen." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not leave the garden." } }
-      }
-    },
-    "Min hage" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "My Garden" } }
-      }
-    },
-    "Skyen er ikke satt opp" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cloud not set up" } }
-      }
-    },
-    "GoogleService-Info.plist mangler i prosjektet." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "GoogleService-Info.plist is missing from the project." } }
-      }
-    },
-    "Kunne ikke koble til skyen. Sjekk nettforbindelsen og prøv igjen." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not connect to the cloud. Check your connection and try again." } }
-      }
-    },
-    "Kunne ikke laste hagen din. Prøv igjen senere." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not load your garden. Please try again later." } }
-      }
-    },
-    "Kunne ikke lagre planten." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not save the plant." } }
-      }
-    },
-    "Kunne ikke registrere vanningen." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not log the watering." } }
-      }
-    },
-    "Kunne ikke registrere stellet." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not log the care event." } }
-      }
-    },
-    "Kunne ikke laste opp bildet." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not upload the photo." } }
-      }
-    },
-    "Kunne ikke slette bildet." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not delete the photo." } }
-      }
-    },
-    "Kunne ikke lagre plasseringen." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not save the location." } }
-      }
-    },
-    "Konto" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Account" } }
-      }
-    },
-    "Logg inn for å dele hagen din" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in to share your garden" } }
-      }
-    },
-    "Med en konto kan du invitere andre til å stelle plantene sammen med deg. Appen fungerer som vanlig uten innlogging." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "With an account you can invite others to care for the plants together with you. The app works as usual without signing in." } }
-      }
-    },
-    "E-post" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Email" } }
-      }
-    },
-    "Logg ut" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign out" } }
-      }
-    },
-    "Slett konto" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete account" } }
-      }
-    },
-    "Bekreft innloggingen på nytt for å slette kontoen. Dette kan ikke angres." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Confirm your sign-in again to delete the account. This cannot be undone." } }
-      }
-    },
-    "Logg inn med Google" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in with Google" } }
-      }
-    },
-    "Bekreft med Google" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Confirm with Google" } }
-      }
-    },
-    "Noe gikk galt" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Something went wrong" } }
-      }
-    },
-    "Innloggingen kunne ikke fullføres. Prøv igjen." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "The sign-in could not be completed. Please try again." } }
-      }
-    },
-    "Spill av" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Play" } }
-      }
-    },
-    "Ingen vanningsplan" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "No watering schedule" } }
-      }
-    },
-    "Vanningsplan" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering schedule" } }
-      }
-    },
-    "Uten vanningsplan får planten ingen påminnelser og vises ikke under «Trenger vann». Passer for uteplanter som klarer seg selv." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Without a watering schedule the plant gets no reminders and never appears under “Needs water”. Suitable for outdoor plants that manage on their own." } }
-      }
-    },
-    "Egen plassering" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Custom location" } }
-      }
-    },
-    "Legg til" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add" } }
-      }
-    },
-    "Navn på plassering" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Location name" } }
-      }
-    },
     "%@ trenger vann 🌱" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ needs water 🌱"
+          }
+        }
+      }
+    },
+    "Alle med koden kan bli med i hagen og se og stelle plantene." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anyone with the code can join the garden and see and care for the plants."
           }
         }
       }
@@ -403,6 +118,26 @@
         }
       }
     },
+    "Bekreft innloggingen på nytt for å slette kontoen. Dette kan ikke angres." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm your sign-in again to delete the account. This cannot be undone."
+          }
+        }
+      }
+    },
+    "Bekreft med Google" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm with Google"
+          }
+        }
+      }
+    },
     "Beskjæring" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -414,12 +149,82 @@
         }
       }
     },
+    "Bli med" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join"
+          }
+        }
+      }
+    },
+    "Bli med i en annen hage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join another garden"
+          }
+        }
+      }
+    },
+    "Bli med i hagen min i iGarden! Åpne igarden://join?code=%@ eller skriv inn koden %@ under «Del hagen»." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join my garden in iGarden! Open igarden://join?code=%1$@ or enter the code %2$@ under “Share garden”."
+          }
+        }
+      }
+    },
     "Dato" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Date"
+          }
+        }
+      }
+    },
+    "Deg" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You"
+          }
+        }
+      }
+    },
+    "Gruppering" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Grouping" } }
+      }
+    },
+    "Vanningsstatus" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering status" } }
+      }
+    },
+    "Del hagen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share garden"
+          }
+        }
+      }
+    },
+    "Del invitasjonen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share the invite"
           }
         }
       }
@@ -445,6 +250,26 @@
         }
       }
     },
+    "Du bytter til den delte hagen. Din egen hage blir liggende og kan ikke nås før du forlater den delte." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You switch to the shared garden. Your own garden stays behind and can't be reached until you leave the shared one."
+          }
+        }
+      }
+    },
+    "Du er allerede medlem av denne hagen." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are already a member of this garden."
+          }
+        }
+      }
+    },
     "Du får ett varsel per plante den dagen den skal vannes." : {
       "localizations" : {
         "en" : {
@@ -455,12 +280,92 @@
         }
       }
     },
+    "Du mister tilgangen til plantene i denne hagen." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You lose access to the plants in this garden."
+          }
+        }
+      }
+    },
+    "Du ser dine egne plasseringer. Slett alle for å få tilbake standardlisten." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're seeing your own locations. Delete them all to get the default list back."
+          }
+        }
+      }
+    },
+    "E-post" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "Egen plassering" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom location"
+          }
+        }
+      }
+    },
+    "Eier" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Owner"
+          }
+        }
+      }
+    },
+    "Fant ingen gyldig invitasjon med den koden. Sjekk koden, eller be om en ny – koder utløper etter 7 dager." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No valid invite found for that code. Check the code, or ask for a new one – codes expire after 7 days."
+          }
+        }
+      }
+    },
     "Ferdig" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done"
+          }
+        }
+      }
+    },
+    "Fjern" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
+          }
+        }
+      }
+    },
+    "Fjerne %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove %@?"
           }
         }
       }
@@ -476,12 +381,52 @@
         }
       }
     },
+    "For å dele hagen eller bli med i andres må du være logget inn med Apple eller Google. Bruk konto-knappen på hovedskjermen." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To share your garden or join others you need to be signed in with Apple or Google. Use the account button on the main screen."
+          }
+        }
+      }
+    },
     "Forfalt – skulle vannes %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Overdue – should have been watered %@"
+          }
+        }
+      }
+    },
+    "Forlat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave"
+          }
+        }
+      }
+    },
+    "Forlat hagen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave garden"
+          }
+        }
+      }
+    },
+    "Forlate hagen?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave the garden?"
           }
         }
       }
@@ -497,6 +442,16 @@
         }
       }
     },
+    "Gartner uten navn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardener without a name"
+          }
+        }
+      }
+    },
     "Gjødsling" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -508,8 +463,38 @@
         }
       }
     },
+    "GoogleService-Info.plist mangler i prosjektet." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GoogleService-Info.plist is missing from the project."
+          }
+        }
+      }
+    },
+    "Gyldig i 7 dager." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valid for 7 days."
+          }
+        }
+      }
+    },
     "Hage" : {
       "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Garden"
+          }
+        }
+      }
+    },
+    "Hagen" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -582,6 +567,46 @@
         }
       }
     },
+    "Ingen vanningsplan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No watering schedule"
+          }
+        }
+      }
+    },
+    "Innloggingen kunne ikke fullføres. Prøv igjen." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The sign-in could not be completed. Please try again."
+          }
+        }
+      }
+    },
+    "Invitasjonskode" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invite code"
+          }
+        }
+      }
+    },
+    "Inviter" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invite"
+          }
+        }
+      }
+    },
     "Kjøkken" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -603,6 +628,16 @@
         }
       }
     },
+    "Konto" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        }
+      }
+    },
     "Kontor" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -614,12 +649,122 @@
         }
       }
     },
+    "Kunne ikke forlate hagen." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not leave the garden."
+          }
+        }
+      }
+    },
+    "Kunne ikke koble til skyen. Sjekk nettforbindelsen og prøv igjen." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not connect to the cloud. Check your connection and try again."
+          }
+        }
+      }
+    },
+    "Kunne ikke lagre planten." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not save the plant."
+          }
+        }
+      }
+    },
+    "Kunne ikke lagre plasseringen." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not save the location."
+          }
+        }
+      }
+    },
+    "Kunne ikke laste hagen din. Prøv igjen senere." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not load your garden. Please try again later."
+          }
+        }
+      }
+    },
+    "Kunne ikke laste opp bildet." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not upload the photo."
+          }
+        }
+      }
+    },
+    "Kunne ikke registrere stellet." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not log the care event."
+          }
+        }
+      }
+    },
+    "Kunne ikke registrere vanningen." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not log the watering."
+          }
+        }
+      }
+    },
+    "Kunne ikke slette bildet." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not delete the photo."
+          }
+        }
+      }
+    },
+    "Lag invitasjonskode" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create invite code"
+          }
+        }
+      }
+    },
     "Lagre" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save"
+          }
+        }
+      }
+    },
+    "Legg til" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
           }
         }
       }
@@ -664,6 +809,96 @@
         }
       }
     },
+    "Logg inn for å dele hagen din" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in to share your garden"
+          }
+        }
+      }
+    },
+    "Logg inn først" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in first"
+          }
+        }
+      }
+    },
+    "Logg inn med Google" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in with Google"
+          }
+        }
+      }
+    },
+    "Logg ut" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
+          }
+        }
+      }
+    },
+    "Med en konto kan du invitere andre til å stelle plantene sammen med deg. Appen fungerer som vanlig uten innlogging." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With an account you can invite others to care for the plants together with you. The app works as usual without signing in."
+          }
+        }
+      }
+    },
+    "Medlem" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Member"
+          }
+        }
+      }
+    },
+    "Medlemmer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Members"
+          }
+        }
+      }
+    },
+    "medlemmet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the member"
+          }
+        }
+      }
+    },
+    "Min hage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Garden"
+          }
+        }
+      }
+    },
     "Mine planter" : {
       "localizations" : {
         "en" : {
@@ -680,6 +915,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
+          }
+        }
+      }
+    },
+    "Navn på plassering" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location name"
           }
         }
       }
@@ -702,6 +947,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next watering"
+          }
+        }
+      }
+    },
+    "Noe gikk galt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong"
           }
         }
       }
@@ -735,6 +990,9 @@
           }
         }
       }
+    },
+    "OK" : {
+
     },
     "Om planten" : {
       "localizations" : {
@@ -859,6 +1117,16 @@
         }
       }
     },
+    "Skyen er ikke satt opp" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cloud not set up"
+          }
+        }
+      }
+    },
     "Slett" : {
       "localizations" : {
         "en" : {
@@ -875,6 +1143,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete photo"
+          }
+        }
+      }
+    },
+    "Slett konto" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account"
           }
         }
       }
@@ -926,6 +1204,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bedroom"
+          }
+        }
+      }
+    },
+    "Spill av" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play"
           }
         }
       }
@@ -1008,6 +1296,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Type"
+          }
+        }
+      }
+    },
+    "Uten vanningsplan får planten ingen påminnelser og vises ikke under «Trenger vann». Passer for uteplanter som klarer seg selv." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Without a watering schedule the plant gets no reminders and never appears under “Needs water”. Suitable for outdoor plants that manage on their own."
           }
         }
       }
@@ -1101,6 +1399,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Watering reminders"
+          }
+        }
+      }
+    },
+    "Vanningsplan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watering schedule"
           }
         }
       }
