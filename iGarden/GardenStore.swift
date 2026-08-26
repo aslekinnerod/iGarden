@@ -218,6 +218,22 @@ final class GardenStore {
         }
     }
 
+    // MARK: - Bed-handlinger
+
+    /// Vanner alle plantene i et bed/rom i én operasjon.
+    func waterAll(in location: String) {
+        for plant in plants where plant.location == location {
+            markWatered(plant)
+        }
+    }
+
+    /// Gjødsler alle plantene i et bed/rom – logger en gjødslingshendelse per plante.
+    func fertilizeAll(in location: String) {
+        for plant in plants where plant.location == location {
+            addCareEvent(CareEvent(type: .fertilizing), to: plant)
+        }
+    }
+
     // MARK: - Stell-logg
 
     func addCareEvent(_ event: CareEvent, to plant: Plant) {

@@ -44,6 +44,17 @@ struct ContentView: View {
     @State private var showAccount = false
     @State private var showSharing = false
     @State private var showSmartGarden = false
+
+    /// Ventende bed-handling (vann/gjødsle alle) som skal bekreftes.
+    struct BedAction: Identifiable {
+        enum Kind { case water, fertilize }
+        let kind: Kind
+        let location: String
+        let plantCount: Int
+        var id: String { location + String(describing: kind) }
+    }
+
+    @State private var pendingBedAction: BedAction?
     @State private var sharingPrefilledCode = ""
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var showOnboarding = false
@@ -69,6 +80,17 @@ struct ContentView: View {
             return matching.sorted {
                 nextWateringSortKey($0) < nextWateringSortKey($1)
             }
+        }
+    }
+
+    private var bedActionTitle: String {
+        guard let action = pendingBedAction else { return "" }
+        let bed = PlantLocation.displayName(for: action.location)
+        switch action.kind {
+        case .water:
+            return String(localized: "Vanne alle \(action.plantCount) plantene i \(bed)?")
+        case .fertilize:
+            return String(localized: "Gjødsle alle \(action.plantCount) plantene i \(bed)?")
         }
     }
 
@@ -109,6 +131,7 @@ struct ContentView: View {
                                 Spacer()
                                 Text("\(group.plants.count)")
                                     .foregroundStyle(.secondary)
+                                bedMenu(for: group)
                             }
                         }
                     }
@@ -240,6 +263,27 @@ struct ContentView: View {
                     showOnboarding = true
                 }
             }
+            .confirmationDialog(
+                bedActionTitle,
+                isPresented: Binding(
+                    get: { pendingBedAction != nil },
+                    set: { if !$0 { pendingBedAction = nil } }
+                ),
+                titleVisibility: .visible
+            ) {
+                if let action = pendingBedAction {
+                    Button(action.kind == .water ? String(localized: "Vann") : String(localized: "Gjødsle")) {
+                        switch action.kind {
+                        case .water:
+                            gardenStore.waterAll(in: action.location)
+                        case .fertilize:
+                            gardenStore.fertilizeAll(in: action.location)
+                        }
+                        pendingBedAction = nil
+                    }
+                    Button("Avbryt", role: .cancel) { pendingBedAction = nil }
+                }
+            }
             .alert(
                 "Noe gikk galt",
                 isPresented: Binding(
@@ -254,6 +298,34 @@ struct ContentView: View {
         } detail: {
             Text("Velg en plante")
         }
+    }
+
+    /// Meny på bed-seksjonen: vann/gjødsle hele bedet, og pH-snarvei.
+    private func bedMenu(for group: (location: String, plants: [Plant])) -> some View {
+        Menu {
+            Button {
+                pendingBedAction = BedAction(kind: .water, location: group.location, plantCount: group.plants.count)
+            } label: {
+                Label("Vann alle", systemImage: "drop.fill")
+            }
+            Button {
+                pendingBedAction = BedAction(kind: .fertilize, location: group.location, plantCount: group.plants.count)
+            } label: {
+                Label("Gjødsle alle", systemImage: "leaf.fill")
+            }
+            if gardenStore.customLocations.contains(where: { $0.name == group.location }) {
+                Divider()
+                Button {
+                    showSmartGarden = true
+                } label: {
+                    Label("Mål jord-pH", systemImage: "gauge.with.needle")
+                }
+            }
+        } label: {
+            Image(systemName: "ellipsis.circle")
+                .font(.footnote)
+        }
+        .textCase(nil)
     }
 
     private func plantRows(_ plants: [Plant]) -> some View {

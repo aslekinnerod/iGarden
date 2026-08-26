@@ -1283,6 +1283,9 @@
     "pH" : {
 
     },
+    "pH %@" : {
+
+    },
     "pH %@ · %@" : {
       "localizations" : {
         "nb" : {
@@ -1441,6 +1444,55 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete %@?"
+          }
+        }
+      }
+    },
+    "Vann alle" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Water all" } }
+      }
+    },
+    "Gjødsle alle" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize all" } }
+      }
+    },
+    "Mål jord-pH" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Measure soil pH" } }
+      }
+    },
+    "Vann" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Water" } }
+      }
+    },
+    "Gjødsle" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize" } }
+      }
+    },
+    "Vanne alle %lld plantene i %@?" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : { "stringUnit" : { "state" : "translated", "value" : "Water the %1$lld plant in %2$@?" } },
+              "other" : { "stringUnit" : { "state" : "translated", "value" : "Water all %1$lld plants in %2$@?" } }
+            }
+          }
+        }
+      }
+    },
+    "Gjødsle alle %lld plantene i %@?" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize the %1$lld plant in %2$@?" } },
+              "other" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize all %1$lld plants in %2$@?" } }
+            }
           }
         }
       }
