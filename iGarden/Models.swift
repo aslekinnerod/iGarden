@@ -37,6 +37,49 @@ enum PlantLocation: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+/// Vannbehov. Råverdiene er lagringsformat og må ikke endres.
+enum WaterNeed: String, Codable, CaseIterable, Identifiable {
+    case low = "Lite"
+    case medium = "Middels"
+    case high = "Mye"
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
+
+    /// Foreslått vanningsintervall i dager for nye planter.
+    var suggestedIntervalDays: Int {
+        switch self {
+        case .low: 14
+        case .medium: 7
+        case .high: 4
+        }
+    }
+}
+
+/// Lysbehov. Råverdiene er lagringsformat og må ikke endres.
+enum LightNeed: String, Codable, CaseIterable, Identifiable {
+    case shade = "Skygge"
+    case partShade = "Halvskygge"
+    case sun = "Full sol"
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
+
+    var icon: String {
+        switch self {
+        case .shade: "cloud"
+        case .partShade: "cloud.sun"
+        case .sun: "sun.max"
+        }
+    }
+}
+
 enum WateringStatus {
     case overdue
     case dueToday
@@ -61,6 +104,9 @@ struct Plant: Codable, Identifiable, Hashable {
     /// Foretrukket jord-pH (fra plantedatabasen eller manuelt satt).
     var preferredPHLow: Double?
     var preferredPHHigh: Double?
+    /// Vann- og lysbehov (fra plantedatabasen eller manuelt satt).
+    var waterNeed: WaterNeed?
+    var lightNeed: LightNeed?
 
     init(
         id: String? = nil,
@@ -73,7 +119,9 @@ struct Plant: Codable, Identifiable, Hashable {
         lastWatered: Date? = nil,
         photoPath: String? = nil,
         preferredPHLow: Double? = nil,
-        preferredPHHigh: Double? = nil
+        preferredPHHigh: Double? = nil,
+        waterNeed: WaterNeed? = nil,
+        lightNeed: LightNeed? = nil
     ) {
         self.id = id
         self.name = name
@@ -86,6 +134,8 @@ struct Plant: Codable, Identifiable, Hashable {
         self.photoPath = photoPath
         self.preferredPHLow = preferredPHLow
         self.preferredPHHigh = preferredPHHigh
+        self.waterNeed = waterNeed
+        self.lightNeed = lightNeed
     }
 
     /// Neste vanningsdato, beregnet fra sist vannet + intervall.

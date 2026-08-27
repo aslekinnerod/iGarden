@@ -156,6 +156,28 @@ struct PlantTests {
         #expect(PlantDatabase.search("blabaer").first?.name == "Blåbær")
     }
 
+    @Test func vannOgLysbehovErSattFornuftig() throws {
+        // Alle oppføringer har verdier (ikke-opsjonelle felter), og
+        // kjente ytterpunkter er kuratert riktig.
+        let kaktus = PlantDatabase.match(name: "Kaktus", species: nil)
+        #expect(kaktus?.water == .low)
+        #expect(kaktus?.light == .sun)
+
+        let calathea = PlantDatabase.match(name: "Calathea", species: nil)
+        #expect(calathea?.water == .high)
+        #expect(calathea?.light == .shade)
+
+        let tomat = PlantDatabase.match(name: "Tomat", species: nil)
+        #expect(tomat?.water == .high)
+        #expect(tomat?.light == .sun)
+    }
+
+    @Test func vannbehovForeslaarVanningsintervall() throws {
+        #expect(WaterNeed.low.suggestedIntervalDays == 14)
+        #expect(WaterNeed.medium.suggestedIntervalDays == 7)
+        #expect(WaterNeed.high.suggestedIntervalDays == 4)
+    }
+
     @Test func soekMatcherLatinskeNavnOgAliaser() throws {
         #expect(PlantDatabase.search("lavandula").contains { $0.name == "Lavendel" })
         #expect(PlantDatabase.search("georgin").contains { $0.name == "Dahlia" })

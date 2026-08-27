@@ -23,6 +23,8 @@ struct PlantFormView: View {
     @State private var wateringIntervalDays: Int
     @State private var phLow: Double?
     @State private var phHigh: Double?
+    @State private var waterNeed: WaterNeed?
+    @State private var lightNeed: LightNeed?
     @State private var showDeleteConfirmation = false
     /// Navnet fra sist valgte databaseforslag – skjuler trefflisten
     /// til brukeren skriver noe annet.
@@ -48,6 +50,8 @@ struct PlantFormView: View {
         _wateringIntervalDays = State(initialValue: plant?.wateringIntervalDays ?? 7)
         _phLow = State(initialValue: plant?.preferredPHLow)
         _phHigh = State(initialValue: plant?.preferredPHHigh)
+        _waterNeed = State(initialValue: plant?.waterNeed)
+        _lightNeed = State(initialValue: plant?.lightNeed)
     }
 
     private var isEditing: Bool { plant != nil }
@@ -108,6 +112,25 @@ struct PlantFormView: View {
                     if !hasWateringSchedule {
                         Text("Uten vanningsplan får planten ingen påminnelser og vises ikke under «Trenger vann». Passer for uteplanter som klarer seg selv.")
                     }
+                }
+
+                Section {
+                    Picker("Vannbehov", selection: $waterNeed) {
+                        Text("Ikke satt").tag(WaterNeed?.none)
+                        ForEach(WaterNeed.allCases) { need in
+                            Text(need.displayName).tag(WaterNeed?.some(need))
+                        }
+                    }
+                    Picker("Lysbehov", selection: $lightNeed) {
+                        Text("Ikke satt").tag(LightNeed?.none)
+                        ForEach(LightNeed.allCases) { need in
+                            Text(need.displayName).tag(LightNeed?.some(need))
+                        }
+                    }
+                } header: {
+                    Text("Vann og lys")
+                } footer: {
+                    Text("Fylles inn automatisk for kjente planter når du lagrer.")
                 }
 
                 Section {
@@ -200,6 +223,8 @@ struct PlantFormView: View {
         let match = PlantDatabase.match(name: trimmedName, species: trimmedSpecies)
         let effectivePHLow = phLow ?? match?.phLow
         let effectivePHHigh = phHigh ?? match?.phHigh
+        let effectiveWater = waterNeed ?? match?.water
+        let effectiveLight = lightNeed ?? match?.light
         if var updated = plant {
             updated.name = trimmedName
             updated.species = trimmedSpecies.isEmpty ? nil : trimmedSpecies
@@ -209,6 +234,8 @@ struct PlantFormView: View {
             updated.wateringIntervalDays = hasWateringSchedule ? wateringIntervalDays : nil
             updated.preferredPHLow = effectivePHLow
             updated.preferredPHHigh = effectivePHHigh
+            updated.waterNeed = effectiveWater
+            updated.lightNeed = effectiveLight
             gardenStore.updatePlant(updated)
         } else {
             gardenStore.addPlant(Plant(
@@ -219,7 +246,9 @@ struct PlantFormView: View {
                 notes: notes,
                 wateringIntervalDays: hasWateringSchedule ? wateringIntervalDays : nil,
                 preferredPHLow: effectivePHLow,
-                preferredPHHigh: effectivePHHigh
+                preferredPHHigh: effectivePHHigh,
+                waterNeed: effectiveWater,
+                lightNeed: effectiveLight
             ))
         }
         dismiss()
@@ -232,6 +261,12 @@ struct PlantFormView: View {
         }
         phLow = info.phLow
         phHigh = info.phHigh
+        waterNeed = info.water
+        lightNeed = info.light
+        // For nye planter foreslås vanningsintervall fra vannbehovet.
+        if !isEditing, hasWateringSchedule {
+            wateringIntervalDays = info.water.suggestedIntervalDays
+        }
         appliedSuggestionName = info.name
     }
 

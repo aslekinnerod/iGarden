@@ -61,6 +61,20 @@ struct PlantDetailView: View {
                 if let intervalDays = livePlant.wateringIntervalDays {
                     LabeledContent("Vanningsintervall", value: String(localized: "Hver \(intervalDays). dag"))
                 }
+                if let water = livePlant.waterNeed {
+                    LabeledContent {
+                        Text(water.displayName)
+                    } label: {
+                        Label("Vannbehov", systemImage: "drop")
+                    }
+                }
+                if let light = livePlant.lightNeed {
+                    LabeledContent {
+                        Text(light.displayName)
+                    } label: {
+                        Label("Lysbehov", systemImage: light.icon)
+                    }
+                }
                 if let phText = livePlant.preferredPHText {
                     LabeledContent("Jord (pH)", value: phText)
                 }

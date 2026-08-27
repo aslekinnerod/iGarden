@@ -566,6 +566,27 @@
         }
       }
     },
+    "Full sol" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full sun"
+          }
+        }
+      }
+    },
+    "Fylles inn automatisk for kjente planter når du lagrer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filled in automatically for known plants when you save."
+          }
+        }
+      }
+    },
     "Gang" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -583,6 +604,48 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gardener without a name"
+          }
+        }
+      }
+    },
+    "Gjødsle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertilize"
+          }
+        }
+      }
+    },
+    "Gjødsle alle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertilize all"
+          }
+        }
+      }
+    },
+    "Gjødsle alle %lld plantene i %@?" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Fertilize the %1$lld plant in %2$@?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Fertilize all %1$lld plants in %2$@?"
+                }
+              }
+            }
           }
         }
       }
@@ -649,6 +712,17 @@
         }
       }
     },
+    "Halvskygge" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partial shade"
+          }
+        }
+      }
+    },
     "Hold vanningen i rute" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -678,6 +752,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Ikke satt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not set"
           }
         }
       }
@@ -1034,6 +1118,17 @@
         }
       }
     },
+    "Lite" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low"
+          }
+        }
+      }
+    },
     "Logg inn for å dele hagen din" : {
       "localizations" : {
         "en" : {
@@ -1070,6 +1165,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sign out"
+          }
+        }
+      }
+    },
+    "Lysbehov" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light need"
+          }
+        }
+      }
+    },
+    "Mål jord-pH" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Measure soil pH"
           }
         }
       }
@@ -1124,6 +1239,17 @@
         }
       }
     },
+    "Middels" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium"
+          }
+        }
+      }
+    },
     "Min hage" : {
       "localizations" : {
         "en" : {
@@ -1140,6 +1266,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "My Plants"
+          }
+        }
+      }
+    },
+    "Mye" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High"
           }
         }
       }
@@ -1398,6 +1535,17 @@
         }
       }
     },
+    "Skygge" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shade"
+          }
+        }
+      }
+    },
     "Slett" : {
       "localizations" : {
         "en" : {
@@ -1444,55 +1592,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete %@?"
-          }
-        }
-      }
-    },
-    "Vann alle" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Water all" } }
-      }
-    },
-    "Gjødsle alle" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize all" } }
-      }
-    },
-    "Mål jord-pH" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Measure soil pH" } }
-      }
-    },
-    "Vann" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Water" } }
-      }
-    },
-    "Gjødsle" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize" } }
-      }
-    },
-    "Vanne alle %lld plantene i %@?" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : { "stringUnit" : { "state" : "translated", "value" : "Water the %1$lld plant in %2$@?" } },
-              "other" : { "stringUnit" : { "state" : "translated", "value" : "Water all %1$lld plants in %2$@?" } }
-            }
-          }
-        }
-      }
-    },
-    "Gjødsle alle %lld plantene i %@?" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize the %1$lld plant in %2$@?" } },
-              "other" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize all %1$lld plants in %2$@?" } }
-            }
           }
         }
       }
@@ -1676,6 +1775,68 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Without a watering schedule the plant gets no reminders and never appears under “Needs water”. Suitable for outdoor plants that manage on their own."
+          }
+        }
+      }
+    },
+    "Vann" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Water"
+          }
+        }
+      }
+    },
+    "Vann alle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Water all"
+          }
+        }
+      }
+    },
+    "Vann og lys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Water and light"
+          }
+        }
+      }
+    },
+    "Vannbehov" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Water need"
+          }
+        }
+      }
+    },
+    "Vanne alle %lld plantene i %@?" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Water the %1$lld plant in %2$@?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Water all %1$lld plants in %2$@?"
+                }
+              }
+            }
           }
         }
       }
