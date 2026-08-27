@@ -135,7 +135,7 @@ struct PlantTests {
     }
 
     @Test func databasenHarRundt300Planter() throws {
-        #expect(PlantDatabase.plants.count >= 280)
+        #expect(PlantDatabase.plants.count >= 350)
         // Ingen duplikatnavn.
         #expect(Set(PlantDatabase.plants.map(\.name)).count == PlantDatabase.plants.count)
         // Alle pH-områder er gyldige.
