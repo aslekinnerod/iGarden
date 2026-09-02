@@ -1,0 +1,23 @@
+<!-- @dsCard group="Components" viewport="700x260" name="Lists" subtitle="ListSection & ListRow — iOS inset grouped" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;background:var(--bg-grouped);font-family:var(--font-body);padding:16px 0}a{color:var(--accent)}a:hover{color:var(--green-900)}</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.js"></script>
+<script src="../../_ds_bundle.js"></script></head><body>
+<div id="root"></div>
+<script type="text/babel">
+const { ListSection, ListRow, Switch } = window.IGardenDesignSystem_631e89;
+ReactDOM.createRoot(document.getElementById('root')).render(<div style={{maxWidth:480,margin:'0 auto'}}>
+<ListSection header="Om planten">
+  <ListRow title="Art" value="Monstera deliciosa" />
+  <ListRow title="Plassering" value="Stue" chevron onClick={()=>{}} />
+  <ListRow icon="cloud-sun" title="Lysbehov" value="Halvskygge" last />
+</ListSection>
+<ListSection header="Varsler" footer="Du får ett varsel per plante den dagen den skal vannes.">
+  <ListRow title="Vanningspåminnelser" trailing={<Switch checked />} />
+  <ListRow title="Slett plante" destructive last onClick={()=>{}} />
+</ListSection>
+</div>);
+</script>
+</body></html>

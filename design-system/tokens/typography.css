@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:ital,wght@0,400..700;1,400..700&display=swap');
+:root{
+/* The app uses the iOS system font (SF Pro). Web substitute: Figtree (body/UI), Young Serif (brand display for marketing/slides). */
+--font-body:'Figtree',-apple-system,'SF Pro Text','Helvetica Neue',sans-serif;
+--font-display:'Young Serif',Georgia,serif;
+--font-mono:ui-monospace,'SF Mono',Menlo,monospace;
+/* iOS Dynamic Type scale (default sizes) */
+--text-large-title:34px;--text-title1:28px;--text-title2:22px;--text-title3:20px;
+--text-headline:17px;--text-body:17px;--text-callout:16px;--text-subheadline:15px;
+--text-footnote:13px;--text-caption1:12px;--text-caption2:11px;
+--weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;
+--leading-tight:1.2;--leading-body:1.35;
+}

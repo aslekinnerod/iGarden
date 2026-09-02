@@ -1,0 +1,21 @@
+:root{
+/* Brand greens — anchored on app accent #2E7D32 (Assets.xcassets/AccentColor) */
+--green-900:#1B4D20;--green-700:#2E7D32;--green-600:#3B9142;--green-500:#4CAF50;--green-300:#A5D6A7;--green-100:#DCEDDC;--green-050:#EFF7EE;
+/* Naturals — from the app icon: terracotta pot, soil, misty leaf-green backdrop */
+--terracotta-600:#A85F35;--terracotta-500:#C97B4A;--terracotta-100:#F3E1D3;
+--soil-700:#5C4433;--soil-400:#8A6E58;--soil-100:#EDE4DC;
+--sage-400:#A9C4A0;--mist-200:#D7EAD1;--mist-300:#B7D9AE;
+--paper:#FAF8F2;--ink:#22301F;
+/* iOS system colors used by the app for status + actions */
+--ios-blue:#007AFF;--ios-red:#FF3B30;--ios-orange:#FF9500;--ios-green:#34C759;
+/* Semantic */
+--accent:var(--green-700);
+--status-overdue:var(--ios-red);--status-due:var(--ios-orange);--status-ok:var(--ios-green);
+--action-water:var(--ios-blue);--destructive:var(--ios-red);
+--fill-leaf:rgba(46,125,50,.12);--fill-leaf-fg:rgba(46,125,50,.5);
+/* iOS surfaces + labels (grouped lists) */
+--bg-grouped:#F2F2F7;--surface-card:#FFFFFF;--separator:rgba(60,60,67,.29);
+--label-1:#000000;--label-2:rgba(60,60,67,.6);--label-3:rgba(60,60,67,.3);
+/* Semantic surface aliases */
+--surface-page:var(--bg-grouped);--surface-brand:var(--mist-200);--text-body:var(--label-1);--text-muted:var(--label-2);
+}

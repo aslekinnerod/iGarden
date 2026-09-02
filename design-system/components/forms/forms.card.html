@@ -1,0 +1,31 @@
+<!-- @dsCard group="Components" viewport="700x260" name="Forms" subtitle="Input, SearchField, Switch, Stepper" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;background:var(--bg-grouped);font-family:var(--font-body);padding:16px}a{color:var(--accent)}a:hover{color:var(--green-900)}</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.js"></script>
+<script src="../../_ds_bundle.js"></script></head><body>
+<div id="root"></div>
+<script type="text/babel">
+const { Input, SearchField, Switch, Stepper, Card, ListRow } = window.IGardenDesignSystem_631e89;
+function Demo(){
+  const [on, setOn] = React.useState(true);
+  const [days, setDays] = React.useState(7);
+  const [ph, setPh] = React.useState(6.5);
+  const [q, setQ] = React.useState('');
+  return <div style={{maxWidth:480}}>
+    <SearchField placeholder="Søk på navn eller art" value={q} onChange={setQ} />
+    <Card style={{marginTop:12}}>
+      <Input placeholder="Navn" />
+      <div style={{borderTop:'1px solid var(--separator)'}}></div>
+      <Input placeholder="Art / latinsk navn" />
+      <div style={{borderTop:'1px solid var(--separator)'}}></div>
+      <ListRow title="Vanningsplan" trailing={<Switch checked={on} onChange={setOn} />} />
+      <ListRow title="Intervall" trailing={<Stepper value={days} onChange={setDays} format={v => `Hver ${v}. dag`} />} />
+      <ListRow title="Jord" last trailing={<Stepper value={ph} min={3.5} max={9} step={0.1} format={v => `pH ${v.toFixed(1).replace('.', ',')}`} />} />
+    </Card>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body></html>

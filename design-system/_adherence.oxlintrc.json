@@ -1,0 +1,370 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/core/**",
+              "components/forms/**",
+              "components/garden/**",
+              "components/lists/**",
+              "ui_kits/ios-app/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Young Serif|Figtree))/i]",
+        "message": "Font not provided by the design system. Available: Young Serif, Figtree."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:status|pill|children|style|key|ref|className|style|children)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: status, pill, children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:overdue|due|never|ok|none)$/]",
+        "message": "<Badge> status must be one of 'overdue' | 'due' | 'never' | 'ok' | 'none'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|size|icon|disabled|fullWidth|onClick|children|style|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: variant, size, icon, disabled, fullWidth, onClick, children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:prominent|bordered|plain|destructive)$/]",
+        "message": "<Button> variant must be one of 'prominent' | 'bordered' | 'plain' | 'destructive'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:regular|large)$/]",
+        "message": "<Button> size must be one of 'regular' | 'large'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:inset|children|style|key|ref|className|style|children)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: inset, children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CareEventRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:type|date|note|last|style|key|ref|className|style|children)$/]",
+        "message": "<CareEventRow> doesn't accept that prop. Declared props: type, date, note, last, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CareEventRow'] > JSXAttribute[name.name='type'] > Literal[value!=/^(?:watering|fertilizing|repotting|pruning)$/]",
+        "message": "<CareEventRow> type must be one of 'watering' | 'fertilizing' | 'repotting' | 'pruning'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='EmptyState'] > JSXAttribute > JSXIdentifier[name!=/^(?:icon|title|description|actionLabel|onAction|style|key|ref|className|style|children)$/]",
+        "message": "<EmptyState> doesn't accept that prop. Declared props: icon, title, description, actionLabel, onAction, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FeatureRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:icon|title|text|style|key|ref|className|style|children)$/]",
+        "message": "<FeatureRow> doesn't accept that prop. Declared props: icon, title, text, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Icon'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|size|color|filled|strokeWidth|style|key|ref|className|style|children)$/]",
+        "message": "<Icon> doesn't accept that prop. Declared props: name, size, color, filled, strokeWidth, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='IconButton'] > JSXAttribute > JSXIdentifier[name!=/^(?:icon|filled|floating|label|color|onClick|style|key|ref|className|style|children)$/]",
+        "message": "<IconButton> doesn't accept that prop. Declared props: icon, filled, floating, label, color, onClick, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Input'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|placeholder|value|onChange|multiline|style|key|ref|className|style|children)$/]",
+        "message": "<Input> doesn't accept that prop. Declared props: label, placeholder, value, onChange, multiline, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ListRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:icon|iconColor|leading|title|subtitle|value|trailing|chevron|destructive|last|onClick|style|key|ref|className|style|children)$/]",
+        "message": "<ListRow> doesn't accept that prop. Declared props: icon, iconColor, leading, title, subtitle, value, trailing, chevron, destructive, last, onClick, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ListSection'] > JSXAttribute > JSXIdentifier[name!=/^(?:header|headerAccessory|footer|children|style|key|ref|className|style|children)$/]",
+        "message": "<ListSection> doesn't accept that prop. Declared props: header, headerAccessory, footer, children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PlantRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|location|statusText|status|photo|hasSchedule|needsWater|last|onClick|style|key|ref|className|style|children)$/]",
+        "message": "<PlantRow> doesn't accept that prop. Declared props: name, location, statusText, status, photo, hasSchedule, needsWater, last, onClick, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PlantRow'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:overdue|due|never|ok|none)$/]",
+        "message": "<PlantRow> status must be one of 'overdue' | 'due' | 'never' | 'ok' | 'none'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SearchField'] > JSXAttribute > JSXIdentifier[name!=/^(?:placeholder|value|onChange|style|key|ref|className|style|children)$/]",
+        "message": "<SearchField> doesn't accept that prop. Declared props: placeholder, value, onChange, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Stepper'] > JSXAttribute > JSXIdentifier[name!=/^(?:value|onChange|min|max|step|format|style|key|ref|className|style|children)$/]",
+        "message": "<Stepper> doesn't accept that prop. Declared props: value, onChange, min, max, step, format, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Switch'] > JSXAttribute > JSXIdentifier[name!=/^(?:checked|onChange|style|key|ref|className|style|children)$/]",
+        "message": "<Switch> doesn't accept that prop. Declared props: checked, onChange, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WateringStatus'] > JSXAttribute > JSXIdentifier[name!=/^(?:status|title|caption|style|key|ref|className|style|children)$/]",
+        "message": "<WateringStatus> doesn't accept that prop. Declared props: status, title, caption, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WateringStatus'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:overdue|due|never|ok|none)$/]",
+        "message": "<WateringStatus> status must be one of 'overdue' | 'due' | 'never' | 'ok' | 'none'."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Badge": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "CareEventRow": {
+        "replaces": []
+      },
+      "EmptyState": {
+        "replaces": []
+      },
+      "FeatureRow": {
+        "replaces": []
+      },
+      "Icon": {
+        "replaces": []
+      },
+      "IconButton": {
+        "replaces": []
+      },
+      "Input": {
+        "replaces": []
+      },
+      "ListRow": {
+        "replaces": []
+      },
+      "ListSection": {
+        "replaces": []
+      },
+      "PlantRow": {
+        "replaces": []
+      },
+      "SearchField": {
+        "replaces": []
+      },
+      "Stepper": {
+        "replaces": []
+      },
+      "Switch": {
+        "replaces": []
+      },
+      "WateringStatus": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--accent",
+      "--action-water",
+      "--bg-grouped",
+      "--blur-material",
+      "--destructive",
+      "--dur-base",
+      "--dur-fast",
+      "--ease-out",
+      "--fill-leaf",
+      "--fill-leaf-fg",
+      "--focus-ring",
+      "--font-body",
+      "--font-display",
+      "--font-mono",
+      "--green-050",
+      "--green-100",
+      "--green-300",
+      "--green-500",
+      "--green-600",
+      "--green-700",
+      "--green-900",
+      "--hit-target",
+      "--ink",
+      "--ios-blue",
+      "--ios-green",
+      "--ios-orange",
+      "--ios-red",
+      "--label-1",
+      "--label-2",
+      "--label-3",
+      "--leading-body",
+      "--leading-tight",
+      "--list-inset",
+      "--mist-200",
+      "--mist-300",
+      "--paper",
+      "--press-opacity",
+      "--radius-auth",
+      "--radius-button",
+      "--radius-card",
+      "--radius-photo",
+      "--radius-pill",
+      "--radius-thumb",
+      "--row-gap",
+      "--sage-400",
+      "--separator",
+      "--shadow-card",
+      "--shadow-sheet",
+      "--soil-100",
+      "--soil-400",
+      "--soil-700",
+      "--space-1",
+      "--space-2",
+      "--space-3",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-8",
+      "--status-due",
+      "--status-ok",
+      "--status-overdue",
+      "--surface-brand",
+      "--surface-card",
+      "--surface-page",
+      "--terracotta-100",
+      "--terracotta-500",
+      "--terracotta-600",
+      "--text-body",
+      "--text-callout",
+      "--text-caption1",
+      "--text-caption2",
+      "--text-footnote",
+      "--text-headline",
+      "--text-large-title",
+      "--text-muted",
+      "--text-subheadline",
+      "--text-title1",
+      "--text-title2",
+      "--text-title3",
+      "--weight-bold",
+      "--weight-medium",
+      "--weight-regular",
+      "--weight-semibold"
+    ],
+    "tokenKinds": {
+      "--green-900": "color",
+      "--green-700": "color",
+      "--green-600": "color",
+      "--green-500": "color",
+      "--green-300": "color",
+      "--green-100": "color",
+      "--green-050": "color",
+      "--terracotta-600": "color",
+      "--terracotta-500": "color",
+      "--terracotta-100": "color",
+      "--soil-700": "color",
+      "--soil-400": "color",
+      "--soil-100": "color",
+      "--sage-400": "color",
+      "--mist-200": "color",
+      "--mist-300": "color",
+      "--paper": "color",
+      "--ink": "color",
+      "--ios-blue": "color",
+      "--ios-red": "color",
+      "--ios-orange": "color",
+      "--ios-green": "color",
+      "--accent": "color",
+      "--status-overdue": "color",
+      "--status-due": "color",
+      "--status-ok": "color",
+      "--action-water": "color",
+      "--destructive": "color",
+      "--fill-leaf": "color",
+      "--fill-leaf-fg": "color",
+      "--bg-grouped": "color",
+      "--surface-card": "color",
+      "--separator": "color",
+      "--label-1": "color",
+      "--label-2": "color",
+      "--label-3": "color",
+      "--surface-page": "color",
+      "--surface-brand": "color",
+      "--text-body": "font",
+      "--text-muted": "font",
+      "--font-body": "font",
+      "--font-display": "font",
+      "--font-mono": "font",
+      "--text-large-title": "font",
+      "--text-title1": "font",
+      "--text-title2": "font",
+      "--text-title3": "font",
+      "--text-headline": "font",
+      "--text-callout": "font",
+      "--text-subheadline": "font",
+      "--text-footnote": "font",
+      "--text-caption1": "font",
+      "--text-caption2": "font",
+      "--weight-regular": "font",
+      "--weight-medium": "font",
+      "--weight-semibold": "font",
+      "--weight-bold": "font",
+      "--leading-tight": "font",
+      "--leading-body": "font",
+      "--space-1": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-8": "spacing",
+      "--radius-thumb": "radius",
+      "--radius-photo": "radius",
+      "--radius-card": "radius",
+      "--radius-button": "radius",
+      "--radius-auth": "radius",
+      "--radius-pill": "radius",
+      "--hit-target": "spacing",
+      "--list-inset": "spacing",
+      "--row-gap": "spacing",
+      "--shadow-card": "shadow",
+      "--shadow-sheet": "shadow",
+      "--blur-material": "other",
+      "--ease-out": "other",
+      "--dur-fast": "other",
+      "--dur-base": "other",
+      "--press-opacity": "other",
+      "--focus-ring": "shadow"
+    },
+    "fontFamilies": [
+      "Figtree",
+      "Young Serif"
+    ]
+  }
+}

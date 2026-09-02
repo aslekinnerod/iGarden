@@ -1,0 +1,7 @@
+:root{
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;
+/* Radii from code: thumbnails 8, photos 10, auth buttons 8; cards/sheets follow iOS 12/10 */
+--radius-thumb:8px;--radius-photo:10px;--radius-card:10px;--radius-button:12px;--radius-auth:8px;--radius-pill:999px;
+/* Layout */
+--hit-target:44px;--list-inset:16px;--row-gap:10px;
+}
