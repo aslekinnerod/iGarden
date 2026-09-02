@@ -112,6 +112,7 @@ struct PlantTests {
         #expect(CareEventType.fertilizing.rawValue == "Gjødsling")
         #expect(CareEventType.repotting.rawValue == "Ompotting")
         #expect(CareEventType.pruning.rawValue == "Beskjæring")
+        #expect(CareEventType.liming.rawValue == "Kalking")
     }
 
     // MARK: - Smart hage (jord-pH)

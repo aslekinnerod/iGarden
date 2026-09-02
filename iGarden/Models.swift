@@ -177,6 +177,8 @@ enum CareEventType: String, Codable, CaseIterable, Identifiable {
     case fertilizing = "Gjødsling"
     case repotting = "Ompotting"
     case pruning = "Beskjæring"
+    /// Kalking hever jord-pH – tiltak fra Smart hage.
+    case liming = "Kalking"
 
     var id: String { rawValue }
 
@@ -191,8 +193,15 @@ enum CareEventType: String, Codable, CaseIterable, Identifiable {
         case .fertilizing: "leaf.fill"
         case .repotting: "arrow.triangle.2.circlepath"
         case .pruning: "scissors"
+        case .liming: "circle.dotted"
         }
     }
+}
+
+/// Vanlige gjødseltyper til hurtigvalg. Lagres som notat på hendelsen
+/// (fritekst er brukerinnhold og lokaliseres ikke).
+enum Fertilizers {
+    static let options = ["Fullgjødsel", "Tomatgjødsel", "Surjordsgjødsel", "Kompost"]
 }
 
 struct CareEvent: Codable, Identifiable, Hashable {

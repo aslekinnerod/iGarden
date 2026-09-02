@@ -39,17 +39,34 @@ struct PlantDetailView: View {
 
             Section {
                 wateringStatus
-                Button {
-                    gardenStore.markWatered(livePlant)
-                } label: {
-                    Label("Vannet nå", systemImage: "drop.fill")
-                        .frame(maxWidth: .infinity)
+                HStack(spacing: DS.Spacing.rowGap) {
+                    Button {
+                        gardenStore.markWatered(livePlant)
+                    } label: {
+                        Label("Vannet nå", systemImage: "drop.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Menu {
+                        // Gjødseltypen lagres som notat på hendelsen.
+                        ForEach(Fertilizers.options, id: \.self) { fertilizer in
+                            Button(fertilizer) {
+                                gardenStore.addCareEvent(CareEvent(type: .fertilizing, note: fertilizer), to: livePlant)
+                            }
+                        }
+                        Button("Gjødsle uten type") {
+                            gardenStore.addCareEvent(CareEvent(type: .fertilizing), to: livePlant)
+                        }
+                    } label: {
+                        Label("Gjødsle", systemImage: "leaf.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
                 }
-                .buttonStyle(.borderedProminent)
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
             } header: {
-                Text("Vanning")
+                Text("Vanning og stell")
             }
 
             Section("Om planten") {

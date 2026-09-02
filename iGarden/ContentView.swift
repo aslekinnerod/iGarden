@@ -45,9 +45,9 @@ struct ContentView: View {
     @State private var showSharing = false
     @State private var showSmartGarden = false
 
-    /// Ventende bed-handling (vann/gjødsle alle) som skal bekreftes.
+    /// Ventende bed-handling (vann/gjødsle/kalk alle) som skal bekreftes.
     struct BedAction: Identifiable {
-        enum Kind { case water, fertilize }
+        enum Kind { case water, fertilize, lime }
         let kind: Kind
         let location: String
         let plantCount: Int
@@ -91,6 +91,8 @@ struct ContentView: View {
             return String(localized: "Vanne alle \(action.plantCount) plantene i \(bed)?")
         case .fertilize:
             return String(localized: "Gjødsle alle \(action.plantCount) plantene i \(bed)?")
+        case .lime:
+            return String(localized: "Kalke \(bed)? Kalking hever pH-en over tid – mål på nytt etter noen uker.")
         }
     }
 
@@ -272,14 +274,29 @@ struct ContentView: View {
                 titleVisibility: .visible
             ) {
                 if let action = pendingBedAction {
-                    Button(action.kind == .water ? String(localized: "Vann") : String(localized: "Gjødsle")) {
-                        switch action.kind {
-                        case .water:
+                    switch action.kind {
+                    case .water:
+                        Button("Vann") {
                             gardenStore.waterAll(in: action.location)
-                        case .fertilize:
-                            gardenStore.fertilizeAll(in: action.location)
+                            pendingBedAction = nil
                         }
-                        pendingBedAction = nil
+                    case .fertilize:
+                        // Gjødseltypen lagres som notat på hendelsene.
+                        ForEach(Fertilizers.options, id: \.self) { fertilizer in
+                            Button(fertilizer) {
+                                gardenStore.fertilizeAll(in: action.location, fertilizer: fertilizer)
+                                pendingBedAction = nil
+                            }
+                        }
+                        Button("Gjødsle uten type") {
+                            gardenStore.fertilizeAll(in: action.location)
+                            pendingBedAction = nil
+                        }
+                    case .lime:
+                        Button("Kalk") {
+                            gardenStore.limeAll(in: action.location)
+                            pendingBedAction = nil
+                        }
                     }
                     Button("Avbryt", role: .cancel) { pendingBedAction = nil }
                 }
@@ -314,6 +331,11 @@ struct ContentView: View {
                 Label("Gjødsle alle", systemImage: "leaf.fill")
             }
             if gardenStore.customLocations.contains(where: { $0.name == group.location }) {
+                Button {
+                    pendingBedAction = BedAction(kind: .lime, location: group.location, plantCount: group.plants.count)
+                } label: {
+                    Label("Kalk bedet", systemImage: "circle.dotted")
+                }
                 Divider()
                 Button {
                     showSmartGarden = true
@@ -328,12 +350,21 @@ struct ContentView: View {
         .textCase(nil)
     }
 
+    /// Sann når planten står i et bed med målt pH utenfor sitt område.
+    private func hasSoilWarning(_ plant: Plant) -> Bool {
+        guard let bed = gardenStore.customLocations.first(where: { $0.name == plant.location }) else {
+            return false
+        }
+        let fit = SoilFit.evaluate(plant: plant, bedPH: bed.soilPH)
+        return fit == .tooAcidic || fit == .tooAlkaline
+    }
+
     private func plantRows(_ plants: [Plant]) -> some View {
         ForEach(plants) { plant in
             NavigationLink {
                 PlantDetailView(plant: plant)
             } label: {
-                PlantRowView(plant: plant)
+                PlantRowView(plant: plant, soilWarning: hasSoilWarning(plant))
             }
             .swipeActions(edge: .leading) {
                 Button {
@@ -356,6 +387,8 @@ struct ContentView: View {
 
 struct PlantRowView: View {
     let plant: Plant
+    /// Viser trekantvarsel på raden når jord-pH ikke passer planten (APP-40).
+    var soilWarning: Bool = false
 
     private var hasSchedule: Bool { plant.wateringStatus != .noSchedule }
 
@@ -368,7 +401,14 @@ struct PlantRowView: View {
                     .font(.footnote)
             }
             VStack(alignment: .leading, spacing: 2) {
-                Text(plant.name)
+                HStack(spacing: 4) {
+                    Text(plant.name)
+                    if soilWarning {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(Color.statusDue)
+                            .font(.caption)
+                    }
+                }
                 HStack(spacing: 4) {
                     Text(plant.locationDisplayName)
                         .foregroundStyle(.secondary)

@@ -252,10 +252,18 @@ final class GardenStore {
         }
     }
 
-    /// Gjødsler alle plantene i et bed/rom – logger en gjødslingshendelse per plante.
-    func fertilizeAll(in location: String) {
+    /// Gjødsler alle plantene i et bed/rom – logger en gjødslingshendelse
+    /// per plante, med gjødseltypen som notat.
+    func fertilizeAll(in location: String, fertilizer: String? = nil) {
         for plant in plants where plant.location == location {
-            addCareEvent(CareEvent(type: .fertilizing), to: plant)
+            addCareEvent(CareEvent(type: .fertilizing, note: fertilizer ?? ""), to: plant)
+        }
+    }
+
+    /// Kalker et bed (hever pH over tid) – logges på alle plantene der.
+    func limeAll(in location: String) {
+        for plant in plants where plant.location == location {
+            addCareEvent(CareEvent(type: .liming), to: plant)
         }
     }
 

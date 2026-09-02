@@ -1789,6 +1789,36 @@
         }
       }
     },
+    "Kalking" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Liming" } }
+      }
+    },
+    "Kalk bedet" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lime the bed" } }
+      }
+    },
+    "Kalk" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lime" } }
+      }
+    },
+    "Kalke %@? Kalking hever pH-en over tid – mål på nytt etter noen uker." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lime %@? Liming raises pH over time – measure again in a few weeks." } }
+      }
+    },
+    "Gjødsle uten type" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize without type" } }
+      }
+    },
+    "Vanning og stell" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering and care" } }
+      }
+    },
     "Vann alle" : {
       "localizations" : {
         "en" : {
