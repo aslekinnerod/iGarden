@@ -30,6 +30,13 @@ service cloud.firestore {
       allow read, write: if signedIn() && request.auth.uid == uid;
     }
 
+    // Delt cache for KI-oppslag av planteinfo. Skrives én gang per
+    // plantenavn av første bruker som slår det opp; endres ikke.
+    match /plantLookups/{key} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+    }
+
     match /invites/{code} {
       // Mottakeren må kunne slå opp koden før de er medlem.
       allow read: if signedIn();

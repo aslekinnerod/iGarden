@@ -29,6 +29,8 @@ struct PlantFormView: View {
     /// Navnet fra sist valgte databaseforslag – skjuler trefflisten
     /// til brukeren skriver noe annet.
     @State private var appliedSuggestionName: String?
+    @State private var isLookingUp = false
+    @State private var lookupError: String?
 
     private var nameSuggestions: [PlantInfo] {
         let query = name.trimmingCharacters(in: .whitespaces)
@@ -60,6 +62,38 @@ struct PlantFormView: View {
         name.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    /// KI-oppslag tilbys når navnet er ukjent for den lokale databasen.
+    private var canOfferLookup: Bool {
+        trimmedName.count >= 3
+            && trimmedName != appliedSuggestionName
+            && nameSuggestions.isEmpty
+            && PlantDatabase.match(name: trimmedName, species: species) == nil
+    }
+
+    private func lookUpWithAI() {
+        isLookingUp = true
+        Task {
+            defer { isLookingUp = false }
+            do {
+                let result = try await PlantLookupService.lookup(name: trimmedName)
+                name = result.norskNavn
+                if species.trimmingCharacters(in: .whitespaces).isEmpty {
+                    species = result.latinskNavn
+                }
+                phLow = result.phLav
+                phHigh = result.phHoey
+                waterNeed = result.waterNeed
+                lightNeed = result.lightNeed
+                if !isEditing, hasWateringSchedule {
+                    wateringIntervalDays = result.vanningsintervallDager
+                }
+                appliedSuggestionName = result.norskNavn
+            } catch {
+                lookupError = error.localizedDescription
+            }
+        }
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -89,6 +123,22 @@ struct PlantFormView: View {
                                     .foregroundStyle(.secondary)
                             }
                         }
+                    }
+                    if canOfferLookup {
+                        Button {
+                            lookUpWithAI()
+                        } label: {
+                            HStack {
+                                if isLookingUp {
+                                    ProgressView()
+                                    Text("Slår opp «\(trimmedName)»…")
+                                        .foregroundStyle(.secondary)
+                                } else {
+                                    Label("Slå opp «\(trimmedName)» med KI", systemImage: "sparkle.magnifyingglass")
+                                }
+                            }
+                        }
+                        .disabled(isLookingUp)
                     }
                     TextField("Art / latinsk navn", text: $species)
                     NavigationLink {
@@ -203,6 +253,17 @@ struct PlantFormView: View {
                     Button("Lagre") { save() }
                         .disabled(trimmedName.isEmpty)
                 }
+            }
+            .alert(
+                "Noe gikk galt",
+                isPresented: Binding(
+                    get: { lookupError != nil },
+                    set: { if !$0 { lookupError = nil } }
+                )
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(lookupError ?? "")
             }
             .confirmationDialog(
                 "Slette \(trimmedName.isEmpty ? String(localized: "planten") : trimmedName)?",

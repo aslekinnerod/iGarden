@@ -650,6 +650,16 @@
         }
       }
     },
+    "Gjødsle uten type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertilize without type"
+          }
+        }
+      }
+    },
     "Gjødsling" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -892,6 +902,67 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The soil here is too acidic (pH %@) – see Smart Garden"
+          }
+        }
+      }
+    },
+    "Kalk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lime"
+          }
+        }
+      }
+    },
+    "Kalk bedet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lime the bed"
+          }
+        }
+      }
+    },
+    "Kalke %@? Kalking hever pH-en over tid – mål på nytt etter noen uker." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lime %@? Liming raises pH over time – measure again in a few weeks."
+          }
+        }
+      }
+    },
+    "Slå opp «%@» med KI" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Look up “%@” with AI" } }
+      }
+    },
+    "Slår opp «%@»…" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Looking up “%@”…" } }
+      }
+    },
+    "Fant ingen planteinformasjon om «%@». Sjekk stavemåten." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No plant information found for “%@”. Check the spelling." } }
+      }
+    },
+    "KI-oppslaget er ikke tilgjengelig akkurat nå. Prøv igjen senere." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The AI lookup is unavailable right now. Please try again later." } }
+      }
+    },
+    "Kalking" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liming"
           }
         }
       }
@@ -1789,36 +1860,6 @@
         }
       }
     },
-    "Kalking" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Liming" } }
-      }
-    },
-    "Kalk bedet" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lime the bed" } }
-      }
-    },
-    "Kalk" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lime" } }
-      }
-    },
-    "Kalke %@? Kalking hever pH-en over tid – mål på nytt etter noen uker." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lime %@? Liming raises pH over time – measure again in a few weeks." } }
-      }
-    },
-    "Gjødsle uten type" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fertilize without type" } }
-      }
-    },
-    "Vanning og stell" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watering and care" } }
-      }
-    },
     "Vann alle" : {
       "localizations" : {
         "en" : {
@@ -1940,6 +1981,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Watering"
+          }
+        }
+      }
+    },
+    "Vanning og stell" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watering and care"
           }
         }
       }
