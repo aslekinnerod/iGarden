@@ -72,7 +72,7 @@ struct PlantFormView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "leaf.circle")
-                                    .foregroundStyle(.green)
+                                    .foregroundStyle(Color.accentColor)
                                 VStack(alignment: .leading, spacing: 1) {
                                     Text(info.name)
                                         .foregroundStyle(.primary)

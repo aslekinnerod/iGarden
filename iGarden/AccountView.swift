@@ -52,7 +52,7 @@ struct AccountView: View {
             Spacer()
             Image(systemName: "person.2.circle")
                 .font(.system(size: 64))
-                .foregroundStyle(.green)
+                .foregroundStyle(Color.accentColor)
             Text("Logg inn for å dele hagen din")
                 .font(.title3.bold())
             Text("Med en konto kan du invitere andre til å stelle plantene sammen med deg. Appen fungerer som vanlig uten innlogging.")
@@ -94,7 +94,7 @@ struct AccountView: View {
             .frame(height: 50)
         }
         .foregroundStyle(colorScheme == .dark ? .black : .white)
-        .background(colorScheme == .dark ? Color.white : Color.black, in: RoundedRectangle(cornerRadius: 8))
+        .background(colorScheme == .dark ? Color.white : Color.black, in: RoundedRectangle(cornerRadius: DS.Radius.auth))
     }
 
     /// Kjører en innloggingsflyt; avbrutt innlogging vises ikke som feil.

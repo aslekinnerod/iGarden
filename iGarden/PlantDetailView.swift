@@ -180,21 +180,21 @@ struct PlantDetailView: View {
                     Text("Trives i jorden her (pH \(bedPH.formatted(.number.precision(.fractionLength(1)))))")
                 } icon: {
                     Image(systemName: "checkmark.seal.fill")
-                        .foregroundStyle(.green)
+                        .foregroundStyle(Color.statusOK)
                 }
             case .tooAcidic:
                 Label {
                     Text("Jorden her er for sur (pH \(bedPH.formatted(.number.precision(.fractionLength(1))))) – se Smart hage")
                 } icon: {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(Color.statusDue)
                 }
             case .tooAlkaline:
                 Label {
                     Text("Jorden her er for kalkrik (pH \(bedPH.formatted(.number.precision(.fractionLength(1))))) – se Smart hage")
                 } icon: {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(Color.statusDue)
                 }
             case .unknown:
                 EmptyView()
@@ -204,9 +204,9 @@ struct PlantDetailView: View {
 
     private var statusColor: Color {
         switch livePlant.wateringStatus {
-        case .overdue: .red
-        case .dueToday, .neverWatered: .orange
-        case .ok: .green
+        case .overdue: .statusOverdue
+        case .dueToday, .neverWatered: .statusDue
+        case .ok: .statusOK
         case .noSchedule: .secondary
         }
     }
@@ -256,10 +256,10 @@ struct PlantDetailView: View {
             PlantPhotoView(path: livePlant.photoPath) {
                 ZStack {
                     Rectangle()
-                        .fill(.green.opacity(0.12))
+                        .fill(Color.fillLeaf)
                     Image(systemName: "leaf")
                         .font(.system(size: 56))
-                        .foregroundStyle(.green.opacity(0.5))
+                        .foregroundStyle(Color.fillLeafForeground)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -299,11 +299,11 @@ struct PlantDetailView: View {
     private func timelineCell(_ photo: PlantPhoto) -> some View {
         VStack(spacing: 4) {
             PlantPhotoView(path: photo.storagePath) {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.green.opacity(0.12))
+                RoundedRectangle(cornerRadius: DS.Radius.photo)
+                    .fill(Color.fillLeaf)
             }
             .frame(width: 96, height: 96)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.photo))
             Text(photo.date.formatted(date: .abbreviated, time: .omitted))
                 .font(.caption2)
                 .foregroundStyle(.secondary)

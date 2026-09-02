@@ -341,7 +341,7 @@ struct ContentView: View {
                 } label: {
                     Label("Vannet", systemImage: "drop.fill")
                 }
-                .tint(.blue)
+                .tint(.actionWater)
             }
             .swipeActions(edge: .trailing) {
                 Button(role: .destructive) {
@@ -386,22 +386,22 @@ struct PlantRowView: View {
 
     private var thumbnail: some View {
         PlantPhotoView(path: plant.photoPath) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(.green.opacity(0.12))
+            RoundedRectangle(cornerRadius: DS.Radius.thumb)
+                .fill(Color.fillLeaf)
                 .overlay {
                     Image(systemName: "leaf")
-                        .foregroundStyle(.green.opacity(0.5))
+                        .foregroundStyle(Color.fillLeafForeground)
                 }
         }
-        .frame(width: 44, height: 44)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .frame(width: DS.Spacing.hitTarget, height: DS.Spacing.hitTarget)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.thumb))
     }
 
     private var statusColor: Color {
         switch plant.wateringStatus {
-        case .overdue: .red
-        case .dueToday, .neverWatered: .orange
-        case .ok: .green
+        case .overdue: .statusOverdue
+        case .dueToday, .neverWatered: .statusDue
+        case .ok: .statusOK
         case .noSchedule: .secondary
         }
     }

@@ -15,7 +15,7 @@ struct OnboardingView: View {
 
             Image(systemName: "leaf.circle.fill")
                 .font(.system(size: 72))
-                .foregroundStyle(.green)
+                .foregroundStyle(Color.accentColor)
 
             Text("Velkommen til iGarden")
                 .font(.title.bold())
@@ -58,7 +58,7 @@ struct OnboardingView: View {
         HStack(alignment: .top, spacing: 14) {
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundStyle(.green)
+                .foregroundStyle(Color.accentColor)
                 .frame(width: 32)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)

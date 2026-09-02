@@ -117,7 +117,7 @@ struct SmartGardenView: View {
                         Text("Alle vurderte planter står i jord de trives i.")
                     } icon: {
                         Image(systemName: "checkmark.seal.fill")
-                            .foregroundStyle(.green)
+                            .foregroundStyle(Color.statusOK)
                     }
                 } else {
                     Text("Ingen planter å vurdere ennå. Sett pH på bedene og pH-preferanse på plantene, så dukker anbefalingene opp her.")
@@ -141,7 +141,7 @@ struct SmartGardenView: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
                 Image(systemName: "exclamationmark.triangle.fill")
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(Color.statusDue)
                 Text(recommendation.plant.name)
                     .font(.headline)
             }

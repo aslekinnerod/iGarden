@@ -172,7 +172,7 @@ struct GardenSharingView: View {
     private func memberRow(_ member: GardenMember) -> some View {
         HStack {
             Image(systemName: member.isOwner ? "person.crop.circle.badge.checkmark" : "person.crop.circle")
-                .foregroundStyle(.green)
+                .foregroundStyle(Color.accentColor)
             VStack(alignment: .leading, spacing: 2) {
                 Text(memberName(member))
                 Text(member.isOwner ? "Eier" : "Medlem")
