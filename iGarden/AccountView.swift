@@ -66,6 +66,7 @@ struct AccountView: View {
                 } onCompletion: { result in
                     handleAuthTask {
                         try await authStore.signIn(with: result)
+                        dismiss()
                     }
                 }
                 .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
@@ -73,6 +74,7 @@ struct AccountView: View {
 
                 googleButton("Logg inn med Google") {
                     try await authStore.signInWithGoogle()
+                    dismiss()
                 }
             }
         }
