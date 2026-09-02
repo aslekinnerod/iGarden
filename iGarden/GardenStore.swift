@@ -30,6 +30,8 @@ final class GardenStore {
     private var membersListener: ListenerRegistration?
     private var authListener: AuthStateDidChangeListenerHandle?
     private var startedForUid: String?
+    private var bootstrapTask: Task<Void, Never>?
+    private var isSigningInAnonymously = false
 
     var currentUserId: String? { Auth.auth().currentUser?.uid }
 
@@ -60,20 +62,30 @@ final class GardenStore {
                     guard self.startedForUid != user.uid else { return }
                     self.startedForUid = user.uid
                     self.detachListeners()
-                    await self.bootstrap(uid: user.uid)
+                    // Bytter bruker-id mens et bootstrap-løp pågår, kanselleres
+                    // det gamle så det ikke skriver med feil uid.
+                    self.bootstrapTask?.cancel()
+                    self.bootstrapTask = Task { await self.bootstrap(uid: user.uid) }
                 } else {
                     self.startedForUid = nil
                     self.detachListeners()
-                    await self.signInAnonymously()
+                    self.bootstrapTask?.cancel()
+                    await self.signInAnonymouslyIfNeeded()
                 }
             }
         }
         if Auth.auth().currentUser == nil {
-            Task { await signInAnonymously() }
+            Task { await signInAnonymouslyIfNeeded() }
         }
     }
 
-    private func signInAnonymously() async {
+    /// Single-flight: auth-lytteren fyrer umiddelbart med nil-bruker samtidig
+    /// som start() sjekker currentUser – uten vakten ga det to anonyme
+    /// kontoer per førstegangsstart og en falsk feilmelding fra taperen.
+    private func signInAnonymouslyIfNeeded() async {
+        guard !isSigningInAnonymously, Auth.auth().currentUser == nil else { return }
+        isSigningInAnonymously = true
+        defer { isSigningInAnonymously = false }
         do {
             try await Auth.auth().signInAnonymously()
         } catch {
@@ -81,10 +93,17 @@ final class GardenStore {
         }
     }
 
+    /// Sann så lenge dette bootstrap-løpet fortsatt gjelder – bruker-id-en
+    /// er uendret og løpet er ikke kansellert av et nytt.
+    private func isCurrentBootstrap(_ uid: String) -> Bool {
+        !Task.isCancelled && Auth.auth().currentUser?.uid == uid
+    }
+
     private func bootstrap(uid: String) async {
         do {
             let userRef = db.collection("users").document(uid)
             let userDoc = try await userRef.getDocument()
+            guard isCurrentBootstrap(uid) else { return }
 
             if let existing = userDoc.data()?["primaryGardenId"] as? String {
                 // Mistet tilgang (fjernet av eier) eller slettet hage
@@ -92,10 +111,12 @@ final class GardenStore {
                 if let gardenDoc = try? await db.collection("gardens").document(existing).getDocument(),
                    gardenDoc.exists,
                    let loaded = try? gardenDoc.data(as: Garden.self) {
+                    guard isCurrentBootstrap(uid) else { return }
                     garden = loaded
                     attachListeners(gardenId: existing)
                     return
                 }
+                guard isCurrentBootstrap(uid) else { return }
             }
 
             // Sekvensielt, ikke batch: reglene for medlemsdokumentet
@@ -114,9 +135,13 @@ final class GardenStore {
             try await userRef.setData(["primaryGardenId": newGarden.documentID], merge: true)
 
             let gardenDoc = try await newGarden.getDocument()
+            guard isCurrentBootstrap(uid) else { return }
             garden = try gardenDoc.data(as: Garden.self)
             attachListeners(gardenId: newGarden.documentID)
         } catch {
+            // Et foreldet løp (bruker-id byttet underveis) skal ikke
+            // skremme brukeren med en feil det selv forårsaket.
+            guard isCurrentBootstrap(uid) else { return }
             errorMessage = String(localized: "Kunne ikke laste hagen din. Prøv igjen senere.")
         }
     }
