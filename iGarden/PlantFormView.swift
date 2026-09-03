@@ -252,6 +252,8 @@ struct PlantFormView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.canvas)
             .navigationTitle(isEditing ? String(localized: "Rediger plante") : String(localized: "Ny plante"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

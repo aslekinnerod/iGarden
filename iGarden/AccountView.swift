@@ -26,6 +26,8 @@ struct AccountView: View {
                     signedOutView
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.canvas)
             .navigationTitle("Konto")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -48,7 +50,7 @@ struct AccountView: View {
     }
 
     private var signedOutView: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: DS.Spacing.s6) {
             Spacer()
             Image(systemName: "person.2.circle")
                 .font(.system(size: 64))
@@ -60,7 +62,7 @@ struct AccountView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
             Spacer()
-            VStack(spacing: 12) {
+            VStack(spacing: DS.Spacing.s3) {
                 SignInWithAppleButton(.signIn) { request in
                     authStore.prepareRequest(request)
                 } onCompletion: { result in
@@ -78,7 +80,7 @@ struct AccountView: View {
                 }
             }
         }
-        .padding(24)
+        .padding(DS.Spacing.s6)
     }
 
     /// Google-knapp i samme stil som Apple-knappen.
@@ -86,7 +88,7 @@ struct AccountView: View {
         Button {
             handleAuthTask(action)
         } label: {
-            HStack(spacing: 8) {
+            HStack(spacing: DS.Spacing.s2) {
                 Image(systemName: "g.circle.fill")
                     .font(.title3)
                 Text(title)

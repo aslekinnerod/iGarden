@@ -47,6 +47,8 @@ struct LocationPickerView: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(Color.canvas)
         .navigationTitle("Plassering")
         .navigationBarTitleDisplayMode(.inline)
     }

@@ -41,6 +41,8 @@ struct SmartGardenView: View {
                     recommendationsSection
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.canvas)
             .navigationTitle("Smart hage")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -94,7 +96,7 @@ struct SmartGardenView: View {
                 Button("Fjern pH") {
                     gardenStore.setSoilPH(nil, for: bed)
                 }
-                .tint(.orange)
+                .tint(Color.statusDue)
             }
         }
     }
@@ -132,14 +134,21 @@ struct SmartGardenView: View {
             Text("Anbefalinger")
         } footer: {
             if thrivingCount > 0 && !recommendations.isEmpty {
-                Text("\(thrivingCount) planter trives der de står.")
+                Text(thrivingText)
             }
         }
     }
 
+    /// Entall og flertall skilles, så det ikke står «1 planter».
+    private var thrivingText: String {
+        thrivingCount == 1
+            ? String(localized: "1 plante trives der den står.")
+            : String(localized: "\(thrivingCount) planter trives der de står.")
+    }
+
     private func recommendationRow(_ recommendation: SoilRecommendation) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
+            HStack(spacing: DS.Spacing.s2) {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundStyle(Color.statusDue)
                 Text(recommendation.plant.name)

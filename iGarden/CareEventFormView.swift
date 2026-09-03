@@ -28,6 +28,8 @@ struct CareEventFormView: View {
                 TextField("Notat (valgfritt)", text: $note, axis: .vertical)
                     .lineLimit(2...4)
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.canvas)
             .navigationTitle("Registrer stell")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

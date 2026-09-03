@@ -39,6 +39,8 @@ struct ReminderSettingsView: View {
                     Text("Du får ett varsel per plante den dagen den skal vannes.")
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.canvas)
             .navigationTitle("Varsler")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

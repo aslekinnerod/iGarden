@@ -107,12 +107,12 @@ struct PlantDetailView: View {
             if photoTimeline.count > 1 {
                 Section {
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .top, spacing: 12) {
+                        HStack(alignment: .top, spacing: DS.Spacing.s3) {
                             ForEach(photoTimeline) { photo in
                                 timelineCell(photo)
                             }
                         }
-                        .padding(.vertical, 4)
+                        .padding(.vertical, DS.Spacing.s1)
                     }
                 } header: {
                     HStack {
@@ -240,7 +240,7 @@ struct PlantDetailView: View {
     }
 
     private var wateringStatus: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DS.Spacing.s3) {
             Image(systemName: statusIcon)
                 .font(.title2)
                 .foregroundStyle(statusColor)
@@ -403,7 +403,7 @@ struct CareEventRow: View {
     let event: CareEvent
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: DS.Spacing.rowGap) {
             Image(systemName: event.type.icon)
                 .foregroundStyle(.secondary)
                 .frame(width: 20)

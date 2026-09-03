@@ -50,7 +50,7 @@ struct SlideshowView: View {
                 Text(photos[index].date.formatted(date: .long, time: .omitted))
                     .font(.callout)
                     .foregroundStyle(.white.opacity(0.8))
-                    .padding(.bottom, 8)
+                    .padding(.bottom, DS.Spacing.s2)
             }
             .padding()
         }

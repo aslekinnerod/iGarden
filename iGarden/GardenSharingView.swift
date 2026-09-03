@@ -38,6 +38,8 @@ struct GardenSharingView: View {
                     signInPrompt
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.canvas)
             .navigationTitle("Del hagen")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -85,7 +87,7 @@ struct GardenSharingView: View {
             if gardenStore.isOwner {
                 Section {
                     if let inviteCode {
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: DS.Spacing.s2) {
                             Text(inviteCode)
                                 .font(.system(.title, design: .monospaced).bold())
                                 .textSelection(.enabled)
@@ -185,7 +187,7 @@ struct GardenSharingView: View {
                     memberToRemove = member
                 } label: {
                     Image(systemName: "person.crop.circle.badge.minus")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(Color.statusOverdue)
                 }
                 .buttonStyle(.borderless)
             }
