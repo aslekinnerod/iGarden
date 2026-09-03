@@ -7,3 +7,6 @@ iGarden/IssuetrackerConfig.plist
 # Xcode
 xcuserdata/
 DerivedData/
+
+# Lokale bygg/skjermbilder fra kommandolinjen
+build/

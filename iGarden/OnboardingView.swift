@@ -10,17 +10,10 @@ struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        VStack(spacing: 32) {
-            Spacer()
+        VStack(spacing: 0) {
+            hero
 
-            Image(systemName: "leaf.circle.fill")
-                .font(.system(size: 72))
-                .foregroundStyle(Color.accentColor)
-
-            Text("Velkommen til iGarden")
-                .font(.title.bold())
-
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: DS.Spacing.s5) {
                 featureRow(
                     icon: "plus.circle.fill",
                     title: "Registrer plantene dine",
@@ -37,9 +30,10 @@ struct OnboardingView: View {
                     text: "Ta bilder underveis og se utviklingen på tidslinjen."
                 )
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, DS.Spacing.s6)
+            .padding(.top, DS.Spacing.s6)
 
-            Spacer()
+            Spacer(minLength: DS.Spacing.s6)
 
             Button {
                 dismiss()
@@ -49,17 +43,50 @@ struct OnboardingView: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
+            .padding(.horizontal, DS.Spacing.s6)
+            .padding(.bottom, DS.Spacing.s6)
         }
-        .padding(24)
+        .background(Color(.systemBackground))
         .interactiveDismissDisabled()
     }
 
+    /// Hagebildet fyller toppen av arket, med tittelen lagt over en
+    /// mørk toning nederst så teksten er lesbar uansett motiv.
+    private var hero: some View {
+        Image("OnboardingGarden")
+            .resizable()
+            .scaledToFill()
+            .frame(maxWidth: .infinity)
+            .frame(height: 320)
+            .clipped()
+            .overlay(alignment: .bottomLeading) {
+                LinearGradient(
+                    colors: [.clear, .green900.opacity(0.45), .green900.opacity(0.85)],
+                    startPoint: .center,
+                    endPoint: .bottom
+                )
+                .overlay(alignment: .bottomLeading) {
+                    VStack(alignment: .leading, spacing: DS.Spacing.s1) {
+                        Label("iGarden", systemImage: "leaf.circle.fill")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.white.opacity(0.85))
+                        Text("Velkommen til hagen din")
+                            .font(.title.bold())
+                            .foregroundStyle(.white)
+                    }
+                    .padding(DS.Spacing.s6)
+                }
+            }
+            .ignoresSafeArea(edges: .top)
+            .accessibilityLabel("En frodig blomsterhage med rosebue, fontene og steinsti")
+    }
+
     private func featureRow(icon: String, title: String, text: String) -> some View {
-        HStack(alignment: .top, spacing: 14) {
+        HStack(alignment: .top, spacing: DS.Spacing.s3 + 2) {
             Image(systemName: icon)
                 .font(.title2)
                 .foregroundStyle(Color.accentColor)
-                .frame(width: 32)
+                .frame(width: DS.Spacing.s8)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.headline)
@@ -72,5 +99,8 @@ struct OnboardingView: View {
 }
 
 #Preview {
-    OnboardingView()
+    Text("Bak arket")
+        .sheet(isPresented: .constant(true)) {
+            OnboardingView()
+        }
 }
