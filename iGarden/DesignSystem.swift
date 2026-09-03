@@ -8,6 +8,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 enum DS {
     /// tokens/spacing.css – radier.
@@ -17,6 +18,8 @@ enum DS {
         static let card: CGFloat = 10
         static let button: CGFloat = 12
         static let auth: CGFloat = 8
+        /// Store flater: hero-bånd og kort med bilde.
+        static let hero: CGFloat = 16
     }
 
     /// tokens/spacing.css – 4-basert skala og iOS-listemål.
@@ -31,6 +34,10 @@ enum DS {
         static let hitTarget: CGFloat = 44
         static let listInset: CGFloat = 16
         static let rowGap: CGFloat = 10
+        /// Miniatyrbilde i planteraden.
+        static let thumb: CGFloat = 56
+        /// Høyde på hero-båndet øverst i plantelisten.
+        static let heroBand: CGFloat = 150
     }
 
     /// tokens/effects.css – animasjonsvarigheter.
@@ -69,6 +76,24 @@ extension Color {
     static let statusDue = Color.orange
     static let statusOK = Color.green
     static let actionWater = Color.blue
+
+    // MARK: Flater – varm papirbakgrunn i lys modus, systemets i mørk
+    /// Bakgrunnen bak listene. Erstatter iOS-grått med papirtonen fra
+    /// merkevaren, uten å ødelegge mørk modus.
+    static let canvas = Color(UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor.systemGroupedBackground
+            : UIColor(red: 0.980, green: 0.973, blue: 0.949, alpha: 1)
+    })
+
+    /// Toningen som legges over foto så hvit tekst er lesbar.
+    static var heroScrim: LinearGradient {
+        LinearGradient(
+            colors: [.clear, Color.green900.opacity(0.35), Color.green900.opacity(0.85)],
+            startPoint: .center,
+            endPoint: .bottom
+        )
+    }
 
     // MARK: Plassholderfyll for plantebilder (--fill-leaf)
     static let fillLeaf = Color.accentColor.opacity(0.12)

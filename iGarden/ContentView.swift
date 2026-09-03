@@ -122,6 +122,14 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             List {
+                if !gardenStore.plants.isEmpty {
+                    Section {
+                        heroBand
+                            .listRowInsets(EdgeInsets())
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                    }
+                }
                 switch grouping {
                 case .location:
                     ForEach(locationGroups, id: \.location) { group in
@@ -150,6 +158,9 @@ struct ContentView: View {
                     }
                 }
             }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(Color.canvas)
             .navigationTitle("Mine planter")
             .searchable(text: $searchText, prompt: "Søk på navn eller art")
             .overlay {
@@ -313,8 +324,59 @@ struct ContentView: View {
                 Text(gardenStore.errorMessage ?? "")
             }
         } detail: {
-            Text("Velg en plante")
+            ContentUnavailableView {
+                Label("Velg en plante", systemImage: "leaf")
+            } description: {
+                Text("Velg en plante i listen for å se stell, bilder og jord.")
+            }
         }
+    }
+
+    private var plantsNeedingWaterCount: Int {
+        gardenStore.plants.filter(\.needsWater).count
+    }
+
+    private var heroSubtitle: String {
+        let count = plantsNeedingWaterCount
+        switch count {
+        case 0: return String(localized: "Alt er vannet. Ingenting haster i dag.")
+        case 1: return String(localized: "1 plante trenger vann")
+        default: return String(localized: "\(count) planter trenger vann")
+        }
+    }
+
+    /// Bilde-bånd øverst i listen, i samme språk som velkomstskjermen:
+    /// foto, grønn toning og hvit tekst som sier hva som haster.
+    private var heroBand: some View {
+        ZStack(alignment: .bottomLeading) {
+            Image("OnboardingGarden")
+                .resizable()
+                .scaledToFill()
+                .frame(maxWidth: .infinity)
+                .frame(height: DS.Spacing.heroBand)
+                .clipped()
+
+            Color.heroScrim
+                .frame(height: DS.Spacing.heroBand)
+
+            VStack(alignment: .leading, spacing: DS.Spacing.s1) {
+                Text(gardenStore.garden?.name ?? String(localized: "Min hage"))
+                    .font(.title3.bold())
+                    .foregroundStyle(.white)
+                HStack(spacing: DS.Spacing.s1 + 2) {
+                    Image(systemName: plantsNeedingWaterCount == 0 ? "checkmark.circle.fill" : "drop.fill")
+                    Text(heroSubtitle)
+                }
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(.white.opacity(0.9))
+            }
+            .padding(DS.Spacing.s4)
+        }
+        .frame(height: DS.Spacing.heroBand)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.hero))
+        .padding(.horizontal, DS.Spacing.listInset)
+        .padding(.bottom, DS.Spacing.s2)
+        .accessibilityElement(children: .combine)
     }
 
     /// Meny på bed-seksjonen: vann/gjødsle hele bedet, og pH-snarvei.
@@ -393,23 +455,24 @@ struct PlantRowView: View {
     private var hasSchedule: Bool { plant.wateringStatus != .noSchedule }
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: DS.Spacing.s3) {
             thumbnail
-            if hasSchedule {
-                Image(systemName: "drop.fill")
-                    .foregroundStyle(statusColor)
-                    .font(.footnote)
-            }
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 4) {
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(spacing: DS.Spacing.s1) {
                     Text(plant.name)
+                        .font(.headline)
                     if soilWarning {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundStyle(Color.statusDue)
                             .font(.caption)
                     }
                 }
-                HStack(spacing: 4) {
+                HStack(spacing: DS.Spacing.s1) {
+                    if hasSchedule {
+                        Image(systemName: "drop.fill")
+                            .foregroundStyle(statusColor)
+                            .font(.caption2)
+                    }
                     Text(plant.locationDisplayName)
                         .foregroundStyle(.secondary)
                     if hasSchedule {
@@ -422,6 +485,7 @@ struct PlantRowView: View {
                 .font(.caption)
             }
         }
+        .padding(.vertical, DS.Spacing.s1)
     }
 
     private var thumbnail: some View {
@@ -433,8 +497,8 @@ struct PlantRowView: View {
                         .foregroundStyle(Color.fillLeafForeground)
                 }
         }
-        .frame(width: DS.Spacing.hitTarget, height: DS.Spacing.hitTarget)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.thumb))
+        .frame(width: DS.Spacing.thumb, height: DS.Spacing.thumb)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.photo))
     }
 
     private var statusColor: Color {
