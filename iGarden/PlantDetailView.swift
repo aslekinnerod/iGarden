@@ -151,8 +151,11 @@ struct PlantDetailView: View {
                 }
             }
         }
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .background(Color.canvas)
         .navigationTitle(livePlant.name)
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Rediger") { showEditSheet = true }
@@ -268,6 +271,8 @@ struct PlantDetailView: View {
         }
     }
 
+    /// Hero-foto med plantens navn over en grønn toning, i samme
+    /// språk som velkomstskjermen og plantelisten.
     private var photoHeader: some View {
         ZStack(alignment: .bottomTrailing) {
             PlantPhotoView(path: livePlant.photoPath) {
@@ -280,8 +285,25 @@ struct PlantDetailView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 220)
+            .frame(height: DS.Spacing.heroPhoto)
             .clipped()
+            .overlay {
+                Color.heroScrim
+            }
+            .overlay(alignment: .bottomLeading) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(livePlant.name)
+                        .font(.title2.bold())
+                        .foregroundStyle(.white)
+                    if let species = livePlant.species, !species.isEmpty {
+                        Text(species)
+                            .font(.subheadline)
+                            .italic()
+                            .foregroundStyle(.white.opacity(0.85))
+                    }
+                }
+                .padding(DS.Spacing.s4)
+            }
 
             Menu {
                 if CameraPicker.isAvailable {
@@ -297,11 +319,14 @@ struct PlantDetailView: View {
             } label: {
                 Label("Legg til bilde", systemImage: "camera.fill")
                     .labelStyle(.iconOnly)
-                    .padding(10)
+                    .padding(DS.Spacing.rowGap)
                     .background(.thinMaterial, in: Circle())
-                    .padding(10)
+                    .padding(DS.Spacing.rowGap)
             }
         }
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.hero))
+        .padding(.horizontal, DS.Spacing.listInset)
+        .padding(.bottom, DS.Spacing.s2)
         .onChange(of: selectedPhotoItem) {
             Task { await importSelectedPhoto() }
         }

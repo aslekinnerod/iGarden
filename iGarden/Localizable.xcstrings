@@ -425,12 +425,25 @@
         }
       }
     },
+    "En frodig blomsterhage med rosebue, fontene og steinsti" : {
+
+    },
     "Fant ingen gyldig invitasjon med den koden. Sjekk koden, eller be om en ny – koder utløper etter 7 dager." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No valid invite found for that code. Check the code, or ask for a new one – codes expire after 7 days."
+          }
+        }
+      }
+    },
+    "Fant ingen planteinformasjon om «%@». Sjekk stavemåten." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No plant information found for “%@”. Check the spelling."
           }
         }
       }
@@ -766,6 +779,9 @@
         }
       }
     },
+    "iGarden" : {
+
+    },
     "Ikke satt" : {
       "localizations" : {
         "en" : {
@@ -936,26 +952,6 @@
         }
       }
     },
-    "Slå opp «%@» med KI" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Look up “%@” with AI" } }
-      }
-    },
-    "Slår opp «%@»…" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Looking up “%@”…" } }
-      }
-    },
-    "Fant ingen planteinformasjon om «%@». Sjekk stavemåten." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "No plant information found for “%@”. Check the spelling." } }
-      }
-    },
-    "KI-oppslaget er ikke tilgjengelig akkurat nå. Prøv igjen senere." : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "The AI lookup is unavailable right now. Please try again later." } }
-      }
-    },
     "Kalking" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -973,6 +969,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "alkaline soil"
+          }
+        }
+      }
+    },
+    "KI-oppslaget er ikke tilgjengelig akkurat nå. Prøv igjen senere." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The AI lookup is unavailable right now. Please try again later."
           }
         }
       }
@@ -1128,6 +1134,9 @@
           }
         }
       }
+    },
+    "Lagt til av KI" : {
+
     },
     "Legg til" : {
       "localizations" : {
@@ -1617,6 +1626,26 @@
         }
       }
     },
+    "Slå opp «%@» med KI" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Look up “%@” with AI"
+          }
+        }
+      }
+    },
+    "Slår opp «%@»…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looking up “%@”…"
+          }
+        }
+      }
+    },
     "Slett" : {
       "localizations" : {
         "en" : {
@@ -2076,7 +2105,11 @@
         }
       }
     },
+    "Velkommen til hagen din" : {
+
+    },
     "Velkommen til iGarden" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

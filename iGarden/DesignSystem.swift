@@ -38,6 +38,8 @@ enum DS {
         static let thumb: CGFloat = 56
         /// Høyde på hero-båndet øverst i plantelisten.
         static let heroBand: CGFloat = 150
+        /// Høyde på hero-fotoet på plantedetaljen.
+        static let heroPhoto: CGFloat = 260
     }
 
     /// tokens/effects.css – animasjonsvarigheter.
