@@ -184,6 +184,58 @@ struct PlantTests {
         #expect(PlantDatabase.search("georgin").contains { $0.name == "Dahlia" })
     }
 
+    // MARK: - Delt plantekatalog (Firestore)
+
+    private func aiPlant(_ name: String, latin: String? = nil, aliases: [String] = [], phLow: Double = 5.5, phHigh: Double = 6.5) -> PlantInfo {
+        PlantInfo(name: name, latinName: latin, aliases: aliases, phLow: phLow, phHigh: phHigh, water: .medium, light: .sun, source: .ai)
+    }
+
+    @Test func katalogenSlaarSammenKuratertOgFjernListe() throws {
+        let merged = PlantCatalog.merge(bundled: PlantDatabase.plants, remote: [aiPlant("Zyxplante", latin: "Zyxus testus", aliases: ["zyxblomst"])])
+        #expect(merged.count == PlantDatabase.plants.count + 1)
+        // KI-planten er søkbar på navn, latin og lært alias – uten nytt KI-kall.
+        #expect(PlantDatabase.search("zyx", in: merged).first?.name == "Zyxplante")
+        #expect(PlantDatabase.search("zyxus", in: merged).first?.name == "Zyxplante")
+        #expect(PlantDatabase.match(name: "zyxblomst ved døra", species: nil, in: merged)?.name == "Zyxplante")
+        #expect(PlantDatabase.match(name: "zyxblomst", species: nil, in: merged)?.source == .ai)
+    }
+
+    @Test func fjernoppfoeringVinnerOverKuratert() throws {
+        // En rettelse gjort i Firestore-konsollen skal slå gjennom uten ny appversjon.
+        let corrected = PlantInfo(name: "Blåbær", latinName: "Vaccinium myrtillus", aliases: [], phLow: 4.2, phHigh: 5.2, water: .medium, light: .partShade)
+        let merged = PlantCatalog.merge(bundled: PlantDatabase.plants, remote: [corrected])
+        #expect(merged.count == PlantDatabase.plants.count)
+        let match = PlantDatabase.match(name: "Blåbær", species: nil, in: merged)
+        #expect(match?.phLow == 4.2)
+        #expect(match?.phHigh == 5.2)
+    }
+
+    @Test func plantInfoKodesSomFirestoreDokument() throws {
+        let info = aiPlant("Zyxplante", latin: "Zyxus testus", aliases: ["zyxblomst"])
+        #expect(info.id == "zyxplante")
+        #expect(PlantInfo.documentID(for: "Blåbær / Hageblåbær") == "blabaer-_-hageblabaer")
+
+        let encoded = try Firestore.Encoder().encode(info)
+        // Råverdiene er lagringsformat og valideres av security rules.
+        #expect(encoded["water"] as? String == "Middels")
+        #expect(encoded["light"] as? String == "Full sol")
+        #expect(encoded["source"] as? String == "ai")
+        #expect(encoded["aliases"] as? [String] == ["zyxblomst"])
+        #expect(encoded["id"] == nil)
+
+        let decoded = try Firestore.Decoder().decode(PlantInfo.self, from: encoded)
+        #expect(decoded.name == "Zyxplante")
+        #expect(decoded.source == .ai)
+        #expect(decoded.keywords.contains("zyxblomst"))
+
+        // Håndredigerte dokumenter uten aliaser/kilde tolkes som kuraterte.
+        let sparse: [String: Any] = ["name": "Testplante", "phLow": 6.0, "phHigh": 7.0, "water": "Lite", "light": "Skygge"]
+        let sparseInfo = try Firestore.Decoder().decode(PlantInfo.self, from: sparse)
+        #expect(sparseInfo.source == .curated)
+        #expect(sparseInfo.aliases.isEmpty)
+        #expect(sparseInfo.latinName == nil)
+    }
+
     @Test func jordvurderingSkillerSurtOgKalkrikt() throws {
         let plant = Plant(name: "Blåbær", preferredPHLow: 4.0, preferredPHHigh: 5.5)
 

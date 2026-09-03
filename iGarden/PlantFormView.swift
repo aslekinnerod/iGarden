@@ -9,6 +9,7 @@ import SwiftUI
 /// Feltene holdes i lokal state slik at Avbryt ikke endrer noe.
 struct PlantFormView: View {
     @Environment(GardenStore.self) private var gardenStore
+    @Environment(PlantCatalog.self) private var catalog
     @Environment(\.dismiss) private var dismiss
 
     /// Planten som redigeres, eller nil for ny plante.
@@ -35,7 +36,7 @@ struct PlantFormView: View {
     private var nameSuggestions: [PlantInfo] {
         let query = name.trimmingCharacters(in: .whitespaces)
         guard query.count >= 2, query != appliedSuggestionName else { return [] }
-        let results = PlantDatabase.search(query)
+        let results = catalog.search(query)
         // Ikke mas når eneste treff allerede står i feltet.
         if results.count == 1, results[0].name.folded == query.folded { return [] }
         return Array(results.prefix(6))
@@ -62,12 +63,12 @@ struct PlantFormView: View {
         name.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    /// KI-oppslag tilbys når navnet er ukjent for den lokale databasen.
+    /// KI-oppslag tilbys når navnet er ukjent for katalogen.
     private var canOfferLookup: Bool {
         trimmedName.count >= 3
             && trimmedName != appliedSuggestionName
             && nameSuggestions.isEmpty
-            && PlantDatabase.match(name: trimmedName, species: species) == nil
+            && catalog.match(name: trimmedName, species: species) == nil
     }
 
     private func lookUpWithAI() {
@@ -75,7 +76,7 @@ struct PlantFormView: View {
         Task {
             defer { isLookingUp = false }
             do {
-                let result = try await PlantLookupService.lookup(name: trimmedName)
+                let result = try await catalog.lookUp(name: trimmedName)
                 name = result.norskNavn
                 if species.trimmingCharacters(in: .whitespaces).isEmpty {
                     species = result.latinskNavn
@@ -108,8 +109,16 @@ struct PlantFormView: View {
                                 Image(systemName: "leaf.circle")
                                     .foregroundStyle(Color.accentColor)
                                 VStack(alignment: .leading, spacing: 1) {
-                                    Text(info.name)
-                                        .foregroundStyle(.primary)
+                                    HStack(spacing: 4) {
+                                        Text(info.name)
+                                            .foregroundStyle(.primary)
+                                        if info.source == .ai {
+                                            Image(systemName: "sparkle")
+                                                .font(.caption2)
+                                                .foregroundStyle(.secondary)
+                                                .accessibilityLabel("Lagt til av KI")
+                                        }
+                                    }
                                     if let latin = info.latinName {
                                         Text(latin)
                                             .font(.caption)
@@ -207,7 +216,7 @@ struct PlantFormView: View {
                             phLow = nil
                             phHigh = nil
                         }
-                    } else if let match = PlantDatabase.match(name: name, species: species) {
+                    } else if let match = catalog.match(name: name, species: species) {
                         Button {
                             phLow = match.phLow
                             phHigh = match.phHigh
@@ -280,8 +289,8 @@ struct PlantFormView: View {
 
     private func save() {
         let trimmedSpecies = species.trimmingCharacters(in: .whitespacesAndNewlines)
-        // Er pH-preferansen ikke satt, hentes den automatisk fra plantedatabasen.
-        let match = PlantDatabase.match(name: trimmedName, species: trimmedSpecies)
+        // Er pH-preferansen ikke satt, hentes den automatisk fra katalogen.
+        let match = catalog.match(name: trimmedName, species: trimmedSpecies)
         let effectivePHLow = phLow ?? match?.phLow
         let effectivePHHigh = phHigh ?? match?.phHigh
         let effectiveWater = waterNeed ?? match?.water
@@ -342,4 +351,5 @@ struct PlantFormView: View {
 #Preview("Ny plante") {
     PlantFormView()
         .environment(GardenStore())
+        .environment(PlantCatalog())
 }

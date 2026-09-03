@@ -466,4 +466,5 @@ struct PlantRowView: View {
     ContentView()
         .environment(AuthStore())
         .environment(GardenStore())
+        .environment(PlantCatalog())
 }

@@ -5,7 +5,9 @@
 //  KI-oppslag av planter som ikke finnes i den lokale databasen.
 //  Gemini (via Firebase AI Logic) returnerer strukturert JSON, og
 //  resultatene caches i den delte Firestore-samlingen plantLookups
-//  slik at hver plante bare slås opp én gang globalt.
+//  slik at hvert søkeord bare slås opp én gang globalt (også ukjente).
+//  Kjente planter legges dessuten inn i den delte katalogen (PlantCatalog),
+//  så de dukker opp i autoutfyllingen uten KI neste gang.
 //
 
 import Foundation

@@ -12,6 +12,7 @@ import IssuetrackerSDK
 struct iGardenApp: App {
     @State private var authStore: AuthStore
     @State private var gardenStore: GardenStore
+    @State private var plantCatalog: PlantCatalog
 
     init() {
         // Konfigureres bare når GoogleService-Info.plist ligger i prosjektet,
@@ -28,6 +29,7 @@ struct iGardenApp: App {
         }
         _authStore = State(initialValue: AuthStore())
         _gardenStore = State(initialValue: GardenStore())
+        _plantCatalog = State(initialValue: PlantCatalog())
     }
 
     var body: some Scene {
@@ -35,8 +37,10 @@ struct iGardenApp: App {
             ContentView()
                 .environment(authStore)
                 .environment(gardenStore)
+                .environment(plantCatalog)
                 .onAppear {
                     gardenStore.start()
+                    plantCatalog.start()
                 }
                 .onOpenURL { url in
                     if url.scheme == "igarden" {

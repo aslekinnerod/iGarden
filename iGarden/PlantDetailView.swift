@@ -404,4 +404,5 @@ struct CareEventRow: View {
         PlantDetailView(plant: Plant(id: "preview", name: "Monstera", species: "Monstera deliciosa"))
     }
     .environment(GardenStore())
+    .environment(PlantCatalog())
 }

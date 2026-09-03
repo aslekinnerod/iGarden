@@ -2,6 +2,9 @@ rules_version = '2';
 
 // Datamodell for delt hage:
 //   users/{uid}                                  – brukerprofil + liste over hager
+//   plants/{id}                                  – delt plantekatalog (kuratert + lært av KI)
+//   catalogMeta/bundled                          – versjon av den kuraterte listen som er sådd
+//   plantLookups/{key}                           – cache for KI-oppslag per søkeord
 //   invites/{code}                               – invitasjonskoder med utløpstid
 //   gardens/{gardenId}                           – hage med navn og ownerId
 //   gardens/{gardenId}/members/{uid}             – medlemskap (role: owner|member)
@@ -28,6 +31,33 @@ service cloud.firestore {
 
     match /users/{uid} {
       allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    function validPlant(d) {
+      return d.name is string && d.name.size() > 0 && d.name.size() <= 100
+        && d.aliases is list
+        && d.phLow is number && d.phHigh is number
+        && d.phLow >= 3.5 && d.phHigh <= 9 && d.phLow <= d.phHigh
+        && d.water in ['Lite', 'Middels', 'Mye']
+        && d.light in ['Skygge', 'Halvskygge', 'Full sol']
+        && d.source in ['curated', 'ai'];
+    }
+
+    // Delt plantekatalog. Appen sår den kuraterte listen (source: curated)
+    // og legger til planter funnet med KI (source: ai). KI-oppføringer kan
+    // etterpå bare få flere aliaser (skrivefeil/synonymer lærer seg selv);
+    // kuraterte kan såes på nytt når listen i appen oppdateres.
+    match /plants/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && validPlant(request.resource.data);
+      allow update: if signedIn() && validPlant(request.resource.data) && (
+        request.resource.data.source == 'curated'
+        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['aliases'])
+      );
+    }
+
+    match /catalogMeta/{doc} {
+      allow read, write: if signedIn();
     }
 
     // Delt cache for KI-oppslag av planteinfo. Skrives én gang per

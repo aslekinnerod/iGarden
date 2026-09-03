@@ -3,21 +3,73 @@
 //  iGarden
 //
 //  Kuratert database over vanlige planter i norske hager, med
-//  foretrukket jord-pH. Brukes til søk/autoutfylling i planteskjemaet
-//  og av Smart hage-anbefalingene.
+//  foretrukket jord-pH. Dette er grunnlaget som såes inn i den delte
+//  Firestore-katalogen (se PlantCatalog) og reserven når appen er
+//  offline. Søk/autoutfylling i planteskjemaet går via PlantCatalog,
+//  som slår sammen denne listen med planter lært av KI-oppslag.
 //
 
 import Foundation
 
-struct PlantInfo {
+/// Hvor en katalogoppføring kommer fra. Lagres i Firestore.
+enum PlantInfoSource: String, Codable {
+    /// Håndkuratert i PlantDatabase.swift.
+    case curated
+    /// Lært fra et KI-oppslag (Gemini) gjort av en bruker.
+    case ai
+}
+
+struct PlantInfo: Codable, Identifiable {
     let name: String
     let latinName: String?
-    /// Ekstra søkeord/aliaser (norske synonymer).
+    /// Ekstra søkeord/aliaser (norske synonymer, og søkeord brukere
+    /// har skrevet før et KI-oppslag – skrivefeil lærer seg selv).
     let aliases: [String]
     let phLow: Double
     let phHigh: Double
     let water: WaterNeed
     let light: LightNeed
+    var source: PlantInfoSource
+
+    init(name: String, latinName: String?, aliases: [String], phLow: Double, phHigh: Double, water: WaterNeed, light: LightNeed, source: PlantInfoSource = .curated) {
+        self.name = name
+        self.latinName = latinName
+        self.aliases = aliases
+        self.phLow = phLow
+        self.phHigh = phHigh
+        self.water = water
+        self.light = light
+        self.source = source
+    }
+
+    /// Dokument-id i Firestore-samlingen plants: foldet navn, trygt som id.
+    var id: String { PlantInfo.documentID(for: name) }
+
+    static func documentID(for name: String) -> String {
+        let folded = name.folded
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: " ", with: "-")
+        return String(folded.prefix(100))
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case name, latinName, aliases, phLow, phHigh, water, light, source
+    }
+
+    /// Tolerant dekoding: eldre/håndredigerte dokumenter kan mangle
+    /// aliaser og kilde.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        name = try c.decode(String.self, forKey: .name)
+        latinName = try c.decodeIfPresent(String.self, forKey: .latinName)
+        aliases = try c.decodeIfPresent([String].self, forKey: .aliases) ?? []
+        phLow = try c.decode(Double.self, forKey: .phLow)
+        phHigh = try c.decode(Double.self, forKey: .phHigh)
+        water = try c.decode(WaterNeed.self, forKey: .water)
+        light = try c.decode(LightNeed.self, forKey: .light)
+        source = try c.decodeIfPresent(PlantInfoSource.self, forKey: .source) ?? .curated
+    }
 
     /// Alle søkeord, foldet for søk (små bokstaver, uten diakritiske tegn).
     var keywords: [String] {
@@ -41,6 +93,10 @@ extension String {
 }
 
 enum PlantDatabase {
+    /// Økes når den kuraterte listen endres, så PlantCatalog sår den
+    /// inn i Firestore på nytt (kuraterte dokumenter overskrives).
+    static let bundledVersion = 1
+
     private static func p(_ name: String, _ latin: String?, _ low: Double, _ high: Double, _ water: WaterNeed, _ light: LightNeed, _ aliases: String...) -> PlantInfo {
         PlantInfo(name: name, latinName: latin, aliases: Array(aliases), phLow: low, phHigh: high, water: water, light: light)
     }
@@ -451,7 +507,7 @@ enum PlantDatabase {
     ]
 
     /// Søk for autoutfylling: prefikstreff rangeres foran treff midt i ordet.
-    static func search(_ query: String) -> [PlantInfo] {
+    static func search(_ query: String, in plants: [PlantInfo] = plants) -> [PlantInfo] {
         let folded = query.folded.trimmingCharacters(in: .whitespaces)
         guard !folded.isEmpty else { return [] }
 
@@ -475,7 +531,7 @@ enum PlantDatabase {
 
     /// Finner pH-preferanse fra plantens navn og art. Lengste søkeord
     /// vinner, så «gressløk» ikke matches som «gress».
-    static func match(name: String, species: String?) -> PlantInfo? {
+    static func match(name: String, species: String?, in plants: [PlantInfo] = plants) -> PlantInfo? {
         let haystack = (name + " " + (species ?? "")).folded
         var best: (info: PlantInfo, keywordLength: Int)?
         for info in plants {
